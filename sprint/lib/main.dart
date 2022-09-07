@@ -6,7 +6,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-);
+  );
   runApp(const MyApp());
 }
 
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'invite friends',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -28,9 +28,9 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'choose friends to invite'),
     );
   }
 }
@@ -84,7 +84,87 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: Column(
+        child: Table(
+          border: TableBorder.all(),
+          columnWidths: const <int, TableColumnWidth>{
+            0: IntrinsicColumnWidth(),
+            1: FlexColumnWidth(),
+            2: FixedColumnWidth(64),
+          },
+          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+          children: <TableRow>[
+            TableRow(
+              children: <Widget>[
+                Container(
+                    height: 32,
+                    child: Text(
+                      '@afnan',
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    )
+                    //color: Colors.green,
+                    ),
+                TableCell(
+                  //verticalAlignment: TableCellVerticalAlignment.top,
+                  child: Container(
+                    child: Text(
+                      'Afnan Sahem',
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    height: 32,
+                    width: 32,
+                    //color: Colors.red,
+                  ),
+                ),
+                Container(
+                    height: 64,
+                    //color: Colors.blue,
+                    child:
+                        Checkbox(value: false, onChanged: null) //need changing
+                    ),
+              ],
+            ),
+            TableRow(
+              children: <Widget>[
+                Container(
+                    height: 32,
+                    child: Text(
+                      '@jood',
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    )
+                    //color: Colors.green,
+                    ),
+                TableCell(
+                  //verticalAlignment: TableCellVerticalAlignment.top,
+                  child: Container(
+                    child: Text(
+                      'Jood Ahmed',
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    height: 32,
+                    width: 32,
+                    //color: Colors.red,
+                  ),
+                ),
+                Container(
+                    height: 64,
+                    //color: Colors.blue,
+                    child:
+                        Checkbox(value: false, onChanged: null) //need changing
+                    ),
+              ],
+            ),
+          ],
+        ),
+
+        /*Column(
           // Column is also a layout widget. It takes a list of children and
           // arranges them vertically. By default, it sizes itself to fit its
           // children horizontally, and tries to be as tall as its parent.
@@ -109,7 +189,7 @@ class _MyHomePageState extends State<MyHomePage> {
               style: Theme.of(context).textTheme.headline4,
             ),
           ],
-        ),
+        ),*/
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
