@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/my_button.dart';
-//import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -10,7 +11,7 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
-  //final _auth = FirebaseAuth.instance;
+  final _auth = FirebaseAuth.instance;
 
   late String email;
   late String password;
@@ -39,7 +40,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               onChanged: (value) {
                 email = value;
               },
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Enter your Email',
                 contentPadding: EdgeInsets.symmetric(
                   vertical: 10,
@@ -77,7 +78,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               onChanged: (value) {
                 password = value;
               },
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Enter your password',
                 contentPadding: EdgeInsets.symmetric(
                   vertical: 10,
@@ -112,9 +113,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             MyButton(
               color: Colors.green,
               title: 'register',
-              onPressed: () {
-                print(email);
-                print(password);
+              onPressed: () async {
+                //print(email);
+                //print(password);
+                try {
+                  final newUser = await _auth.createUserWithEmailAndPassword(
+                      email: email, password: password);
+                  //move the auth user to the home page(our App) and we should have import for it.
+                  //Navigator.pushNamed(context, HomeScreen.screenRout);
+                } catch (e) {
+                  print(e);
+                }
               },
             )
           ],
