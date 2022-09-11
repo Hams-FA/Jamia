@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:sprint/data/models/user_model.dart';
+import 'package:sprint/data/remote_data_source/firestore_helper.dart';
 import 'package:sprint/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class inviteFriends extends StatefulWidget {
   const inviteFriends({super.key, required this.title});
@@ -21,8 +24,9 @@ class inviteFriends extends StatefulWidget {
 }
 
 class _inviteFriendsState extends State<inviteFriends> {
-  int _counter = 0;
+  //int _counter = 0;
 
+/*
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -30,9 +34,10 @@ class _inviteFriendsState extends State<inviteFriends> {
       // so that the display can reflect the updated values. If we changed
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
-      _counter++;
+      //_counter++;
     });
   }
+*/
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +48,143 @@ class _inviteFriendsState extends State<inviteFriends> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
+        appBar: AppBar(
+          title: Text("invite friends"),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              StreamBuilder<List<UserModel>>(
+                  stream: FirestoreHelper.readFromUsers(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Text("some error occured"),
+                      );
+                    }
+                    if (snapshot.hasData) {
+//something wrong here
+/*
+                      final users = snapshot.data;
+
+                      if (users != null) {
+                        //return Center(
+                        //child: Text("almost"),
+                        //);
+
+                        for (var user in users) {
+                          //return Center(
+                          //child: Text(users.length.toString()),
+                          //);
+
+                          child:
+                          FutureBuilder<UserModel?>(
+                            future: readOneUser(user.userName),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasError) {
+                                return Text("something went wrong");
+                              } else if (snapshot.hasData) {
+                                final user = snapshot.data;
+                                if (user == null) {
+                                  return Center(
+                                    child: Text("No user"),
+                                  );
+                                } else {
+                                  return Center(
+                                    child: Text("here?"),
+                                  ); //buildUser(user)
+                                }
+                                /*
+                          return user == null
+                              ? Center(
+                                  child: Text("No user"),
+                                )
+                              : buildUser(user);*/
+                              } else {
+                                return Center(
+                                  child:
+                                      CircularProgressIndicator(), //child: Text("no data"), //CircularProgressIndicator(),
+                                );
+                              }
+                            },
+                          );
+                          //String username = user.userName;
+                          //Future<UserModel?> u = readOneUser(user.userName);
+                          //return buildUser(u);//user
+                        }
+                      } else {
+                        return Center(child: Text("some error occured - 2"));
+                      }
+mine^^*/
+
+                      final userData = snapshot.data; //
+                      return Expanded(
+                          child: ListView.builder(
+                              itemCount: userData!.length,
+                              itemBuilder: (context, index) {
+                                final singleUser = userData[index];
+                                return Container(
+                                  margin: EdgeInsets.symmetric(vertical: 5),
+                                  child: ListTile(
+                                    leading: Container(
+                                      width: 40,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                          color: Colors.grey,
+                                          shape: BoxShape.circle),
+                                    ),
+                                    title: Text("${singleUser.userName}"),
+                                    subtitle: Text("username"),
+                                    trailing: Icon(Icons.add),
+                                  ),
+                                );
+                              }));
+                    }
+
+                    return Center(
+                      child: Text("not yet"), //CircularProgressIndicator()
+                    );
+                  }),
+              ElevatedButton(onPressed: () {}, child: Text("invite")),
+
+              ///////// delete this
+              FutureBuilder<UserModel?>(
+                  future: readOneUser("Saba55"),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Text("something went wrong");
+                    } else if (snapshot.hasData) {
+                      final user = snapshot.data;
+                      if (user == null) {
+                        return Center(
+                          child: Text("No user"),
+                        );
+                      } else {
+                        return buildUser(user);
+                      }
+                      /*
+                      return user == null
+                          ? Center(
+                              child: Text("No user"),
+                            )
+                          : buildUser(user);*/
+                    } else {
+                      return Center(
+                        child:
+                            CircularProgressIndicator(), //child: Text("no data"), //CircularProgressIndicator(),
+                      );
+                    }
+                  })
+            ],
+          ),
+        )
+        /*     
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
@@ -65,7 +207,7 @@ class _inviteFriendsState extends State<inviteFriends> {
                 Container(
                     height: 32,
                     child: Text(
-                      '@afnan',
+                      '@afnanss',
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(fontWeight: FontWeight.bold),
@@ -76,7 +218,7 @@ class _inviteFriendsState extends State<inviteFriends> {
                   //verticalAlignment: TableCellVerticalAlignment.top,
                   child: Container(
                     child: Text(
-                      'Afnan Sahem',
+                      'Afnan Sahem ---',
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(fontWeight: FontWeight.bold),
@@ -158,11 +300,37 @@ class _inviteFriendsState extends State<inviteFriends> {
           ],
         ),*/
       ),
+      /*
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
+        //onPressed: _incrementCounter,
+        //tooltip: 'Increment',
         child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+      ), */// This trailing comma makes auto-formatting nicer for build methods.
+    */
+        );
   }
+
+  Future<UserModel?> readOneUser(String userName) async {
+    final docOneUser =
+        FirebaseFirestore.instance.collection('users').doc(userName);
+    final snapshot = await docOneUser.get();
+    if (snapshot.exists) {
+      return UserModel.fromSnapshot(snapshot);
+    }
+  }
+
+//UserModer
+  Widget buildUser(UserModel user) => ListTile(
+        leading: Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(color: Colors.grey, shape: BoxShape.circle),
+        ),
+        title: Text("${user.Name}"), //
+        subtitle: Text("${user.userName}"), //username
+      );
+}
+
+Widget getFriendsData(List<UserModel> users) {
+  return new ListView();
 }
