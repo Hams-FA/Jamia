@@ -49,7 +49,8 @@ class _inviteFriendsState extends State<inviteFriends> {
     // than having to individually change instances of widgets.
     return Scaffold(
         appBar: AppBar(
-          title: Text("invite friends"),
+          title: Text("دعوة صديق إلى الجمعية"),
+          centerTitle: true,
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -69,6 +70,37 @@ class _inviteFriendsState extends State<inviteFriends> {
                       );
                     }
                     if (snapshot.hasData) {
+                      final userData = snapshot.data; //
+                      return Expanded(
+                          child: ListView.builder(
+                              itemCount: userData!.length,
+                              itemBuilder: (context, index) {
+                                final singleUser = userData[index];
+                                var list = <String>[]; //
+                                list.add(singleUser.userName); //
+                                return Container(
+                                  margin: EdgeInsets.symmetric(vertical: 5),
+                                  child: ListTile(
+                                    leading: Container(
+                                      width: 40,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                          color: Colors.grey,
+                                          shape: BoxShape.circle),
+                                    ),
+                                    title: Text("${singleUser.Name}"),
+                                    subtitle: Text(
+                                        "${singleUser.userName}              التقييم:${singleUser.rate}"),
+                                    trailing: Icon(Icons.add),
+                                  ),
+                                );
+                              }));
+                    }
+
+                    return Center(
+                      child: Text("not yet"), //CircularProgressIndicator()
+                    );
+                  }),
 //something wrong here
 /*
                       final users = snapshot.data;
@@ -123,37 +155,11 @@ class _inviteFriendsState extends State<inviteFriends> {
                       }
 mine^^*/
 
-                      final userData = snapshot.data; //
-                      return Expanded(
-                          child: ListView.builder(
-                              itemCount: userData!.length,
-                              itemBuilder: (context, index) {
-                                final singleUser = userData[index];
-                                return Container(
-                                  margin: EdgeInsets.symmetric(vertical: 5),
-                                  child: ListTile(
-                                    leading: Container(
-                                      width: 40,
-                                      height: 40,
-                                      decoration: BoxDecoration(
-                                          color: Colors.grey,
-                                          shape: BoxShape.circle),
-                                    ),
-                                    title: Text("${singleUser.userName}"),
-                                    subtitle: Text("username"),
-                                    trailing: Icon(Icons.add),
-                                  ),
-                                );
-                              }));
-                    }
-
-                    return Center(
-                      child: Text("not yet"), //CircularProgressIndicator()
-                    );
-                  }),
-              ElevatedButton(onPressed: () {}, child: Text("invite")),
+              ElevatedButton(onPressed: () {}, child: Text("دعوة")),
 
               ///////// delete this
+              ///
+              /*
               FutureBuilder<UserModel?>(
                   future: readOneUser("Saba55"),
                   builder: (context, snapshot) {
@@ -180,7 +186,7 @@ mine^^*/
                             CircularProgressIndicator(), //child: Text("no data"), //CircularProgressIndicator(),
                       );
                     }
-                  })
+                  })*/
             ],
           ),
         )
