@@ -12,18 +12,18 @@ main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(MaterialApp(
-    home: SearchFriends(),
+    home: ViewAndDeleteFriends(),
   ));
 }
 
-class SearchFriends extends StatefulWidget {
-  const SearchFriends({Key? key}) : super(key: key);
+class ViewAndDeleteFriends extends StatefulWidget {
+  const ViewAndDeleteFriends({Key? key}) : super(key: key);
 
   @override
-  State<SearchFriends> createState() => _SearchFriendsState();
+  State<ViewAndDeleteFriends> createState() => _ViewAndDeleteFriendsState();
 }
 
-class _SearchFriendsState extends State<SearchFriends> {
+class _ViewAndDeleteFriendsState extends State<ViewAndDeleteFriends> {
 /*
     final CollectionReference profileList =
       FirebaseFirestore.instance.collection('FriendsList');
@@ -59,7 +59,7 @@ class _SearchFriendsState extends State<SearchFriends> {
           ),
         )),
         body: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance.collection('users').snapshots(),
+          stream: FirebaseFirestore.instance.collection('users').doc('BqOzze04XhjjKlgEOc5F').collection('friends').snapshots(),
           builder: (context, snapshots) {
             return (snapshots.connectionState == ConnectionState.waiting)
                 ? Center(
@@ -83,9 +83,7 @@ class _SearchFriendsState extends State<SearchFriends> {
                                 fontWeight: FontWeight.bold),
                           ),
                           subtitle: Text(
-                            data['userName'] +
-                                "                            rate:  " +
-                                data['rate'],
+                            data['userName']+                                 "                            rate:  " + data['rate'],
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -101,15 +99,12 @@ class _SearchFriendsState extends State<SearchFriends> {
                               children: <Widget>[
                                 IconButton(
                                   icon: Icon(
-                                    Icons.add,
-                                    size: 30.0,
-                                    color: Color.fromARGB(255, 6, 65, 37),
+                                    Icons.remove_circle_outline,
+                                    size: 20.0,
+                                    color: Color.fromARGB(255, 169, 37, 4),
                                   ),
-                                 onPressed: () {
+                                  onPressed: () {
                                     var uName = data['userName'];
-                                   var photo = data['photo'];
-                                    var rate = data['rate'];
-                                    var name = data['Name'];
                                    /* final User =
                                         FirebaseAuth.instance.currentUser!.uid; */
                                     final docUser = FirebaseFirestore.
@@ -117,8 +112,7 @@ class _SearchFriendsState extends State<SearchFriends> {
                                     .doc('BqOzze04XhjjKlgEOc5F')
                                     .collection('friends').doc(uName);
 
-                                    docUser.set(
-                                        {'userName': uName, 'rate': rate , 'photo': photo, 'Name': name});
+                                    docUser.delete();
 
                                     //_onAddIconPressed(data['userName']);
                                   },
@@ -126,7 +120,7 @@ class _SearchFriendsState extends State<SearchFriends> {
                               ]),
                         );
                       }
-                      if (data['Name']
+                      if (data['userName']
                           .toString()
                           .toLowerCase()
                           .startsWith(name.toLowerCase())) {
@@ -141,9 +135,7 @@ class _SearchFriendsState extends State<SearchFriends> {
                                 fontWeight: FontWeight.bold),
                           ),
                           subtitle: Text(
-                            data['userName'] +
-                                "                            rate:  " +
-                                data['rate'],
+                            data['userName']+                                 "                            rate:  " + data['rate'],
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -159,15 +151,13 @@ class _SearchFriendsState extends State<SearchFriends> {
                               children: <Widget>[
                                 IconButton(
                                   icon: Icon(
-                                    Icons.add,
-                                    size: 30.0,
-                                    color: Color.fromARGB(255, 6, 65, 37),
+                                    Icons.remove_circle_outline,
+                                    size: 20.0,
+                                    color: Color.fromARGB(255, 169, 37, 4),
                                   ),
                                   onPressed: () {
                                     var uName = data['userName'];
-                                   var photo = data['photo'];
-                                    var rate = data['rate'];
-                                    var name = data['Name'];
+
                                    /* final User =
                                         FirebaseAuth.instance.currentUser!.uid; */
                                     final docUser = FirebaseFirestore.
@@ -175,8 +165,7 @@ class _SearchFriendsState extends State<SearchFriends> {
                                     .doc('BqOzze04XhjjKlgEOc5F')
                                     .collection('friends').doc(uName);
 
-                                    docUser.set(
-                                        {'userName': uName, 'rate': rate , 'photo': photo, 'Name': name});
+                                    docUser.delete();
 
                                     //_onAddIconPressed(data['userName']);
                                   },

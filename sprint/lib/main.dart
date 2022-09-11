@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sprint/SearchFriends.dart';
 import 'package:sprint/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'SearchFriends.dart';
+import 'ViewAndDeleteFriends.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,9 +30,9 @@ class myApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
       ),
-      home: SearchFriends(), /*const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: ViewAndDeleteFriends(), /*const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
