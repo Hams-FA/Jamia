@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/user_model.dart';
 
+//change this to id
 class FirestoreHelper {
   static Stream<List<UserModel>> readFromUsers() {
     final userFriends = FirebaseFirestore.instance
         .collection("users")
-        .doc('BqOzze04XhjjKlgEOc5F') //7HpbZ5WCtcFCrUnconiQ
+        .doc('mona@gmail.com/') //change this to id
         .collection('friends'); //.doc("a@gmail.com");
     return userFriends.snapshots().map((querySnapshot) =>
         querySnapshot.docs.map((e) => UserModel.fromSnapshot(e)).toList());

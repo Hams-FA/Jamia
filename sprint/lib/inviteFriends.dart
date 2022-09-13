@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:sprint/data/models/user_model.dart';
 import 'package:sprint/data/remote_data_source/firestore_helper.dart';
@@ -8,45 +10,40 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class inviteFriends extends StatefulWidget {
   const inviteFriends({super.key, required this.title});
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
-
+  //static final invitedAlready = [];
   @override
   State<inviteFriends> createState() => _inviteFriendsState();
 }
 
 class _inviteFriendsState extends State<inviteFriends> {
-  //int _counter = 0;
+  Map<String, bool?> checked = new Map();
+  List<String> selectedEmails = List<String>.empty(growable: true); //
+  //List list = await readInvited2();
+  static var invitedAlready = [];
 
-/*
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      //_counter++;
-    });
+//here?
+  void initState() {
+    super.initState();
+    readInvited211();
+    print('1');
+    readInvited211();
+    //invitedAlready.add('tyry');
+    //invitedAlready = readInvited211() as List; //here
+    print(invitedAlready);
+    print('hi');
+    //print(r
+    //veadInvited2());
   }
-*/
+
+  CreateStats() {
+    print('create');
+  }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+    print('22');
+    print(invitedAlready.length); //?
     return Scaffold(
         appBar: AppBar(
           title: Text("دعوة صديق إلى الجمعية"),
@@ -65,40 +62,88 @@ class _inviteFriendsState extends State<inviteFriends> {
                       );
                     }
                     if (snapshot.hasError) {
+                      print(snapshot.error);
                       return Center(
                         child: Text("some error occured"),
                       );
                     }
                     if (snapshot.hasData) {
-                      final userData = snapshot.data; //
+                      final userData = snapshot.data;
+                      //List selectedIndexes = []; //
                       return Expanded(
                           child: ListView.builder(
                               itemCount: userData!.length,
                               itemBuilder: (context, index) {
                                 final singleUser = userData[index];
-                                var list = <String>[]; //
-                                list.add(singleUser.userName); //
-                                return Container(
-                                  margin: EdgeInsets.symmetric(vertical: 5),
-                                  child: ListTile(
-                                    leading: Container(
-                                      width: 40,
-                                      height: 40,
-                                      decoration: BoxDecoration(
-                                          color: Colors.grey,
-                                          shape: BoxShape.circle),
-                                    ),
-                                    title: Text("${singleUser.Name}"),
-                                    subtitle: Text(
-                                        "${singleUser.userName}              التقييم:${singleUser.rate}"),
-                                    trailing: Icon(Icons.add),
-                                  ),
-                                );
+                                //checked.addAll{"'${singleUser.userName}:false};
+
+                                //List list = readInvited21(); //store data here!
+                                //change this to contain?
+                                //!list.contains()
+                                if (true) {
+                                  checked['${singleUser.Email}'] = false;
+                                  return Container(
+                                      margin: EdgeInsets.symmetric(vertical: 5),
+                                      child: StatefulBuilder(
+                                        builder: (context, setState) =>
+                                            (CheckboxListTile(
+                                          //ListTile
+                                          secondary: Container(
+                                            width: 40,
+                                            height: 40,
+                                            decoration: BoxDecoration(
+                                                color: Colors.grey,
+                                                shape: BoxShape.circle),
+                                          ),
+                                          title: Text("${singleUser.Name}"),
+                                          subtitle: Text(
+                                              "${singleUser.Email}              التقييم:${singleUser.rate}"),
+                                          activeColor: Colors.green,
+                                          checkColor: Colors.white,
+                                          value: checked[
+                                              '${singleUser.Email}'], //isChecked, //checked['${singleUser.userName}'],
+                                          onChanged: (val) {
+                                            setState(() {
+                                              checked['${singleUser.Email}'] =
+                                                  val;
+                                              if (checked[
+                                                      '${singleUser.Email}'] ==
+                                                  true) {
+                                                selectedEmails
+                                                    .add('${singleUser.Email}');
+                                              } else if (checked[
+                                                      '${singleUser.Email}'] ==
+                                                  false) {
+                                                selectedEmails.removeWhere(
+                                                    (element) =>
+                                                        element ==
+                                                        '${singleUser.Email}');
+                                              }
+                                            });
+                                          },
+                                        )),
+                                      )
+
+                                      /*
+                                    trailing: Checkbox(
+                                      value: this.value,
+                                      onChanged: (bool? value) {
+                                        setState(() {
+                                          this.value = value;
+                                        });
+                                      },
+                                    ),*/
+
+                                      //1
+                                      //Icon(Icons.add),
+                                      //),
+                                      );
+                                }
                               }));
                     }
 
                     return Center(
-                      child: Text("not yet"), //CircularProgressIndicator()
+                      child: CircularProgressIndicator(),
                     );
                   }),
 //something wrong here
@@ -155,7 +200,27 @@ class _inviteFriendsState extends State<inviteFriends> {
                       }
 mine^^*/
 
-              ElevatedButton(onPressed: () {}, child: Text("دعوة")),
+              ElevatedButton(
+                  onPressed: () {
+                    selectedEmails.forEach((element) {
+                      var jamiaId =
+                          '1'; //change this to id coming from selected jamia
+                      final docInviteFriends = FirebaseFirestore.instance
+                          .collection('JamiaGroup')
+                          .doc(jamiaId)
+                          .collection('members')
+                          .doc(element);
+
+                      docInviteFriends.set({'status': 'pending'});
+
+                      final updateRequestList = FirebaseFirestore.instance
+                          .collection('requestList')
+                          .doc(element);
+                      updateRequestList.set({'jamiaID': jamiaId});
+                    });
+                  },
+                  child: Text("دعوة")),
+              //add if possible ${selectedUsersNames.length} :
 
               ///////// delete this
               ///
@@ -189,143 +254,19 @@ mine^^*/
                   })*/
             ],
           ),
-        )
-        /*     
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Table(
-          border: TableBorder.all(),
-          columnWidths: const <int, TableColumnWidth>{
-            0: IntrinsicColumnWidth(),
-            1: FlexColumnWidth(),
-            2: FixedColumnWidth(64),
-          },
-          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-          children: <TableRow>[
-            TableRow(
-              children: <Widget>[
-                Container(
-                    height: 32,
-                    child: Text(
-                      '@afnanss',
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    )
-                    //color: Colors.green,
-                    ),
-                TableCell(
-                  //verticalAlignment: TableCellVerticalAlignment.top,
-                  child: Container(
-                    child: Text(
-                      'Afnan Sahem ---',
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    height: 32,
-                    width: 32,
-                    //color: Colors.red,
-                  ),
-                ),
-                Container(
-                    height: 64,
-                    //color: Colors.blue,
-                    child:
-                        Checkbox(value: false, onChanged: null) //need changing
-                    ),
-              ],
-            ),
-            TableRow(
-              children: <Widget>[
-                Container(
-                    height: 32,
-                    child: Text(
-                      '@jood',
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    )
-                    //color: Colors.green,
-                    ),
-                TableCell(
-                  //verticalAlignment: TableCellVerticalAlignment.top,
-                  child: Container(
-                    child: Text(
-                      'Jood Ahmed',
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    height: 32,
-                    width: 32,
-                    //color: Colors.red,
-                  ),
-                ),
-                Container(
-                    height: 64,
-                    //color: Colors.blue,
-                    child:
-                        Checkbox(value: false, onChanged: null) //need changing
-                    ),
-              ],
-            ),
-          ],
-        ),
-
-        /*Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),*/
-      ),
-      /*
-      floatingActionButton: FloatingActionButton(
-        //onPressed: _incrementCounter,
-        //tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), */// This trailing comma makes auto-formatting nicer for build methods.
-    */
-        );
+        ));
   }
-
-  Future<UserModel?> readOneUser(String userName) async {
+/*
+  Future<UserModel?> readOneUser(String Email) async {
     final docOneUser =
-        FirebaseFirestore.instance.collection('users').doc(userName);
+        FirebaseFirestore.instance.collection('users').doc(Email);
     final snapshot = await docOneUser.get();
     if (snapshot.exists) {
       return UserModel.fromSnapshot(snapshot);
     }
   }
+*/
 
-//UserModer
   Widget buildUser(UserModel user) => ListTile(
         leading: Container(
           width: 40,
@@ -333,10 +274,78 @@ mine^^*/
           decoration: BoxDecoration(color: Colors.grey, shape: BoxShape.circle),
         ),
         title: Text("${user.Name}"), //
-        subtitle: Text("${user.userName}"), //username
+        subtitle: Text("${user.Email}"), //username
       );
+
+  void readInvited211() async {
+    List<dynamic> feature = await readInvited2();
+    feature.forEach((element) {
+      print(element);
+      invitedAlready.add(element);
+    });
+  }
 }
 
 Widget getFriendsData(List<UserModel> users) {
   return new ListView();
 }
+/*
+Future<List<String>> readInvited() async {
+  QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+      .collection("JamiaGroup")
+      .doc('1')
+      .collection('members')
+      .get(); //
+  //return querySnapshot.docs;
+
+  //List<dynamic> menus = querySnapshot.docs
+  //  .map((e) => QuerySnapshot.fromJson(e.data() as Map<String, dynamic>))
+  //.toList();
+  String s = querySnapshot.toString();
+  //print(s);
+  return null;
+}
+*/
+
+Future<List<dynamic>> readInvited2() async {
+  final querySnapshot = await FirebaseFirestore.instance
+      .collection("JamiaGroup")
+      .doc('1') //chenge this to jamia id
+      .collection('members')
+      .get();
+
+  List<dynamic> res = List<dynamic>.empty(growable: true);
+  ;
+
+  //res = querySnapshot.keys;
+  querySnapshot.docs.forEach((element) {
+    //res.add(element.id); //data() - id
+    print(element.id);
+    //print(element['status']);
+  });
+  //print(res);
+  print('readinvited that return feature');
+  return res; //as List?
+  //return querySnapshot.snapshots();//().map((event) => event.docs.map((e) => event.data()as Map<String,dynamic>.toList())
+}
+
+
+
+
+
+/*
+List<String> readInvited21()  {
+  var old = readInvited2();
+  old.forEach((element)){
+
+  }
+
+    //List<Future<dynamic>>
+    //_selectedItems = List<Future<dynamic>>();
+    List<dynamic>
+    listofimg = [];
+    Future.forEach((element) {   element.then((value) =>
+    listofimg.add(value));
+    });
+}
+*/

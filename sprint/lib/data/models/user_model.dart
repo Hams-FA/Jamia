@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
+  final String? Email; //new
   final String? NID;
   final String? Name;
   final String? Password;
@@ -9,10 +10,11 @@ class UserModel {
   final String? photo;
   final String? rate;
   final int? status;
-  final String userName;
+  final String? userName;
 
   UserModel(
-      {this.NID,
+      {this.Email,
+      this.NID,
       this.Name,
       this.Password,
       this.PhoneNO,
@@ -20,12 +22,13 @@ class UserModel {
       this.photo,
       this.rate,
       this.status,
-      required this.userName});
+      this.userName});
 
   factory UserModel.fromSnapshot(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
 
     return UserModel(
+      Email: snapshot['Email'],
       NID: snapshot['NID'],
       Name: snapshot['Name'],
       Password: snapshot['Password'],
@@ -39,6 +42,7 @@ class UserModel {
   }
 
   Map<String, dynamic> toJson() => {
+        "Email": Email,
         "NID": NID,
         "Name": Name,
         "Password": Password,
