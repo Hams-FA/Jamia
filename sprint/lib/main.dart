@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sprint/SearchFriends.dart';
+import 'package:sprint/ViewAndDeleteFriends.dart';
 import 'package:sprint/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.grey,
       ),
       /*routes: <String, WidgetBuilder>{
         '/login': (BuildContext context) => const LoginScreen(),
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
         '/home': (BuildContext context) => const HomeScreen(),
       },*/
       home:
-          SearchFriends(), //const MyHomePage(title: 'Flutter Demo Home Page'),
+          ViewAndDeleteFriends(), //const MyHomePage(title: 'Flutter Demo Home Page'),
       builder: EasyLoading.init(),
       /*
     );

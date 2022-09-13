@@ -47,8 +47,7 @@ class _SearchFriendsState extends State<SearchFriends> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: Card(
-              color: Colors.white,
+            title: SizedBox(
           child: Directionality(
               textDirection: ui.TextDirection.rtl,
               child: TextFormField(

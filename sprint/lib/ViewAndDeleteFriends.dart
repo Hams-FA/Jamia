@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 import 'dart:html';
+import 'dart:ui' as ui;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -48,19 +49,53 @@ class _ViewAndDeleteFriendsState extends State<ViewAndDeleteFriends> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: Card(
-          child: TextField(
-            decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.search),
-                hintText: 'Search by user name, name Or Phone Number'),
-            onChanged: (val) {
-              setState(() {
-                name = val;
-              });
-            },
-          ),
+            title: SizedBox(
+              
+           child: Directionality(
+              textDirection: ui.TextDirection.rtl,
+              child: TextFormField(
+                keyboardType: TextInputType.name,
+                textAlign: TextAlign.right,
+
+                // The validator receives the text that the user has entered.
+                onChanged: (value) {
+                  name = value;
+                },
+                decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.search),
+                        hintText: 'ابحث عن صديق باستخدام الاسم او الايميل',
+                        contentPadding: EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal: 20,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(30),
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.grey,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(30),
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.green,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(30),
+                          ),
+                        ),
+                      ),
+              ),),
         )),
-        body: StreamBuilder<QuerySnapshot>(
+        body:
+         StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection('users')
               .doc('fay@hotmail.com')
