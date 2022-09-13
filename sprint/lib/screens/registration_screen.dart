@@ -8,6 +8,11 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:line_icons/line_icons.dart';
 import '../widgets/validations.dart';
 import 'package:intl/intl.dart';
+import 'package:intl/src/intl/text_direction.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'dart:ui' as ui;
+import 'package:intl/intl.dart' as intl;
+import 'package:date_time_picker/date_time_picker.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -23,14 +28,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final _firestore = FirebaseFirestore.instance;
 
   late String nid;
-  late String name;
-  late String userName;
+  late String f_name;
+  late String l_name;
   late String bd;
   late String phone;
   late String email;
   late String password;
   late String conpassword;
-
+  DateTime date = DateTime.now();
   //bool showSpinner = false;
   @override
   Widget build(BuildContext context) {
@@ -80,141 +85,215 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 SizedBox(height: 30),
 
 //1-National ID:
-                TextFormField(
-                  keyboardType: TextInputType.number,
-                  textAlign: TextAlign.right,
-
-                  // The validator receives the text that the user has entered.
-                  validator: (value) => validations.validate(5, value!),
-                  onChanged: (value) {
-                    nid = value;
-                  },
-                  decoration: const InputDecoration(
-                    suffixIcon: Icon(Icons.fingerprint),
-                    hintText: 'ادخل رقم هويتك الوطنية',
-                    contentPadding: EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 20,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
+                Directionality(
+                  textDirection: ui.TextDirection.rtl,
+                  child: TextFormField(
+                    keyboardType: TextInputType.number,
+                    textAlign: TextAlign.right,
+                    //textDirection: TextDirection.rtl,
+                    // The validator receives the text that the user has entered.
+                    validator: (value) => validations.validate(5, value!),
+                    onChanged: (value) {
+                      nid = value;
+                    },
+                    decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.fingerprint),
+                      hintText: 'رقم الهوية الوطنية مكون من 10 ارقام',
+                      labelText: 'ادخل رقم هويتك الوطنية',
+                      contentPadding: EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 20,
                       ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.grey,
-                        width: 1,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
                       ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.grey,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
                       ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.green,
-                        width: 2,
-                      ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.green,
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
                       ),
                     ),
                   ),
                 ),
                 SizedBox(height: 8),
-//2-Full Name:
-                TextFormField(
-                  keyboardType: TextInputType.name,
-                  textAlign: TextAlign.right,
+//2-First Name:
+                Directionality(
+                    textDirection: ui.TextDirection.rtl,
+                    child: TextFormField(
+                      keyboardType: TextInputType.name,
+                      textAlign: TextAlign.right,
 
-                  // The validator receives the text that the user has entered.
-                  validator: (value) => validations.validate(3, value!),
-                  onChanged: (value) {
-                    name = value;
-                  },
-                  decoration: const InputDecoration(
-                    suffixIcon: Icon(Icons.person),
-                    hintText: 'ادخل اسمك الكامل',
-                    contentPadding: EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 20,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
+                      // The validator receives the text that the user has entered.
+                      validator: (value) => validations.validate(3, value!),
+                      onChanged: (value) {
+                        f_name = value;
+                      },
+                      decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.person),
+                        labelText: 'ادخل اسمك الاول',
+                        hintText: 'يجب ان يحتوي اسمك الاول على حرفين على الاقل',
+                        contentPadding: EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal: 20,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.grey,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.green,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                        ),
                       ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.grey,
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.green,
-                        width: 2,
-                      ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
-                      ),
-                    ),
-                  ),
-                ),
+                    )),
                 SizedBox(height: 8),
 //3-user name:
-                TextFormField(
-                  keyboardType: TextInputType.name,
-                  textAlign: TextAlign.right,
+                Directionality(
+                  textDirection: ui.TextDirection.rtl,
+                  child: TextFormField(
+                    keyboardType: TextInputType.name,
+                    textAlign: TextAlign.right,
 
-                  // The validator receives the text that the user has entered.
-                  validator: (value) => validations.validate(7, value!),
-                  onChanged: (value) {
-                    userName = value;
-                  },
-                  decoration: const InputDecoration(
-                    suffixIcon: Icon(Icons.person_outline),
-                    hintText: 'ادخل اسم المستخدم',
-                    contentPadding: EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 20,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
+                    // The validator receives the text that the user has entered.
+                    validator: (value) => validations.validate(3, value!),
+                    onChanged: (value) {
+                      l_name = value;
+                    },
+                    decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.people),
+                      labelText: 'ادخل اسمك العائلة',
+                      hintText: 'يجب ان يحتوي اسمك عائلتك على حرفين على الاقل',
+                      contentPadding: EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 20,
                       ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.grey,
-                        width: 1,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
                       ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.grey,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
                       ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color.fromARGB(255, 26, 110, 29),
-                        width: 2,
-                      ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color.fromARGB(255, 26, 110, 29),
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
                       ),
                     ),
                   ),
                 ),
                 SizedBox(height: 8),
 //4-birth date:
-                TextFormField(
-                  keyboardType: TextInputType.datetime,
-                  textAlign: TextAlign.right,
-                  //readOnly: true,
-                  // The validator receives the text that the user has entered.
-                  /* onTap: () async {
+
+                Directionality(
+                  textDirection: ui.TextDirection.rtl,
+                  child: TextFormField(
+                    keyboardType: TextInputType.number,
+                    textAlign: TextAlign.right,
+
+                    // The validator receives the text that the user has entered.
+                    validator: (value) => validations.validate(0, value!),
+                    onChanged: (value) {
+                      bd = value;
+                    },
+                    decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.calendar_month),
+                      labelText: 'ادخل عمرك',
+                      hintText: 'يجب ان يحتوي  عمرك على ارقام فقط',
+                      contentPadding: EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 20,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.grey,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color.fromARGB(255, 26, 110, 29),
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                /*DateTimePicker(
+                    initialValue: '',
+                    firstDate: DateTime(1900),
+                    lastDate: DateTime.now(),
+                    //enabled: Border,
+                    dateLabelText: 'اختر تاريخ ميلادك ',
+                    icon: Icon(Icons.calendar_month),
+                    onChanged: (val) => bd = val,
+                    validator: (val) {
+                      validations.validate(0, val!);
+                    },
+                    onSaved: (val) => print(val),
+                  ),
+                ),*/
+
+                /* TextFormField(
+                    keyboardType: TextInputType.datetime,
+                    textAlign: TextAlign.right,
+                    //readOnly: true,
+                    // The validator receives the text that the user has entered.
+                    /*
+                  onTap: () async {
                     DateTime? pickedDate = await showDatePicker(
                         context: context,
                         initialDate: DateTime.now(),
@@ -223,125 +302,171 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         lastDate: DateTime(2040));
                     final DateFormat formatter = DateFormat("dd/MM/YYYY");
                     bd = formatter.format(pickedDate!).toString();
+                    setState(() {
+                      date = pickedDate;
+                      
+
+                    });
                   },*/
-                  validator: (value) => validations.validate(0, value!),
-                  onChanged: (value) {
-                    bd = value;
-                  },
-                  decoration: const InputDecoration(
-                    suffixIcon: Icon(Icons.calendar_month),
-                    hintText: 'ادخل تاريخ ميلادك',
-                    contentPadding: EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 20,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
+                    onTap: () async {
+                      // Below line stops keyboard from appearing
+                      FocusScope.of(context).requestFocus(new FocusNode());
+                      DateTime? newDate = await showDatePicker(
+                        context: context,
+                        builder: (BuildContext context, Widget? child) {
+                          return Theme(
+                            data: ThemeData.light().copyWith(
+                              primaryColor: Colors.green,
+                              colorScheme: const ColorScheme.light(
+                                  primary: Colors.green),
+                              buttonTheme: const ButtonThemeData(
+                                  textTheme: ButtonTextTheme.primary),
+                            ),
+                            child: child!,
+                          );
+                        },
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(1900),
+                        lastDate: DateTime.now(),
+                      );
+                      //if Cancel
+                      if (newDate == null) return;
+                      //if OK
+                      setState(() => date = newDate);
+                      bd = intl.DateFormat.yMMMd().format(newDate);
+                    },
+                    validator: (value) => validations.validate(0, value!),
+                    onChanged: (value) {
+                      setState(() => bd = value);
+                      print('Selected date: $bd');
+                      //bd = value;
+                    },
+                    onSaved: (val) => print(val),
+                    decoration: const InputDecoration(
+                      suffixIcon: Icon(Icons.calendar_month),
+                      hintText: 'ادخل تاريخ ميلادك',
+                      contentPadding: EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 20,
                       ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.grey,
-                        width: 1,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
                       ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.grey,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
                       ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.green,
-                        width: 2,
-                      ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.green,
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
                       ),
                     ),
                   ),
-                ),
+                ),*/
+
                 SizedBox(height: 8),
 //5-phone number:
-                TextFormField(
-                  keyboardType: TextInputType.number,
-                  textAlign: TextAlign.right,
-
-                  // The validator receives the text that the user has entered.
-                  validator: (value) => validations.validate(4, value!),
-                  onChanged: (value) {
-                    phone = value;
-                  },
-                  decoration: const InputDecoration(
-                    suffixIcon: Icon(Icons.phone),
-                    hintText: 'ادخل رقم جوالك',
-                    contentPadding: EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 20,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
+                Directionality(
+                  textDirection: ui.TextDirection.rtl,
+                  child: TextFormField(
+                    keyboardType: TextInputType.number,
+                    textAlign: TextAlign.right,
+                    // The validator receives the text that the user has entered.
+                    validator: (value) => validations.validate(4, value!),
+                    onChanged: (value) {
+                      phone = value;
+                    },
+                    decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.phone),
+                      labelText: 'ادخل رقم جوالك ',
+                      hintText: '05xxxxxxxx : يجب ان يكون بهذا كالتالي',
+                      //hintText: '05xxxxxxxx :مثال ',
+                      //alignLabelWithHint: true,
+                      contentPadding: EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 20,
                       ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.grey,
-                        width: 1,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
                       ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.grey,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
                       ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.green,
-                        width: 2,
-                      ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.green,
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
                       ),
                     ),
                   ),
                 ),
                 SizedBox(height: 8),
 //6-Email
-                TextFormField(
-                  keyboardType: TextInputType.emailAddress,
-                  textAlign: TextAlign.right,
+                Directionality(
+                  textDirection: ui.TextDirection.rtl,
+                  child: TextFormField(
+                    keyboardType: TextInputType.emailAddress,
+                    textAlign: TextAlign.right,
 
-                  // The validator receives the text that the user has entered.
-                  validator: (value) => validations.validate(1, value!),
-                  onChanged: (value) {
-                    email = value;
-                  },
-                  decoration: const InputDecoration(
-                    suffixIcon: Icon(Icons.email),
-                    hintText: 'ادخل بريدك الالكتروني',
-                    contentPadding: EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 20,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
+                    // The validator receives the text that the user has entered.
+                    validator: (value) => validations.validate(1, value!),
+                    onChanged: (value) {
+                      email = value;
+                    },
+                    decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.email),
+                      labelText: 'ادخل بريدك الالكتروني',
+                      hintText: "مثال admin@gmail.com",
+                      contentPadding: EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 20,
                       ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.grey,
-                        width: 1,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
                       ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.grey,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
                       ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.green,
-                        width: 2,
-                      ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.green,
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
                       ),
                     ),
                   ),
@@ -349,50 +474,78 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 SizedBox(height: 8),
 
 //7-password
-                TextFormField(
-                  obscureText: true,
-                  keyboardType: TextInputType.visiblePassword,
-                  textAlign: TextAlign.right,
-                  // The validator receives the text that the user has entered.
-                  validator: (value) => validations.validate(2, value!),
-                  onChanged: (value) {
-                    password = value;
-                  },
-                  decoration: const InputDecoration(
-                    //labelText: "كلمة المرور" ,
-                    hintText: 'ادخل كلمة المرور',
-                    suffixIcon: Icon(Icons.lock),
-                    contentPadding: EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 20,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
+
+                Directionality(
+                  textDirection: ui.TextDirection.rtl,
+                  child: TextFormField(
+                    obscureText: true,
+                    keyboardType: TextInputType.visiblePassword,
+                    textAlign: TextAlign.right,
+                    // The validator receives the text that the user has entered.
+                    validator: (value) => validations.validate(2, value!),
+                    onChanged: (value) {
+                      password = value;
+                    },
+                    decoration: const InputDecoration(
+                      labelText: 'ادخل كلمة المرور',
+                      hintText: 'انتبه للتعليمات في الاسفل...',
+                      prefixIcon: Icon(Icons.lock),
+                      contentPadding: EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 20,
                       ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.grey,
-                        width: 1,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
                       ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.grey,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
                       ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.green,
-                        width: 2,
-                      ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.green,
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
                       ),
                     ),
                   ),
                 ),
                 SizedBox(height: 8),
-//7-confirm password
+                const Directionality(
+                  textDirection: ui.TextDirection.rtl,
+                  child: Text('*يجب ان تكون كلمة المرور مكونة من 8 خانات ',
+                      textAlign: TextAlign.right, selectionColor: Colors.green),
+                ),
+                const Directionality(
+                  textDirection: ui.TextDirection.rtl,
+                  child: Text(
+                      '*يجب ان تحتوي كلمة المرور على حرف واحد كبير على الاقل',
+                      textAlign: TextAlign.right,
+                      selectionColor: Colors.green),
+                ),
+                const Directionality(
+                  textDirection: ui.TextDirection.rtl,
+                  child: Text(
+                      '*يجب ان تحتوي كلمة المرور على حرف واحد صغير على الاقل',
+                      textAlign: TextAlign.right,
+                      selectionColor: Colors.green),
+                ),
+                const Directionality(
+                  textDirection: ui.TextDirection.rtl,
+                  child: Text('*يجب ان تحتوي كلمة المرور على رقم واحد الاقل',
+                      textAlign: TextAlign.right, selectionColor: Colors.green),
+                ),
+/*7-confirm password
                 TextFormField(
                   obscureText: true,
                   keyboardType: TextInputType.visiblePassword,
@@ -433,16 +586,19 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       ),
                     ),
                   ),
-                ),
+                ),*/
 
                 SizedBox(height: 10),
 
                 MyButton(
                   color: Colors.green,
-                  title: 'الـتـسـجـيـل',
+                  title: 'إنــشــاء',
                   onPressed: () async {
                     EasyLoading.show(status: 'تحميل ...');
                     String _message = '';
+                    //bool condetionUserName =
+                    //isDuplicateUniqueName(userName) as bool;
+                    //if (!condetionUserName) {
                     if (_formKey.currentState!.validate()) {
                       try {
                         await _auth
@@ -455,12 +611,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
                             String? _fcmToken =
                                 await FirebaseMessaging.instance.getToken();
-                            await _firestore.collection('users').doc(userName)
+                            await _firestore.collection('users').doc(email)
                                 //.doc(userCred.user!.uid)
                                 .set({
                               'NID': nid,
-                              'Name': name,
-                              'userName': userName,
+                              'fname': f_name,
+                              'lname': l_name,
                               'birthDate': bd,
                               'PhoneNO': phone,
                               'Email': email,
@@ -474,13 +630,32 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             //await getUserInfo(userCred.user!);
                           },
                         );
+                        //NO
                         //move the auth user to the home page(our App) and we should have import for it.
                         //--Navigator.pushNamed(context, HomeScreen.screenRout);
+                        //move the auth user to the home page(our App) and we should have import for it.
+                        //Navigator.pushNamed(context, '/home');
                       } on FirebaseAuthException catch (e) {
                         switch (e.code) {
                           case "email-already-in-use":
                             _message = 'البريد الإلكتروني مستخدم مسبقًا';
+                            //tost is working
+                            /*Fluttertoast.showToast(
+                                msg: _message,
+                                backgroundColor: Colors.green,
+                                textColor: Colors.grey,
+                                gravity: ToastGravity.TOP,
+                                toastLength: Toast.LENGTH_SHORT);*/
                             break;
+                          /*case "userName-already-in-use":
+                            _message = ' اسم المستخدم مستخدم مسبقًا';
+                            Fluttertoast.showToast(
+                                msg: _message,
+                                backgroundColor: Colors.green,
+                                textColor: Colors.grey,
+                                gravity: ToastGravity.TOP,
+                                toastLength: Toast.LENGTH_SHORT);
+                            break;*/
                           case "invalid-email":
                             _message = 'البريد الإلكتروني غير صالح';
                             break;
@@ -508,6 +683,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         EasyLoading.showError(_message);
                       }
                     }
+                    /*} else {
+                      EasyLoading.showError("اسم المستخدم موجود مسبقا");
+                    }*/
                   },
                 ),
                 Row(
@@ -519,6 +697,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         style: TextStyle(fontSize: 15, color: Colors.green),
                       ),
                       onPressed: () {
+                        //Navigator.pushNamed(context, '/login');
+                        //No
                         //Navigator.pushNamed(context, LoginScreen.screenRoute);
                       },
                     ),
@@ -532,4 +712,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       ),
     );
   }
+/*
+  Future<bool> isDuplicateUniqueName(String uniqueName) async {
+    QuerySnapshot query = await FirebaseFirestore.instance
+        .collection('users')
+        .where('userName', isEqualTo: uniqueName)
+        .get();
+    return query.docs.isNotEmpty;
+  }
+  */
 }

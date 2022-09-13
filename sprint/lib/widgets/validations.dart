@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:sprint/screens/registration_screen.dart';
 
 class Validations {
   String? validate(int decide, String value) {
@@ -39,16 +40,32 @@ class Validations {
     if (!regex.hasMatch(value)) {
       return ("يجب ان يحتوي على حرفين على الأقل");
     }
-    if (!RegExp(r"^[\p{L},.'-]*$",
+    if (!RegExp(r"^[\p{L} ,.'-]*$",
             caseSensitive: false, unicode: true, dotAll: true)
         .hasMatch(value)) {
       return ("يجب ان يحتوي الأسم على أحرف فقط");
+    }
+    if (value.length > 10) {
+      return ("الأسم المدخل غير صحيح");
+    }
+    return null;
+  }
+
+  /*String? validateName(String value) {
+    RegExp regex = RegExp(r'^.{2,}$');
+    if (value.isEmpty || value.trim().isEmpty) return 'الاسم مطلوب';
+    if (!regex.hasMatch(value)) {
+      return ("يجب ان يحتوي على حرفين على الأقل");
+    }
+    RegExp regex2 = RegExp(r'^[A-Za-z]*(\s[A-Za-z]*)+$');
+    if (!regex2.hasMatch(value)) {
+      return (" يجب ان يحتوي الأسم على أحرف فقط واسمين على الاقل");
     }
     if (value.length > 30) {
       return ("الأسم المدخل غير صحيح");
     }
     return null;
-  }
+  }*/
 
   String? validateEmail(String value) {
     if (value.isEmpty || value.trim().isEmpty) {
@@ -78,9 +95,52 @@ class Validations {
       return null;
   }
 
+  String? validateConPassworde(String value) {
+    RegExp regex = new RegExp(r'^.{8,}$');
+    if (value.isEmpty || value.trim().isEmpty) {
+      return ("الرجاء تعيين كلمة مرور");
+    }
+    if (!regex.hasMatch(value)) {
+      return ("يجب أن تحتوي على 8 رموز او أكثر");
+    }
+    //if (RegistrationScreen. ) {
+    //return "كلمة المرور مختلفة*"; // don't match
+    //}
+
+    return null;
+  }
+
+  bool isPasswordCompliant(String password, [int minLength = 8]) {
+    if (password.isEmpty) {
+      return false;
+    }
+
+    bool hasUppercase = password.contains(new RegExp(r'[A-Z]'));
+    bool hasDigits = password.contains(new RegExp(r'[0-9]'));
+    bool hasLowercase = password.contains(new RegExp(r'[a-z]'));
+    //bool hasMinLength = password.length > minLength;
+
+    return hasDigits & hasUppercase & hasLowercase;
+  }
+
+  bool isPasswordCompliant2(String password, [int minLength = 8]) {
+    if (password.length > minLength) {
+      return true;
+    } else
+      return false;
+  }
+
   String? validateBD(String value) {
-    if (value.isEmpty)
-      return ("الرجاء اختيار تاريخ ميلادك ");
+    //int value2 = value as int;
+    RegExp regex = RegExp(r'[0-9]{2}');
+
+    if (value.isEmpty || value.trim().isEmpty) return ("الرجاء اختيار عمرك ");
+    /*if (value2 <= 0 && value2 >= 200) {
+      return ("العمر المدخل غير صحيح");
+    }*/
+    if (!regex.hasMatch(value)) {
+      return ("العمر المدخل غير صحيح");
+    }
     /*if (calculateAge(DateTime.parse(value)) < 16)
       return ("يجب ان يكون عمرك اكبر من 16 سنة"); */
     /* Pattern pattern =
@@ -119,42 +179,37 @@ class Validations {
     }
   }
 
-  String? validateConPassworde(String value) {
-    RegExp regex = new RegExp(r'^.{8,}$');
-    if (value.isEmpty || value.trim().isEmpty) {
-      return ("الرجاء تعيين كلمة مرور");
-    }
+  String? validateUserName(String value) {
+    RegExp regex = RegExp(r'^.{2,}$');
+    if (value.isEmpty || value.trim().isEmpty) return 'اسم المستخدم مطلوب';
     if (!regex.hasMatch(value)) {
-      return ("يجب أن تحتوي على 8 رموز او أكثر");
+      return ("يجب ان يحتوي على حرفين على الأقل");
     }
-    // if (passwordTec.text != password2Tec.text ) {
-    //return "كلمة المرور مختلفة*"; // don't match
-    //}
+    if (value.length > 15) {
+      return ("يجب ان يكون اسم المستخدم لا يزيد عن 15 حرف");
+    }
+    return null;
+  }
+/*
+    bool result = isDuplicateUniqueName(value) as bool;
 
+    //bool result = usernameCheck(value) as bool;
+    if (!result) {
+      return ("اسم المستخدم موجود الرجاء اختيار غيره");
+    }
     return null;
   }
 
-  bool isPasswordCompliant(String password, [int minLength = 8]) {
-    if (password.isEmpty) {
-      return false;
-    }
+  Future<bool> isDuplicateUniqueName(String uniqueName) async {
+    QuerySnapshot query = await FirebaseFirestore.instance
+        .collection('users')
+        .where('userName', isEqualTo: uniqueName)
+        .get();
+    return query.docs.isNotEmpty;
+  }*/
 
-    bool hasUppercase = password.contains(new RegExp(r'[A-Z]'));
-    bool hasDigits = password.contains(new RegExp(r'[0-9]'));
-    bool hasLowercase = password.contains(new RegExp(r'[a-z]'));
-    //bool hasMinLength = password.length > minLength;
-
-    return hasDigits & hasUppercase & hasLowercase;
-  }
-
-  bool isPasswordCompliant2(String password, [int minLength = 8]) {
-    if (password.length > minLength) {
-      return true;
-    } else
-      return false;
-  }
-
-  String? validateUserName(String value) {
+/*
+  Future<String?> validateUserName1(String value) async {
     RegExp regex = RegExp(r'^.{2,}$');
     if (value.isEmpty || value.trim().isEmpty) return 'اسم المستخدم مطلوب';
     if (!regex.hasMatch(value)) {
@@ -165,14 +220,31 @@ class Validations {
     //}
     if (value.length > 15) {
       return ("يجب ان يكون اسم المستخدم لا يزيد عن 15 حرف");
-    } /*
-    bool result = usernameCheck(value) as bool;
-    if (result) {
+    }
+
+    
+    bool result = isDuplicateUniqueName(value) as bool;
+    
+    //bool result = usernameCheck(value) as bool;
+    
+    if (await isDuplicateUniqueName(value)) {
       return ("اسم المستخدم موجود الرجاء اختيار غيره");
-    }*/
+    }
     return null;
   }
-
+Future<bool> isDuplicateUniqueName(String uniqueName) async {
+    QuerySnapshot query = await FirebaseFirestore.instance
+        .collection('users')
+        .where('userName', isEqualTo: uniqueName)
+        .get();
+    return query.docs.isNotEmpty;
+  }
+  String? validateUserName(String value) {
+    Future<String?> result1 = validateUserName1(value);
+    String result = result1 as String;
+    return result;
+  }
+*/
   /*final firestore = FirebaseFirestore.instance;
 
   Future<bool> usernameCheck(String username) async {
