@@ -40,6 +40,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   cloud_firestore: ^3.4.6
   firebase_auth: ^3.8.0
+  line_icons: ^2.0.1
+  firebase_messaging: ^13.0.1
+  flutter_easyloading: ^3.0.5
 
 dev_dependencies:
   flutter_test:
