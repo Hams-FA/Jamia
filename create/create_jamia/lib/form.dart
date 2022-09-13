@@ -1,5 +1,6 @@
 import 'package:create_jamia/user_details.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' show Alignment, AppBar, BuildContext, Colors, Column, Container, EdgeInsets, ElevatedButton, Expanded, FontWeight, Form, FormState, GestureDetector, GlobalKey, Icon, Icons, InputBorder, InputDecoration, Key, MainAxisAlignment, MaterialPageRoute, MediaQuery, Navigator, Row, SafeArea, Scaffold, SingleChildScrollView, SizedBox, State, StatefulWidget, Text, TextFormField, TextInputType, TextStyle, Widget, showDatePicker;
+// ignore: unused_import
 import 'package:date_time_picker/date_time_picker.dart';
 
 class FormPage extends StatefulWidget {
@@ -37,34 +38,34 @@ class _FormPageState extends State<FormPage> {
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
-          title: Text('Create Jamia'),
+          title: const Text('Create Jamia'),
           leading: GestureDetector(
               onTap: () {
                 Navigator.pop(context);
               },
-              child: Icon(Icons.arrow_back_ios_new))),
+              child: const Icon(Icons.arrow_back_ios_new))),
       body: SingleChildScrollView(
         child: Container(
           child: Form(
             key: formKey,
             child: Container(
-              margin: EdgeInsets.symmetric(vertical: 30),
+              margin: const EdgeInsets.symmetric(vertical: 30),
               height: MediaQuery.of(context).size.height,
               child: Column(
                 children: [
                   Container(
                     alignment: Alignment.center,
-                    child: Text(
+                    child: const Text(
                       'Create Jamia',
                       style:
                           TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: TextFormField(
                       onChanged: (value) {
                         name = value;
@@ -80,23 +81,23 @@ class _FormPageState extends State<FormPage> {
                         fillColor: Colors.grey.shade300,
                         filled: true,
                         hintText: "Enter your Group Name",
-                        hintStyle: TextStyle(color: Colors.grey),
+                        hintStyle: const TextStyle(color: Colors.grey),
                         border: InputBorder.none,
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Row(
                           children: [
-                            Text('Choose Member'),
-                            SizedBox(
+                            const Text('Choose Member'),
+                            const SizedBox(
                               width: 10,
                             ),
                             Expanded(
@@ -105,6 +106,7 @@ class _FormPageState extends State<FormPage> {
                                 onChanged: (val) {
                                   setState(() {
                                     minMembers =
+                                        // ignore: prefer_is_empty
                                         val.length < 1 ? 0 : int.parse(val);
                                   });
                                 },
@@ -124,10 +126,10 @@ class _FormPageState extends State<FormPage> {
                                     filled: true,
                                     hintText: "Min",
                                     border: InputBorder.none,
-                                    hintStyle: TextStyle(color: Colors.grey)),
+                                    hintStyle: const TextStyle(color: Colors.grey)),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
                             Expanded(
@@ -155,12 +157,12 @@ class _FormPageState extends State<FormPage> {
                                     filled: true,
                                     hintText: "Max",
                                     border: InputBorder.none,
-                                    hintStyle: TextStyle(color: Colors.grey)),
+                                    hintStyle: const TextStyle(color: Colors.grey)),
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         // Container(
@@ -185,7 +187,7 @@ class _FormPageState extends State<FormPage> {
                         //         });
                         //       }),
                         // ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         TextFormField(
@@ -206,11 +208,11 @@ class _FormPageState extends State<FormPage> {
                             fillColor: Colors.grey.shade300,
                             filled: true,
                             hintText: "Enter Amount",
-                            hintStyle: TextStyle(color: Colors.grey),
+                            hintStyle: const TextStyle(color: Colors.grey),
                             border: InputBorder.none,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Row(
@@ -218,19 +220,19 @@ class _FormPageState extends State<FormPage> {
                           children: [
                             Text(
                               'Start Date : ${startDate!.day}-${startDate!.month}-${startDate!.year}',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 15,
                               ),
                             ),
                             Text(
                               'End Date : ${endDate!.day}-${endDate!.month}-${endDate!.year}',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 15,
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Container(
@@ -250,12 +252,12 @@ class _FormPageState extends State<FormPage> {
                                       startDate!.month, startDate!.day + 14);
                                 });
                               },
-                              child: Text('Select Date')),
+                              child: const Text('Select Date')),
                         ),
                         Container(
                           width: double.infinity,
                           child: ElevatedButton(
-                            child: Text("Send"),
+                            child: const Text("التالي"),
                             onPressed: () async {
                               validation(
                                   minMembers,
@@ -267,7 +269,7 @@ class _FormPageState extends State<FormPage> {
                             },
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                       ],
