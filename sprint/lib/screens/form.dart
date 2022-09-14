@@ -134,7 +134,7 @@ class _FormPageState extends State<FormPage> {
                                       } else if (minMembers < 2) {
                                         return 'اقل عدد هو 2 من الاعضاء';
                                       } else if (maxMembers <= minMembers) {
-                                        return 'يجب أن يكون العدد الأقصى للأعضاء أكبر من الحد الأدنى';
+                                        return ' العدد الأقصى للأعضاء أكبر من الحد الأدنى';
                                       } else if (minMembers > 12) {
                                         return 'اكبر عدد هو 12 من الاعضاء';
                                       } else {
