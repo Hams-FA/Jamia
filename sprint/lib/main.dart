@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:sprint/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:sprint/screens/registration_screen.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:sprint/screens/form.dart';
+import 'package:sprint/screens/home.dart';
+import 'package:sprint/screens/login_screen.dart';
+import 'package:sprint/screens/forgot_password';
+import 'package:sprint/screens/profile_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-);
+  );
   runApp(const MyApp());
 }
 
@@ -30,7 +37,17 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      routes: <String, WidgetBuilder>{
+        '/login': (BuildContext context) => const LoginScreen(),
+        '/registration': (BuildContext context) => const RegistrationScreen(),
+        '/forgotPassword': (BuildContext context) => const ForgotPassword(),
+        '/home': (BuildContext context) => const MyHomePage(),
+        '/profile': (BuildContext context) => const ProfileScreen(),
+      },
+      home: const LoginScreen(),
+      //const RegistrationScreen(), //const MyHomePage(title: 'Flutter Demo Home Page'),
+      builder: EasyLoading.init(),
+      /*
     );
   }
 }
@@ -115,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ), // This trailing comma makes auto-formatting nicer for build methods.*/
     );
   }
 }
