@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         '/home': (BuildContext context) => const HomeScreen(),
       },*/
       home:
-          SearchFriends(), //const MyHomePage(title: 'Flutter Demo Home Page'),
+          ViewAndDeleteFriends(), //const MyHomePage(title: 'Flutter Demo Home Page'),
       builder: EasyLoading.init(),
       /*
     );
