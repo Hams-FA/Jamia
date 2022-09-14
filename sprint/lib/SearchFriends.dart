@@ -25,224 +25,228 @@ class SearchFriends extends StatefulWidget {
 }
 
 class _SearchFriendsState extends State<SearchFriends> {
-/*
-    final CollectionReference profileList =
-      FirebaseFirestore.instance.collection('FriendsList');
+  List<dynamic> myFriends = List<dynamic>.empty(growable: true);
 
-  _onAddIconPressed(String){
-  Future<void> createUserData(String userName) async {
-    return await profileList.doc(userName)
-        .set({'Name': data[Name], 'gender': gender, 'score': score});
-  } 
-} */
   String name = "";
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    readInvited211();
+    print(myFriends);
+  }
+
+  void readInvited211() async {
+    List<dynamic> feature = await readInvited2();
+    feature.forEach((element) {
+      myFriends.add(element);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: SizedBox(
-          child: Directionality(
-              textDirection: ui.TextDirection.rtl,
-              child: TextFormField(
-                keyboardType: TextInputType.name,
-                textAlign: TextAlign.right,
+          title: Text("أضف صديق"),
+          centerTitle: true,
+          backgroundColor: Color.fromARGB(255, 76, 175, 80),
+        ),
+        body: Directionality(
+          textDirection: ui.TextDirection.rtl,
+          child: StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance.collection('users').snapshots(),
+            builder: (context, snapshots) {
+              return (snapshots.connectionState == ConnectionState.waiting)
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : ListView.builder(
+                      itemCount: snapshots.data!.docs.length,
+                      itemBuilder: (context, index) {
+                        var data = snapshots.data!.docs[index].data()
+                            as Map<String, dynamic>;
 
-                // The validator receives the text that the user has entered.
-                onChanged: (value) {
-                  name = value;
-                },
-                decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.search),
-                        hintText: 'ابحث عن صديق باستخدام الاسم او الايميل',
-                        contentPadding: EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 20,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(30),
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.grey,
-                            width: 1,
-                          ),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(30),
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.green,
-                            width: 2,
-                          ),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(30),
-                          ),
-                        ),
-                      ),
-              ),),
-        )),
-        body: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance.collection('users').snapshots(),
-          builder: (context, snapshots) {
-            return (snapshots.connectionState == ConnectionState.waiting)
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : ListView.builder(
-                    itemCount: snapshots.data!.docs.length,
-                    itemBuilder: (context, index) {
-                      var data = snapshots.data!.docs[index].data()
-                          as Map<String, dynamic>;
+                        if (!myFriends.contains(data['Email'])) {
+                          if (name.isEmpty) {
+                            if (data['Email'] != 'Tala@hotmail.com') {
+                               bool toggle = false;
 
-                      if (name.isEmpty) {
-                        if (data['Email'] != 'fay@howrtmail.com') {
-                          //Edit
 
-                          return ListTile(
-                            title: Text(
-                            data['fname'] +" "+ data['lname'],
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            subtitle: Text(
-                              data['Email'] +
-                                  "                            التقييم:  " +
-                                  data['rate'],
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.normal),
-                            ),
-                            leading: CircleAvatar(
-                              backgroundImage: NetworkImage(data['photo']),
-                            ),
-                            trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.add,
-                                      size: 30.0,
-                                      color: Color.fromARGB(255, 6, 65, 37),
-                                    ),
-                                    onPressed: () {
-                                      var email = data['Email'];
-                                      var photo = data['photo'];
-                                      var rate = data['rate'];
-                                      var fname = data['fname'];
-                                      var lname = data['lname'];
+                              //Edit
 
-                                      /* final User =
-                                        FirebaseAuth.instance.currentUser!.uid; */
-                                      final docUser = FirebaseFirestore.instance
-                                          .collection('users')
-                                          .doc('fay@hotmail.com')
-                                          .collection('friends')
-                                          .doc(email);
+                              return ListTile(
+                                title: Text(
+                                  data['fname'] + " " + data['lname'],
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      color: Colors.black54,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                subtitle: Text(
+                                  data['Email'],
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      color: Colors.black54,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                                leading: CircleAvatar(
+                                  backgroundImage: NetworkImage(data['photo']),
+                                ),
+                                trailing: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      IconButton(
+                                          
+                                          onPressed: () {
+                                            setState(() {
+                                              // Here we changing the icon.
+                                              print('test');
+                                               toggle = !toggle;
+                                            });
+                                            var email = data['Email'];
+                                          var photo = data['photo'];
+                                          var rate = data['rate'];
+                                          var fname = data['fname'];
+                                          var lname = data['lname'];
 
-                                      docUser.set({
-                                        'Email': email,
-                                        'rate': rate,
-                                        'photo': photo,
-                                        'fname': fname,
-                                        'lname': lname
-                                      });
+                                          /* final User =
+                                          FirebaseAuth.instance.currentUser!.uid; */
+                                          final docUser = FirebaseFirestore
+                                              .instance
+                                              .collection('users')
+                                              .doc('Tala@hotmail.com')
+                                              .collection('friends')
+                                              .doc(email);
 
-                                      //_onAddIconPressed(data['userName']);
-                                    },
-                                  ),
-                                ]),
-                          );
+                                          docUser.set({
+                                            'Email': email,
+                                            'rate': rate,
+                                            'photo': photo,
+                                            'fname': fname,
+                                            'lname': lname
+                                          });
+
+                                          },
+                                          icon: toggle
+                                              ? Icon(Icons.favorite_border)
+                                              : Icon(
+                                                  Icons.favorite,
+                                                ),),
+                                      
+                                          
+                                          //_onAddIconPressed(data['userName']);
+                                    ]),
+                              );
+                            }
+                          }
+                          if (data['fname']
+                              .toString()
+                              .toLowerCase()
+                              .startsWith(name.toLowerCase())) {
+                            if (data['Email'] != 'Tala@hotmail.com') {
+                              bool toggle = false;
+
+
+                              //Edit
+
+                              return ListTile(
+                                
+                                title: Text(
+                                  data['fname'] + " " + data['lname'],
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      color: Colors.black54,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                subtitle: Text(
+                                  data['Email'],
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      color: Colors.black54,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                                leading: CircleAvatar(
+                                  backgroundImage: NetworkImage(data['photo']),
+                                ),
+                                trailing: Row(
+                                  
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                                                            IconButton(
+                                          
+                                          onPressed: () {
+                                            setState(() {
+                                              print('test');
+
+                                              // Here we changing the icon.
+                                              toggle = !toggle;
+                                            });
+                                            var email = data['Email'];
+                                          var photo = data['photo'];
+                                          var rate = data['rate'];
+                                          var fname = data['fname'];
+                                          var lname = data['lname'];
+
+                                          /* final User =
+                                          FirebaseAuth.instance.currentUser!.uid; */
+                                          final docUser = FirebaseFirestore
+                                              .instance
+                                              .collection('users')
+                                              .doc('Tala@hotmail.com')
+                                              .collection('friends')
+                                              .doc(email);
+
+                                          docUser.set({
+                                            'Email': email,
+                                            'rate': rate,
+                                            'photo': photo,
+                                            'fname': fname,
+                                            'lname': lname
+                                          });
+
+                                          },
+                                          icon: toggle
+                                              ? Icon(Icons.favorite_border)
+                                              : Icon(
+                                                  Icons.favorite,
+                                                ),),
+                                      
+                                    ]),
+                              );
+                            }
+                          }
                         }
-                      }
-                      if (data['fname']
-                          .toString()
-                          .toLowerCase()
-                          .startsWith(name.toLowerCase())) {
-                        if (data['Email'] != 'fay@hotmail.com') {
-                          //Edit
-
-                          return ListTile(
-                            title: Text(
-                            data['fname'] +" "+ data['lname'],
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            subtitle: Text(
-                              data['Email'] +
-                                  "                            التقييم:  " +
-                                  data['rate'],
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.normal),
-                            ),
-                            leading: CircleAvatar(
-                              backgroundImage: NetworkImage(data['photo']),
-                            ),
-                            trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.add,
-                                      size: 30.0,
-                                      color: Color.fromARGB(255, 6, 65, 37),
-                                    ),
-                                    onPressed: () {
-                                      var email = data['Email'];
-                                      var photo = data['photo'];
-                                      var rate = data['rate'];
-                                      var fname = data['fname'];
-                                      var lname = data['lname'];
-
-                                      /* final User =
-                                        FirebaseAuth.instance.currentUser!.uid; */
-                                      final docUser = FirebaseFirestore.instance
-                                          .collection('users')
-                                          .doc('fay@hotmail.com')
-                                          .collection('friends')
-                                          .doc(email);
-
-                                      docUser.set({
-                                        'Email': email,
-                                        'rate': rate,
-                                        'photo': photo,
-                                        'fname': fname,
-                                        'lname': lname
-                                      });
-                                      //_onAddIconPressed(data['userName']);
-                                    },
-                                  ),
-                                ]),
-                          );
-                        }
-                      }
-                      return Container();
-                    });
-          },
+                        return Container();
+                      });
+            },
+          ),
         ));
   }
+}
+
+Future<List<dynamic>> readInvited2() async {
+  final querySnapshot = await FirebaseFirestore.instance
+      .collection("users")
+      .doc('Tala@hotmail.com') //chenge this to jamia id
+      .collection('friends')
+      .get();
+
+  List<dynamic> res = List<dynamic>.empty(growable: true);
+  //res = querySnapshot.keys;
+  //inviteFriends = test;
+  querySnapshot.docs.forEach((element) {
+    res.add(element.id); //data() - id
+    print(element.id);
+    //print(element['status']);
+  });
+  return res;
 }

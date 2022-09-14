@@ -38,6 +38,8 @@ class _ViewAndDeleteFriendsState extends State<ViewAndDeleteFriends> {
   } 
 } */
     String name = "";
+     Widget elevateButton = ElevatedButton(onPressed: null, child: Text('data'));
+
 
   @override
   void initState() {
@@ -48,206 +50,136 @@ class _ViewAndDeleteFriendsState extends State<ViewAndDeleteFriends> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            title: SizedBox(
-              
-           child: Directionality(
-              textDirection: ui.TextDirection.rtl,
-              child: TextFormField(
-                keyboardType: TextInputType.name,
-                textAlign: TextAlign.right,
-
-                // The validator receives the text that the user has entered.
-                onChanged: (value) {
-                  name = value;
-                },
-                decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.search),
-                        hintText: 'ابحث عن صديق باستخدام الاسم او الايميل',
-                        contentPadding: EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 20,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(30),
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.grey,
-                            width: 1,
-                          ),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(30),
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.green,
-                            width: 2,
-                          ),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(30),
-                          ),
-                        ),
-                      ),
-              ),),
-        )),
+       appBar: AppBar(
+  centerTitle: true,
+  title: Text('أصدقائي'),
+  leading: IconButton(
+    onPressed: () {},
+    icon: Icon(Icons.person_add_alt),
+  ),
+  
+),
         body:
-         StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection('users')
-              .doc('fay@hotmail.com')
-              .collection('friends')
-              .snapshots(),
-          builder: (context, snapshots) {
-            return (snapshots.connectionState == ConnectionState.waiting)
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : ListView.builder(
-                    itemCount: snapshots.data!.docs.length,
-                    itemBuilder: (context, index) {
-                      var data = snapshots.data!.docs[index].data()
-                          as Map<String, dynamic>;
-                          showAlertDialog(BuildContext context) {
-                                      // set up the buttons
-                                      Widget cancelButton = TextButton(
-                                        child: Text("تراجع"),
-                                        onPressed: () {   Navigator.pop(context); },
-                                      );
-                                      Widget continueButton = TextButton(
-                                        child: Text("حذف"),
-                                        onPressed: () {
-                                           var email = data['Email'];
+         Directionality(
+              textDirection: ui.TextDirection.rtl,
+           child: StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('users')
+                .doc('Tala@hotmail.com')
+                .collection('friends')
+                .snapshots(),
+            builder: (context, snapshots) {
+              return (snapshots.connectionState == ConnectionState.waiting)
+                  ? Center(
+                      child: CircularProgressIndicator(),
+)
+                  : ListView.builder(
+                    
+                      itemCount: snapshots.data!.docs.length,
+                      itemBuilder: (context, index) {
+                        var data = snapshots.data!.docs[index].data()
+                            as Map<String, dynamic>;
+                            showAlertDialog(BuildContext context) {
+                                        // set up the buttons
+                                        Widget cancelButton = TextButton(
+                                          
+                                          
+                                          child: Text("تراجع"),
+                                          
+                                          onPressed: () {   Navigator.pop(context); },
+                                        );
+                                        Widget continueButton = TextButton(
+                                           style: TextButton.styleFrom(foregroundColor: Colors.red),
 
-                                          /* final User =
-                                        FirebaseAuth.instance.currentUser!.uid; */
-                                          final docUser = FirebaseFirestore
-                                              .instance
-                                              .collection('users')
-                                              .doc('fay@hotmail.com')
-                                              .collection('friends')
-                                              .doc(email);
+                                          child: Text("حذف"),
+                                          onPressed: () {
+                                            Colors.black38;
+                                             var email = data['Email'];
+         
+                                            /* final User =
+                                          FirebaseAuth.instance.currentUser!.uid; */
+                                            final docUser = FirebaseFirestore
+                                                .instance
+                                                .collection('users')
+                                                .doc('Tala@hotmail.com')
+                                                .collection('friends')
+                                                .doc(email);
+         
+                                            docUser.delete();
+                                            Navigator.pop(context);
+                                          },
+                                        );
+                                        // set up the AlertDialog
+                                        AlertDialog alert = AlertDialog(
+                                          title: Text("إزالة صديق"),
+                                          content: Text(
+                                                 data['lname'] +"هل أنت متأكد من رغبتك في إزالة الصديق "  ),
+                                          actions: [
+                                            cancelButton,
+                                            continueButton,
+                                          ],
+                                        );
+                                        // show the dialog
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return alert;
+                                          },
+                                        );
+                                      }
 
-                                          docUser.delete();
-                                          Navigator.pop(context);
-                                        },
-                                      );
-                                      // set up the AlertDialog
-                                      AlertDialog alert = AlertDialog(
-                                        title: Text("إزالة صديق"),
-                                        content: Text(
-                                               data['lname'] +"هل أنت متأكد من رغبتك في إزالة الصديق "  ),
-                                        actions: [
-                                          cancelButton,
-                                          continueButton,
-                                        ],
-                                      );
-                                      // show the dialog
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return alert;
-                                        },
-                                      );
-                                    }
 
-                      if (name.isEmpty) {
-                        return ListTile(
-                          title: Text(
-                            data['fname'] + data['lname'],
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                color: Colors.black54,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          subtitle: Text(
-                            data['Email'] +
-                                "                            rate:  " +
-                                data['rate'],
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                color: Colors.black54,
-                                fontSize: 13,
-                                fontWeight: FontWeight.normal),
-                          ),
-                          leading: CircleAvatar(
-                            backgroundImage: NetworkImage(data['photo']),
-                          ),
-                          trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                 IconButton(
-                                  icon: Icon(
-                                    Icons.remove_circle_outline,
-                                    size: 20.0,
-                                    color: Color.fromARGB(255, 169, 37, 4),
+                        if (data['fname']
+                            .toString()
+                            .toLowerCase()
+                            .startsWith(name.toLowerCase())) {
+
+                          return ListTile(
+                            title: Text(
+                              data['fname'] +" "+ data['lname'],
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  color: Colors.black54,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            subtitle: Text(
+                              data['Email'],
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  color: Colors.black54,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.normal),
+                            ),
+                            leading: CircleAvatar(
+                              backgroundImage: NetworkImage(data['photo']),
+                            ),
+                            trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.remove_circle_outline,
+                                      size: 20.0,
+                                      color: Color.fromARGB(255, 169, 37, 4),
+                                    ),
+                                    onPressed: () {
+                                       showAlertDialog(context);
+         
+         
+                                      //_onAddIconPressed(data['userName']);
+                                    },
                                   ),
-                                  onPressed: () {
-                                     showAlertDialog(context);
-
-
-                                  },
-                                ),
-                              ]),
-                        );
-                      }
-                      if (data['fname']
-                          .toString()
-                          .toLowerCase()
-                          .startsWith(name.toLowerCase())) {
-                        return ListTile(
-                          title: Text(
-                            data['fname'] + data['lname'],
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                color: Colors.black54,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          subtitle: Text(
-                            data['Email'] +
-                                "                            rate:  " +
-                                data['rate'],
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                color: Colors.black54,
-                                fontSize: 13,
-                                fontWeight: FontWeight.normal),
-                          ),
-                          leading: CircleAvatar(
-                            backgroundImage: NetworkImage(data['photo']),
-                          ),
-                          trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.remove_circle_outline,
-                                    size: 20.0,
-                                    color: Color.fromARGB(255, 169, 37, 4),
-                                  ),
-                                  onPressed: () {
-                                     showAlertDialog(context);
-
-
-                                    //_onAddIconPressed(data['userName']);
-                                  },
-                                ),
-                              ]),
-                        );
-                      }
-                      return Container();
-                    });
-          },
-        ));
+                                ]),
+                          );
+                        }
+                        return Container();
+                      });
+            },
+                 ),
+         ));
   }
 
 
