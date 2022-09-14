@@ -6,6 +6,9 @@ import 'package:sprint/data/remote_data_source/firestore_helper.dart';
 import 'package:sprint/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:ui' as ui;
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class inviteFriends extends StatefulWidget {
   const inviteFriends({super.key, required this.title});
@@ -20,24 +23,35 @@ class _inviteFriendsState extends State<inviteFriends> {
   Map<String, bool?> checked = new Map();
   List<String> selectedEmails = List<String>.empty(growable: true); //
   //List list = await readInvited2();
-  static var invitedAlready = [];
+  List<dynamic> invitedAlready = List<dynamic>.empty(growable: true);
+
+  //need to update this User
+  final _auth = FirebaseAuth.instance;
+  late User signedInUser;
 
 //here?
   void initState() {
     super.initState();
-    readInvited211();
+    getCurrentUser();
     print('1');
     readInvited211();
     //invitedAlready.add('tyry');
     //invitedAlready = readInvited211() as List; //here
     print(invitedAlready);
-    print('hi');
+    //print('hi');
     //print(r
     //veadInvited2());
   }
 
-  CreateStats() {
-    print('create');
+  void getCurrentUser() {
+    try {
+      final user = _auth.currentUser;
+      if (user != null) {
+        signedInUser = user;
+      }
+    } catch (e) {
+      EasyLoading.showError("حدث خطأ ما ....");
+    }
   }
 
   @override
@@ -46,9 +60,9 @@ class _inviteFriendsState extends State<inviteFriends> {
     print(invitedAlready.length); //?
     return Scaffold(
         appBar: AppBar(
-          title: Text("دعوة صديق إلى الجمعية"),
-          centerTitle: true,
-        ),
+            title: Text("دعوة صديق إلى الجمعية"),
+            centerTitle: true,
+            backgroundColor: Color.fromARGB(255, 76, 175, 80)),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -77,51 +91,61 @@ class _inviteFriendsState extends State<inviteFriends> {
                                 final singleUser = userData[index];
                                 //checked.addAll{"'${singleUser.userName}:false};
 
-                                //List list = readInvited21(); //store data here!
+                                //List list = readInvited2(); //store data here!
                                 //change this to contain?
                                 //!list.contains()
-                                if (true) {
+                                if (!invitedAlready
+                                    .contains(singleUser.Email)) {
                                   checked['${singleUser.Email}'] = false;
                                   return Container(
                                       margin: EdgeInsets.symmetric(vertical: 5),
                                       child: StatefulBuilder(
                                         builder: (context, setState) =>
-                                            (CheckboxListTile(
-                                          //ListTile
-                                          secondary: Container(
-                                            width: 40,
-                                            height: 40,
-                                            decoration: BoxDecoration(
-                                                color: Colors.grey,
-                                                shape: BoxShape.circle),
-                                          ),
-                                          title: Text("${singleUser.Name}"),
-                                          subtitle: Text(
-                                              "${singleUser.Email}              التقييم:${singleUser.rate}"),
-                                          activeColor: Colors.green,
-                                          checkColor: Colors.white,
-                                          value: checked[
-                                              '${singleUser.Email}'], //isChecked, //checked['${singleUser.userName}'],
-                                          onChanged: (val) {
-                                            setState(() {
-                                              checked['${singleUser.Email}'] =
-                                                  val;
-                                              if (checked[
-                                                      '${singleUser.Email}'] ==
-                                                  true) {
-                                                selectedEmails
-                                                    .add('${singleUser.Email}');
-                                              } else if (checked[
-                                                      '${singleUser.Email}'] ==
-                                                  false) {
-                                                selectedEmails.removeWhere(
-                                                    (element) =>
-                                                        element ==
-                                                        '${singleUser.Email}');
-                                              }
-                                            });
-                                          },
-                                        )),
+                                            Directionality(
+                                          textDirection: ui.TextDirection.rtl,
+                                          child: (CheckboxListTile(
+                                            //ListTile
+                                            secondary: Container(
+                                              width: 40,
+                                              height: 40,
+                                              decoration: BoxDecoration(
+                                                  color: Colors.grey,
+                                                  shape: BoxShape.circle),
+                                            ),
+                                            title: Text(
+                                              "${singleUser.fname} ${singleUser.lname}",
+                                              style: TextStyle(
+                                                color: Color(0xFF393737),
+                                              ),
+                                            ),
+                                            subtitle: Text(
+                                                "${singleUser.Email}              التقييم:${singleUser.rate}"),
+                                            activeColor: Color.fromARGB(
+                                                255, 76, 175, 80),
+                                            checkColor: Colors.white,
+                                            value: checked[
+                                                '${singleUser.Email}'], //isChecked, //checked['${singleUser.userName}'],
+                                            onChanged: (val) {
+                                              setState(() {
+                                                checked['${singleUser.Email}'] =
+                                                    val;
+                                                if (checked[
+                                                        '${singleUser.Email}'] ==
+                                                    true) {
+                                                  selectedEmails.add(
+                                                      '${singleUser.Email}');
+                                                } else if (checked[
+                                                        '${singleUser.Email}'] ==
+                                                    false) {
+                                                  selectedEmails.removeWhere(
+                                                      (element) =>
+                                                          element ==
+                                                          '${singleUser.Email}');
+                                                }
+                                              });
+                                            },
+                                          )),
+                                        ),
                                       )
 
                                       /*
@@ -138,6 +162,8 @@ class _inviteFriendsState extends State<inviteFriends> {
                                       //Icon(Icons.add),
                                       //),
                                       );
+                                } else {
+                                  return Text('');
                                 }
                               }));
                     }
@@ -201,6 +227,9 @@ class _inviteFriendsState extends State<inviteFriends> {
 mine^^*/
 
               ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 76, 175, 80),
+                  ),
                   onPressed: () {
                     selectedEmails.forEach((element) {
                       var jamiaId =
@@ -273,7 +302,12 @@ mine^^*/
           height: 40,
           decoration: BoxDecoration(color: Colors.grey, shape: BoxShape.circle),
         ),
-        title: Text("${user.Name}"), //
+        title: Text(
+          "${user.fname} ${user.lname}",
+          style: TextStyle(
+            color: Color(0xFF393737),
+          ),
+        ), //
         subtitle: Text("${user.Email}"), //username
       );
 
@@ -283,6 +317,9 @@ mine^^*/
       print(element);
       invitedAlready.add(element);
     });
+    print('211');
+    print(invitedAlready);
+    print('invited');
   }
 }
 
@@ -315,14 +352,20 @@ Future<List<dynamic>> readInvited2() async {
       .get();
 
   List<dynamic> res = List<dynamic>.empty(growable: true);
-  ;
-
+  List test = [];
   //res = querySnapshot.keys;
+  //inviteFriends = test;
   querySnapshot.docs.forEach((element) {
-    //res.add(element.id); //data() - id
+    res.add(element.id); //data() - id
+    test.add(element.id);
     print(element.id);
     //print(element['status']);
   });
+
+  print('test list');
+  print(test);
+  print('rest list');
+  print(res);
   //print(res);
   print('readinvited that return feature');
   return res; //as List?

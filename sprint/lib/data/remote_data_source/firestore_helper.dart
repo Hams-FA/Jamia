@@ -6,7 +6,7 @@ class FirestoreHelper {
   static Stream<List<UserModel>> readFromUsers() {
     final userFriends = FirebaseFirestore.instance
         .collection("users")
-        .doc('mona@gmail.com/') //change this to id
+        .doc('wafa@gmail.com/') //change this to id
         .collection('friends'); //.doc("a@gmail.com");
     return userFriends.snapshots().map((querySnapshot) =>
         querySnapshot.docs.map((e) => UserModel.fromSnapshot(e)).toList());
