@@ -105,8 +105,7 @@ late bool toggle;
                                           onPressed: () {
                                             setState(() {
                                               // Here we changing the icon.
-                                              print('test');
-                                               toggle = !toggle;
+                                               toggle = true;
                                             });
                                             var email = data['Email'];
                                           var photo = data['photo'];
@@ -187,7 +186,7 @@ late bool toggle;
                                           onPressed: () {
                                             setState(() {
                                               // Here we changing the icon.
-                                              toggle = !toggle;
+                                              toggle = true;
                                             });
                                             var email = data['Email'];
                                           var photo = data['photo'];
