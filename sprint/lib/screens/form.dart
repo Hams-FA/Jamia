@@ -17,14 +17,16 @@ class _FormPageState extends State<FormPage> {
   double amount = 0.0;
   // final moduleList = ['Weekly', 'Monthly'];
   // String dropdownValue = 'Weekly';
+  DateTime startDate = DateTime.now();
+  DateTime endDate = DateTime.now().add(Duration(days: 14));
 
   String name = '';
 
   @override
   Widget build(BuildContext context) {
-    DateTime? startDate = DateTime.now();
-    DateTime? endDate =
-        DateTime(startDate.year, startDate.month, startDate.day + 14);
+    // DateTime? startDate = DateTime.now();
+    // DateTime? endDate =
+    //     DateTime(startDate.year, startDate.month, startDate.day + 14);
     // DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
     //       value: item,
     //       child: Text(item,
@@ -87,7 +89,7 @@ class _FormPageState extends State<FormPage> {
                           },
                           validator: (value) {
                             if (value == '') {
-                              return 'الرجاء ادخال اسم القروب';
+                              return 'الرجاء ادخال اسم المجموعة';
                             } else {
                               return null;
                             }
@@ -95,7 +97,7 @@ class _FormPageState extends State<FormPage> {
                           decoration: InputDecoration(
                             fillColor: Colors.grey.shade300,
                             filled: true,
-                            hintText: "ادخل اسم القروب ",
+                            hintText: "ادخل اسم المجموعة ",
                             hintStyle: TextStyle(color: Colors.grey),
                             border: InputBorder.none,
                           ),
@@ -131,6 +133,8 @@ class _FormPageState extends State<FormPage> {
                                         return "الرجاء ادخال عدد الاعضاء صحيحا";
                                       } else if (minMembers < 2) {
                                         return 'اقل عدد هو 2 من الاعضاء';
+                                      } else if (maxMembers <= minMembers) {
+                                        return ' العدد الأقصى للأعضاء أكبر من الحد الأدنى';
                                       } else if (minMembers > 12) {
                                         return 'اكبر عدد هو 12 من الاعضاء';
                                       } else {
@@ -172,7 +176,7 @@ class _FormPageState extends State<FormPage> {
                                     decoration: InputDecoration(
                                         fillColor: Colors.grey.shade300,
                                         filled: true,
-                                        hintText: "الأعلى",
+                                        hintText: "الأقصى",
                                         border: InputBorder.none,
                                         hintStyle:
                                             TextStyle(color: Colors.grey)),
@@ -236,30 +240,34 @@ class _FormPageState extends State<FormPage> {
                         SizedBox(
                           height: 20,
                         ),
-                        Directionality(
-                            textDirection: ui.TextDirection.rtl,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Directionality(
-                                    textDirection: ui.TextDirection.rtl,
-                                    child: Text(
-                                      'تاريخ البدء : ${startDate.day}-${startDate.month}-${startDate.year}',
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                      ),
-                                    )),
-                                const Directionality(
-                                    textDirection: ui.TextDirection.rtl,
-                                    child: Text(
-                                      'تاريخ الانتهاء : سوف يتم تحديدة لاحقا',
-                                      //${endDate.day}-${endDate.month}-${endDate.year}',
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                      ),
-                                    )),
-                              ],
-                            )),
+                        // Directionality(
+                        //     textDirection: ui.TextDirection.rtl,
+                        //     child:
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // Directionality(
+                            //     textDirection: ui.TextDirection.rtl,
+                            Text(
+                              'تاريخ الإنشاء : ${startDate.day}-${startDate.month}-${startDate.year}',
+                              style: TextStyle(
+                                fontSize: 15,
+                              ),
+                            ),
+                            // const Directionality(
+                            //     textDirection: ui.TextDirection.rtl,
+                            //     child:
+                            Text(
+                              'تاريخ البدء : ${endDate.day}-${endDate.month}-${endDate.year}',
+                              // 'تاريخ الانتهاء : سوف يتم تحديدة لاحقا',
+                              //${endDate.day}-${endDate.month}-${endDate.year}',
+                              style: TextStyle(
+                                fontSize: 15,
+                              ),
+                            ),
+                          ],
+                          // )
+                        ),
                         SizedBox(
                           height: 10,
                         ),
@@ -270,17 +278,18 @@ class _FormPageState extends State<FormPage> {
                                 primary: Color.fromARGB(255, 76, 175, 80),
                               ),
                               onPressed: () async {
-                                startDate = await showDatePicker(
+                                DateTime? newDate = await showDatePicker(
                                     context: context,
-                                    initialDate: startDate!,
-                                    firstDate: DateTime(1900),
+                                    initialDate: startDate,
+                                    firstDate: DateTime.now(),
                                     lastDate: DateTime(2100));
+                                if (newDate == null) return;
 
                                 setState(() {
-                                  DateTime? startDate = DateTime.now();
-
-                                  endDate = DateTime(startDate.year,
-                                      startDate.month, startDate.day + 14);
+                                  startDate = newDate;
+                                  endDate = startDate.add(Duration(days: 14));
+                                  // endDate = DateTime(startDate.year,
+                                  //     startDate.month, startDate.day + 14);
                                 });
                               },
                               child: Text('أختر تاريخ البدء')),
@@ -298,8 +307,8 @@ class _FormPageState extends State<FormPage> {
                                   maxMembers,
                                   // dropdownValue,
                                   amount,
-                                  startDate!,
-                                  endDate!);
+                                  startDate,
+                                  endDate);
                             },
                           ),
                         ),
@@ -331,7 +340,7 @@ class _FormPageState extends State<FormPage> {
       var startMonth = startDate.month;
       var startDay = startDate.day;
       String formatedStartDate = '${startDay}-${startMonth}-${startYear}';
-      String formatedEndDate = '${startDay + 14}-${startMonth}-${startYear}';
+      String formatedEndDate = '${startDay}-${startMonth}-${startYear}';
 
       Navigator.push(
           context,

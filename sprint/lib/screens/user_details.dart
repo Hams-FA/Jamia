@@ -194,7 +194,7 @@ class _UserDetailsState extends State<UserDetails> {
                   child: Row(
                     children: [
                       Text(
-                        ' تاريخ بدء الجمعية:  ',
+                        ' تاريخ أنشاء الجمعية:  ',
                         style: TextStyle(fontSize: 18),
                       ),
                       Text(
@@ -301,7 +301,7 @@ class _UserDetailsState extends State<UserDetails> {
         .collection('users')
         .doc(signedInUser.email)
         .collection('JamiaGroups')
-        .doc();
+        .doc(docUser.id);
     docUser2.set({
       'name': name,
       'minMembers': minMembers,
@@ -309,7 +309,8 @@ class _UserDetailsState extends State<UserDetails> {
       // 'days': week,
       'amount': amount,
       'startDate': startDate,
-      'endDate': endDate
+      'endDate': endDate,
+      'id': docUser.id
     });
 
     final json = {
@@ -319,7 +320,8 @@ class _UserDetailsState extends State<UserDetails> {
       // 'days': week,
       'amount': amount,
       'startDate': startDate,
-      'endDate': endDate
+      'endDate': endDate,
+      'id': docUser.id
     };
 
     await docUser.set(json);

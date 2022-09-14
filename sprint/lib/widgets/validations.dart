@@ -36,7 +36,9 @@ class Validations {
 
   String? validateName(String value) {
     RegExp regex = RegExp(r'^.{2,}$');
-    if (value.isEmpty || value.trim().isEmpty) return 'الاسم مطلوب';
+    if (value.isEmpty || value.trim().isEmpty) {
+      return 'الاسم مطلوب';
+    }
     if (!regex.hasMatch(value)) {
       return ("يجب ان يحتوي على حرفين على الأقل");
     }
