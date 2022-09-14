@@ -294,6 +294,9 @@ class _UserDetailsState extends State<UserDetails> {
       required String endDate}) async {
     final docUser = FirebaseFirestore.instance.collection('JamiaGroup').doc();
 
+    final docUser1 = docUser.collection('members').doc(signedInUser.email);
+    docUser1.set({'status': 'accepted'});
+
     final docUser2 = FirebaseFirestore.instance
         .collection('users')
         .doc(signedInUser.email)

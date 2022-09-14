@@ -48,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) => validations.validate(1, value!),
                   onChanged: (value) {
-                    email = value;
+                    email = value.toLowerCase();
                   },
                   decoration: const InputDecoration(
                     hintText: 'ادخل بريدك الالكتروني',

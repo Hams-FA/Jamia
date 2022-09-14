@@ -94,7 +94,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     // The validator receives the text that the user has entered.
                     validator: (value) => validations.validate(5, value!),
                     onChanged: (value) {
-                      nid = value;
+                      nid = value.trim();
                     },
                     decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.fingerprint),
@@ -139,9 +139,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       textAlign: TextAlign.right,
 
                       // The validator receives the text that the user has entered.
-                      validator: (value) => validations.validate(3, value!),
+                      /*validator: (value) =>
+                          validations.validate(3, value!.toString()),*/
                       onChanged: (value) {
-                        f_name = value;
+                        f_name = value.trim();
                       },
                       decoration: const InputDecoration(
                         prefixIcon: Icon(Icons.person),
@@ -181,13 +182,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 Directionality(
                   textDirection: ui.TextDirection.rtl,
                   child: TextFormField(
-                    keyboardType: TextInputType.name,
+                    //keyboardType: TextInputType.name,
                     textAlign: TextAlign.right,
 
                     // The validator receives the text that the user has entered.
-                    validator: (value) => validations.validate(3, value!),
+                    /*validator: (value) =>
+                        validations.validate(3, value!.toString()),*/
                     onChanged: (value) {
-                      l_name = value;
+                      l_name = value.trim();
                     },
                     decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.people),
@@ -235,7 +237,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     // The validator receives the text that the user has entered.
                     validator: (value) => validations.validate(0, value!),
                     onChanged: (value) {
-                      bd = value;
+                      bd = value.trim();
                     },
                     decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.calendar_month),
@@ -386,7 +388,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     // The validator receives the text that the user has entered.
                     validator: (value) => validations.validate(4, value!),
                     onChanged: (value) {
-                      phone = value;
+                      phone = value.trim();
                     },
                     decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.phone),
@@ -435,7 +437,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     // The validator receives the text that the user has entered.
                     validator: (value) => validations.validate(1, value!),
                     onChanged: (value) {
-                      email = value;
+                      email = value.toLowerCase().trim();
                     },
                     decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.email),
@@ -484,7 +486,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     // The validator receives the text that the user has entered.
                     validator: (value) => validations.validate(2, value!),
                     onChanged: (value) {
-                      password = value;
+                      password = value.trim();
                     },
                     decoration: const InputDecoration(
                       labelText: 'ادخل كلمة المرور',

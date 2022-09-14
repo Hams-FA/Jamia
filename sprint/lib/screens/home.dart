@@ -139,9 +139,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                                                         data)));
                                                                         */
                                                       },
-                                                      child: Icon(
-                                                          Icons.add_circle)),
-                                                  Text('ادعو اصدقائك')
+                                                      child: const Icon(Icons
+                                                          .person_add_alt)),
+                                                  const Text('ادعو اصدقائك')
                                                 ],
                                               ),
                                             ],
