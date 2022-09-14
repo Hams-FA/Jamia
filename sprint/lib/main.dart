@@ -3,6 +3,8 @@ import 'package:sprint/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:sprint/screens/registration_screen.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:sprint/screens/form.dart';
+import 'package:sprint/screens/home.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,14 +34,14 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      /*routes: <String, WidgetBuilder>{
-        '/login': (BuildContext context) => const LoginScreen(),
+      routes: <String, WidgetBuilder>{
+        //'/login': (BuildContext context) => const LoginScreen(),
         '/registration': (BuildContext context) => const RegistrationScreen(),
-        '/forgotPassword': (BuildContext context) => const ForgotPassword(),
-        '/home': (BuildContext context) => const HomeScreen(),
-      },*/
-      home:
-          RegistrationScreen(), //const MyHomePage(title: 'Flutter Demo Home Page'),
+        //'/forgotPassword': (BuildContext context) => const ForgotPassword(),
+        '/home': (BuildContext context) => const MyHomePage(),
+      },
+      home: //MyHomePage(),
+          const RegistrationScreen(), //const MyHomePage(title: 'Flutter Demo Home Page'),
       builder: EasyLoading.init(),
       /*
     );

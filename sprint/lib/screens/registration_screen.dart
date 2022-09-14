@@ -634,7 +634,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         //move the auth user to the home page(our App) and we should have import for it.
                         //--Navigator.pushNamed(context, HomeScreen.screenRout);
                         //move the auth user to the home page(our App) and we should have import for it.
-                        //Navigator.pushNamed(context, '/home');
+                        Navigator.pushNamed(context, '/home');
                       } on FirebaseAuthException catch (e) {
                         switch (e.code) {
                           case "email-already-in-use":
