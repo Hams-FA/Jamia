@@ -139,8 +139,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       textAlign: TextAlign.right,
 
                       // The validator receives the text that the user has entered.
-                      /*validator: (value) =>
-                          validations.validate(3, value!.toString()),*/
+                      validator: (value) =>
+                          validations.validate(3, value!.toString()),
                       onChanged: (value) {
                         f_name = value.trim();
                       },
@@ -186,8 +186,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     textAlign: TextAlign.right,
 
                     // The validator receives the text that the user has entered.
-                    /*validator: (value) =>
-                        validations.validate(3, value!.toString()),*/
+                    validator: (value) =>
+                        validations.validate(3, value!.toString()),
                     onChanged: (value) {
                       l_name = value.trim();
                     },

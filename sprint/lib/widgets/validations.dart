@@ -40,12 +40,12 @@ class Validations {
     if (!regex.hasMatch(value)) {
       return ("يجب ان يحتوي على حرفين على الأقل");
     }
-    if (!RegExp(r"^[\p{L} ,.'-]*$").hasMatch(
+    /*if (!RegExp(r"^[\p{L} ,.'-]*$").hasMatch(
             value) /*||
         !RegExp(r"^[\p{InArabic} ,.'-]*$").hasMatch(value)*/
         ) {
       return ("يجب ان يحتوي الأسم على أحرف فقط");
-    }
+    }*/
     if (value.length > 10) {
       return ("الأسم المدخل غير صحيح");
     }

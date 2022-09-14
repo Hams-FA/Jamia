@@ -44,8 +44,8 @@ class MyApp extends StatelessWidget {
         '/home': (BuildContext context) => const MyHomePage(),
         '/profile': (BuildContext context) => const ProfileScreen(),
       },
-      home: //MyHomePage(),
-          const RegistrationScreen(), //const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const LoginScreen(),
+      //const RegistrationScreen(), //const MyHomePage(title: 'Flutter Demo Home Page'),
       builder: EasyLoading.init(),
       /*
     );
