@@ -26,7 +26,7 @@ class SearchFriends extends StatefulWidget {
 
 class _SearchFriendsState extends State<SearchFriends> {
   List<dynamic> myFriends = List<dynamic>.empty(growable: true);
-
+late bool toggle; 
   String name = "";
 
   @override
@@ -70,7 +70,7 @@ class _SearchFriendsState extends State<SearchFriends> {
                         if (!myFriends.contains(data['Email'])) {
                           if (name.isEmpty) {
                             if (data['Email'] != 'Tala@hotmail.com') {
-                               bool toggle = false;
+                              toggle= false;
 
 
                               //Edit
@@ -133,9 +133,9 @@ class _SearchFriendsState extends State<SearchFriends> {
 
                                           },
                                           icon: toggle
-                                              ? Icon(Icons.favorite_border)
+                                              ? Icon(Icons.check_box)
                                               : Icon(
-                                                  Icons.favorite,
+                                                  Icons.add_box,
                                                 ),),
                                       
                                           
@@ -149,7 +149,8 @@ class _SearchFriendsState extends State<SearchFriends> {
                               .toLowerCase()
                               .startsWith(name.toLowerCase())) {
                             if (data['Email'] != 'Tala@hotmail.com') {
-                              bool toggle = false;
+                              toggle= false;
+
 
 
                               //Edit
@@ -185,8 +186,6 @@ class _SearchFriendsState extends State<SearchFriends> {
                                           
                                           onPressed: () {
                                             setState(() {
-                                              print('test');
-
                                               // Here we changing the icon.
                                               toggle = !toggle;
                                             });
@@ -215,9 +214,9 @@ class _SearchFriendsState extends State<SearchFriends> {
 
                                           },
                                           icon: toggle
-                                              ? Icon(Icons.favorite_border)
+                                              ? Icon(Icons.check_box)
                                               : Icon(
-                                                  Icons.favorite,
+                                                  Icons.add_box,
                                                 ),),
                                       
                                     ]),
