@@ -6,8 +6,8 @@ import 'package:sprint/screens/form.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-//import 'package:firebase_auth/firebase_auth.dart';
-//import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'dart:ui' as ui;
 
@@ -19,16 +19,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  //final _auth = FirebaseAuth.instance;
-  //late User signedInUser;
+  final _auth = FirebaseAuth.instance;
+  late User signedInUser;
 
   @override
   void initState() {
     super.initState();
     fetchUserfromFirebase();
-    //getCurrentUser();
+    getCurrentUser();
   }
-/*
+
   void getCurrentUser() {
     try {
       final user = _auth.currentUser;
@@ -38,7 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
     } catch (e) {
       EasyLoading.showError("حدث خطأ ما ....");
     }
-  }*/
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +62,11 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               Expanded(
                   child: StreamBuilder<QuerySnapshot>(
-                      stream: fetchUserfromFirebase(),
+                      stream: FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(signedInUser.email)
+                          .collection('JamiaGroups')
+                          .snapshots(),
                       builder: ((context, snapshot) {
                         if (snapshot.hasData) {
                           return ListView.builder(
@@ -104,17 +108,42 @@ class _MyHomePageState extends State<MyHomePage> {
                                                   ),
                                                 ],
                                               ),
-                                              GestureDetector(
-                                                  onTap: () {
+                                              Column(children: [
+                                                GestureDetector(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  FirebaseUserDetails(
+                                                                      data:
+                                                                          data)));
+                                                    },
+                                                    child:
+                                                        Icon(Icons.visibility)),
+                                                Text('التفاصيل')
+                                              ]),
+                                              Column(
+                                                children: [
+                                                  GestureDetector(
+                                                      onTap: () {
+                                                        /*Navigator.push(
+                                                    context, MaterialPageRoute(builder: (context) => inviteFriends()));
+                                                    
                                                     Navigator.push(
                                                         context,
                                                         MaterialPageRoute(
                                                             builder: (context) =>
-                                                                FirebaseUserDetails(
+                                                                inviteFriends(
                                                                     data:
                                                                         data)));
-                                                  },
-                                                  child: Icon(Icons.visibility))
+                                                                        */
+                                                      },
+                                                      child: Icon(
+                                                          Icons.add_circle)),
+                                                  Text('ادعو اصدقائك')
+                                                ],
+                                              ),
                                             ],
                                           )),
                                     ),
@@ -126,7 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           child: Text('No data found'),
                         );
                       }))),
-              Container(
+              /*Container(
                   padding: EdgeInsets.only(bottom: 40),
                   alignment: Alignment.bottomCenter,
                   child: ElevatedButton(
@@ -135,7 +164,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     onPressed: () {},
                     child: Text('ادعو اصدقائك'),
-                  )),
+                  )),*/
             ],
           ),
         ),

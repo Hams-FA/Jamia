@@ -3,8 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 
-//import 'package:firebase_auth/firebase_auth.dart';
-//import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class UserDetails extends StatefulWidget {
   const UserDetails(
@@ -30,7 +30,6 @@ class UserDetails extends StatefulWidget {
 }
 
 class _UserDetailsState extends State<UserDetails> {
-  /*
   final _auth = FirebaseAuth.instance;
   late User signedInUser;
 
@@ -50,7 +49,7 @@ class _UserDetailsState extends State<UserDetails> {
       EasyLoading.showError("حدث خطأ ما ....");
     }
   }
-  */
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -295,12 +294,11 @@ class _UserDetailsState extends State<UserDetails> {
       required String endDate}) async {
     final docUser = FirebaseFirestore.instance.collection('JamiaGroup').doc();
 
-    /*
     final docUser2 = FirebaseFirestore.instance
         .collection('users')
         .doc(signedInUser.email)
         .collection('JamiaGroups')
-        .doc(signedInUser.email);
+        .doc();
     docUser2.set({
       'name': name,
       'minMembers': minMembers,
@@ -310,7 +308,6 @@ class _UserDetailsState extends State<UserDetails> {
       'startDate': startDate,
       'endDate': endDate
     });
-    */
 
     final json = {
       'name': name,
