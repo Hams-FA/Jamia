@@ -5,6 +5,9 @@ import 'package:sprint/screens/registration_screen.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:sprint/screens/form.dart';
 import 'package:sprint/screens/home.dart';
+import 'package:sprint/screens/login_screen.dart';
+import 'package:sprint/screens/forgot_password';
+import 'package:sprint/screens/profile_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,10 +38,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       routes: <String, WidgetBuilder>{
-        //'/login': (BuildContext context) => const LoginScreen(),
+        '/login': (BuildContext context) => const LoginScreen(),
         '/registration': (BuildContext context) => const RegistrationScreen(),
-        //'/forgotPassword': (BuildContext context) => const ForgotPassword(),
+        '/forgotPassword': (BuildContext context) => const ForgotPassword(),
         '/home': (BuildContext context) => const MyHomePage(),
+        '/profile': (BuildContext context) => const ProfileScreen(),
       },
       home: //MyHomePage(),
           const RegistrationScreen(), //const MyHomePage(title: 'Flutter Demo Home Page'),

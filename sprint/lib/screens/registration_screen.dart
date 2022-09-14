@@ -697,7 +697,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         style: TextStyle(fontSize: 15, color: Colors.green),
                       ),
                       onPressed: () {
-                        //Navigator.pushNamed(context, '/login');
+                        Navigator.pushNamed(context, '/login');
                         //No
                         //Navigator.pushNamed(context, LoginScreen.screenRoute);
                       },
