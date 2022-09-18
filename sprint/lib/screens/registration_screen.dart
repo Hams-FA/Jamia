@@ -626,6 +626,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               'rate': "5",
                               'photo': "",
                               'status': 0,
+                              'CardNO': "",
+                              'CardName': "",
+                              'CVV': "",
+                              'CardEndDate': "",
                               'doc': DateTime.now(),
                             });
                             EasyLoading.dismiss();

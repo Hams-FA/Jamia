@@ -29,9 +29,19 @@ class Validations {
       case 7:
         // UserName
         return validateUserName(value);
+      case 8:
+        // UserName
+        return validateSimple(value);
       default:
         return null;
     }
+  }
+
+  String? validateSimple(String value) {
+    if (value.isEmpty || value.trim().isEmpty) {
+      return 'لا يمكن ان يكون الحقل فارغا';
+    }
+    return null;
   }
 
   String? validateName(String value) {

@@ -92,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   textAlign: TextAlign.right,
                   textDirection: TextDirection.rtl,
                   // The validator receives the text that the user has entered.
-                  validator: (value) => validations.validate(2, value!),
+                  validator: (value) => validations.validate(8, value!),
                   onChanged: (value) {
                     password = value;
                   },

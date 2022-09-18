@@ -217,8 +217,11 @@ class _FormPageState extends State<FormPage> {
                             child: TextFormField(
                               keyboardType: TextInputType.number,
                               validator: (value) {
+                                int value2 = value as int;
                                 if (value == "") {
                                   return "الرجاء ادخال المبلغ";
+                                } else if (amount < 0) {
+                                  return "الرجاء ادخال رقم اكبر من الصفر";
                                 } else {
                                   return null;
                                 }

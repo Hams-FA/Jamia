@@ -204,7 +204,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     minWidth: 40,
                   ),
                   MaterialButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/RequestPage');
+                    },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
