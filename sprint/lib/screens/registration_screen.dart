@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../widgets/my_button.dart';
 //import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -96,6 +97,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     onChanged: (value) {
                       nid = value.trim();
                     },
+                    maxLength: 10,
                     decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.fingerprint),
                       hintText: 'رقم الهوية الوطنية مكون من 10 ارقام',
@@ -233,7 +235,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   child: TextFormField(
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.right,
-
+                    /*inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.allow(
+                          RegExp("^([0-9][0-9][0-9])\$")),
+                    ],*/
+                    maxLength: 3,
                     // The validator receives the text that the user has entered.
                     validator: (value) => validations.validate(0, value!),
                     onChanged: (value) {
@@ -390,6 +396,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     onChanged: (value) {
                       phone = value.trim();
                     },
+                    maxLength: 10,
                     decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.phone),
                       labelText: 'ادخل رقم جوالك ',
