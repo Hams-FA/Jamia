@@ -3,9 +3,7 @@ import 'package:sprint/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'dart:html';
 import 'dart:ui' as ui;
-import 'package:url_launcher/url_launcher.dart';
 
 class RequestPageFinal extends StatelessWidget {
   const RequestPageFinal({super.key});
@@ -20,32 +18,27 @@ class RequestPageFinal extends StatelessWidget {
             IconButton(
                 icon: Icon(Icons.home),
                 onPressed: () async {
-                  const url = 'home.dart';
-                  if (await canLaunch(url)) {
-                    await launch(url);
-                  } else {
-                    throw 'Could not launch $url';
-                  }
+                  Navigator.pushNamed(context, '/home');
                 }),
           ],
           title: const Text('طلبات الإضافة',
               textAlign: TextAlign.right,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
-                  fontWeight: FontWeight.bold,
+                 
                   fontFamily: "Montsterrat Classic",
                   color: Color(0xFF545454))),
           backgroundColor: Color(0xFF0F7C0D),
         ),
-        body: StreamBuilder<DocumentSnapshot>(
+        body: StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
                 .collection('requestList')
-                .doc(FirebaseAuth.instance.currentUser!.email)
+                .where('email', isEqualTo :FirebaseAuth.instance.currentUser!.email)
                 .snapshots(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                final reqts = snapshot.data!;
-                if (!reqts.exists) {
+                final reqts = snapshot.data!.docs;
+                if (reqts.isEmpty) {
                   return Center(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -60,7 +53,9 @@ class RequestPageFinal extends StatelessWidget {
                     ),
                   );
                 }
-                return buildCard(reqts);
+                return ListView(
+                  children: reqts.map((e) => buildCard(e)).toList(),
+                );
               } else {
                 return Text('حدث خطأ ما',
                     style: const TextStyle(
