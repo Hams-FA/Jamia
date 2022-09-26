@@ -12,10 +12,36 @@ import 'package:sprint/screens/inviteFriends.dart';
 import 'package:sprint/screens/SearchFriends.dart';
 import 'package:sprint/screens/ViewAndDeleteFriends.dart';
 import 'RequestPageFinal.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:cron/cron.dart';
 //import 'package:sprint/screens/firebase_options.dart';
 
 Future<void> main() async {
+  final cron = Cron();
+  // 30 8 27 1,5,9 *         //in mounth 1 5 9 day 27 at 8:30
+  //'*/5 * * * 9 *'
+  cron.schedule(Schedule.parse('* * * 9 *'), () async {
+    print('every Five secs');
+
+    await AwesomeNotifications().createNotification(
+        content: NotificationContent(
+            id: 2,
+            channelKey: 'key1',
+            title: 'Title for scheduled your notification',
+            body: 'body text/ content'));
+  });
   WidgetsFlutterBinding.ensureInitialized();
+  AwesomeNotifications().initialize(null, [
+    NotificationChannel(
+        channelKey: 'key1',
+        channelName: 'Proto Coders Point',
+        channelDescription: "Notification example",
+        defaultColor: Colors.green,
+        ledColor: Colors.white,
+        playSound: true,
+        enableLights: true,
+        enableVibration: true)
+  ]);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -45,7 +71,6 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         '/login': (BuildContext context) => const LoginScreen(),
         '/RequestPageFinal': (BuildContext context) => const RequestPageFinal(),
-
         '/registration': (BuildContext context) => const RegistrationScreen(),
         '/forgotPassword': (BuildContext context) => const ForgotPassword(),
         '/home': (BuildContext context) => const MyHomePage(),
