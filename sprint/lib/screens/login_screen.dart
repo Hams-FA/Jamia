@@ -33,17 +33,6 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                //////
-                ///try notification first
-                ElevatedButton(
-                  onPressed: () {
-                    notify();
-                  },
-                  child: Icon(
-                    Icons.circle_notifications,
-                  ),
-                ),
-                ////////
                 Container(
                   child: Image.asset('images/logo.jpg'),
                   width: 350,
@@ -212,14 +201,4 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-}
-
-//////try notification fun
-void notify() async {
-  await AwesomeNotifications().createNotification(
-      content: NotificationContent(
-          id: 1,
-          channelKey: 'key1',
-          title: 'Title for your notification',
-          body: 'body text/ content'));
 }

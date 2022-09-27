@@ -21,14 +21,14 @@ Future<void> main() async {
   // 30 8 27 1,5,9 *         //in mounth 1 5 9 day 27 at 8:30
   //'*/5 * * * 9 *'
   cron.schedule(Schedule.parse('* * * 9 *'), () async {
-    print('every Five secs');
+    print('notification');
 
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
             id: 2,
             channelKey: 'key1',
-            title: 'Title for scheduled your notification',
-            body: 'body text/ content'));
+            title: 'تفكر تسوي جمعية؟',
+            body: 'تطبيقنا يساعدك تنشئ جمعيتك الخاصة بشكل منظم ومرتب'));
   });
   WidgetsFlutterBinding.ensureInitialized();
   AwesomeNotifications().initialize(null, [
