@@ -24,8 +24,9 @@ class _inviteFriendsState extends State<inviteFriends> {
   List<dynamic> invitedAlready = List<dynamic>.empty(growable: true);
 
   var jamiaId; //change this to id coming from selected jamia
-  var len;
+  var len; //delete this? no need to check for max here
   bool allinvited = true;
+  bool noFriends = true;
 
   //need to update this User
   final _auth = FirebaseAuth.instance;
@@ -89,14 +90,15 @@ class _inviteFriendsState extends State<inviteFriends> {
                         child: Text("حدث خطأ ما ...."),
                       );
                     }
-                    //
+
                     if (snapshot.data!.isEmpty) {
-                      Center(child: Text('عذراً، لا يوجد لديك اصدقائك'));
+                      return Center(child: Text('عذراً، لا يوجد لديك اصدقاء'));
                     }
 
-                    //
                     if (snapshot.hasData) {
                       final userData = snapshot.data;
+                      noFriends = false;
+
                       return Expanded(
                         child: ListView.builder(
                             itemCount: userData!.length,
@@ -166,45 +168,48 @@ class _inviteFriendsState extends State<inviteFriends> {
                       child: CircularProgressIndicator(),
                     );
                   }),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromARGB(255, 76, 175, 80),
-                  ),
-                  onPressed: () {
-                    //print('on pressed');
-                    //print(selectedEmails.length); //
-                    //if (selectedEmails.length > widget.data['maxMembers']) {
-                    selectedEmails.forEach((element) async {
-                      final docInviteFriends = FirebaseFirestore.instance
-                          .collection('JamiaGroup')
-                          .doc(jamiaId)
-                          .collection('members');
-                      /*.doc(element);
+              noFriends == false
+                  ? ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 76, 175, 80),
+                      ),
+                      onPressed: () {
+                        //print('on pressed');
+                        //print(selectedEmails.length); //
+                        //if (selectedEmails.length > widget.data['maxMembers']) {
+                        selectedEmails.forEach((element) async {
+                          final docInviteFriends = FirebaseFirestore.instance
+                              .collection('JamiaGroup')
+                              .doc(jamiaId)
+                              .collection('members');
+                          /*.doc(element);
                       print('number');
                       //int len = await docInviteFriends.snapshots().length;
                       print(len);
                       print(selectedEmails.length);*/
-                      docInviteFriends.doc(element).set({'status': 'pending'});
+                          docInviteFriends
+                              .doc(element)
+                              .set({'status': 'pending'});
 
-                      /*final updateRequestList = FirebaseFirestore.instance
+                          /*final updateRequestList = FirebaseFirestore.instance
                           .collection('requestList')
                           .doc(element);*/
 
-                      final docSnapshot = await FirebaseFirestore.instance
-                          .collection("requestList")
-                          .add({'email': element, 'jamiaID': jamiaId});
-                    });
+                          final docSnapshot = await FirebaseFirestore.instance
+                              .collection("requestList")
+                              .add({'email': element, 'jamiaID': jamiaId});
+                        });
 
-                    /*if (docSnapshot.exists) {
+                        /*if (docSnapshot.exists) {
                         updateRequestList.update({jamiaId: true});
                       } else {
                         updateRequestList.set({jamiaId: true});
                       }
                     });*/
-                    Navigator.pushNamed(context, '/home');
-                    //Navigator.pop(context);
-                    //}
-                    /*
+                        Navigator.pushNamed(context, '/home');
+                        //Navigator.pop(context);
+                        //}
+                        /*
                     else {
                       showAlertDialog(BuildContext context) {
                         // set up the button
@@ -249,8 +254,11 @@ class _inviteFriendsState extends State<inviteFriends> {
                       );
                     */
                     }*/
-                  },
-                  child: Text("دعوة")),
+                      },
+                      child: Text("دعوة"))
+                  : Container(
+                      child: Text(''),
+                    )
               //],
             ],
           ),
@@ -265,7 +273,7 @@ class _inviteFriendsState extends State<inviteFriends> {
     //print('readinvited211');
     ///print(invitedAlready);
 
-    ///---------------------
+    ///--------------------- this for max? if so no need
     final docInviteFriends = FirebaseFirestore.instance
         .collection('JamiaGroup')
         .doc(jamiaId)
