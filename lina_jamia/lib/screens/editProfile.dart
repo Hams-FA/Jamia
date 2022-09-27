@@ -1,0 +1,607 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_profile_picture/flutter_profile_picture.dart';
+
+import '../widgets/validations.dart';
+
+class editProfile extends StatefulWidget {
+  const editProfile({Key? key}) : super(key: key);
+
+  @override
+  State<editProfile> createState() => _editProfileState();
+}
+
+class _editProfileState extends State<editProfile> {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
+  final _formKey = GlobalKey<FormState>();
+  late String nid;
+  late String name;
+  late String userName;
+  late String bd;
+  late String phone;
+  late String cardNumber;
+  late String expDate;
+  late String cvvNumber;
+  late String cardOwnerName;
+  late String imageUrl;
+  var nidText = TextEditingController();
+  var nameText = TextEditingController();
+  var userNameText = TextEditingController();
+  var bdText = TextEditingController();
+  var phoneText = TextEditingController();
+  var cardNumberText = TextEditingController();
+  var expDateText = TextEditingController();
+  var cvvNumberText = TextEditingController();
+  var cardOwnerNameText = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    Validations validations = Validations();
+
+    return Scaffold(
+        body: FutureBuilder<DocumentSnapshot>(
+      future: _firestore
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser?.email)
+          .get(),
+      builder:
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return const Text("Something went wrong");
+        }
+
+        if (snapshot.hasData && !snapshot.data!.exists) {
+          return const Text("Document does not exist");
+        }
+
+        if (snapshot.connectionState == ConnectionState.done) {
+          Map<String, dynamic> data =
+              snapshot.data!.data() as Map<String, dynamic>;
+          //national id
+          nidText.text = data['NID'];
+          nid = data['NID'];
+          //name
+          nameText.text = data['Name'];
+          name = data['Name'];
+          //user name
+          userNameText.text = data['userName'];
+          userName = data['userName'];
+          //birthdate
+          bdText.text = data['birthDate'];
+          bd = data['birthDate'];
+          //phone number
+          phoneText.text = data['PhoneNO'];
+          phone = data['PhoneNO'];
+          // card number
+          if (data['cardNumber'] == null) {
+            cardNumberText.text = "";
+            cardNumber = "";
+          } else {
+            cardNumberText.text = data['cardNumber'];
+            cardNumber = data['cardNumber'];
+          }
+          //card expiration date
+          if (data['expDate'] == null) {
+            expDateText.text = "";
+            expDate = "";
+          } else {
+            expDateText.text = data['expDate'];
+            expDate = data['expDate'];
+          }
+          //CVV Number
+          if (data['expDate'] == null) {
+            cvvNumberText.text = "";
+            cvvNumber = "";
+          } else {
+            cvvNumberText.text = data['cvv'];
+            cvvNumber = data['cvv'];
+          }
+          //card owner name
+          if (data['expDate'] == null) {
+            cardOwnerNameText.text = "";
+            cardOwnerName = "";
+          } else {
+            cardOwnerNameText.text = data['cardOwner'];
+            cardOwnerName = data['cardOwner'];
+          }
+
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('تعديل الملف الشخصي'),
+              centerTitle: true,
+              backgroundColor: Colors.green,
+            ),
+            backgroundColor: Colors.white,
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: SingleChildScrollView(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const SizedBox(height: 30),
+                      const ProfilePicture(
+                        name: 'Aditya Dharmawan Saputra',
+                        radius: 31,
+                        fontsize: 21,
+                        img:
+                            'https://avatars.githubusercontent.com/u/37553901?v=4',
+                      ),
+                      const SizedBox(height: 30),
+                      TextFormField(
+                        keyboardType: TextInputType.number,
+                        controller: nidText,
+                        textAlign: TextAlign.right,
+
+                        // The validator receives the text that the user has entered.
+                        validator: (value) => validations.validate(5, value!),
+                        onChanged: (value) {
+                          nid = value;
+                        },
+                        decoration: InputDecoration(
+                          suffixIcon: const Icon(Icons.fingerprint),
+                          hintText: "${data['NID']}",
+                          contentPadding: const EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 20,
+                          ),
+                          border: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          enabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.grey,
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.green,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      TextFormField(
+                        keyboardType: TextInputType.name,
+                        textAlign: TextAlign.right,
+                        controller: nameText,
+                        // The validator receives the text that the user has entered.
+                        validator: (value) => validations.validate(3, value!),
+                        onChanged: (value) {
+                          name = value;
+                        },
+                        decoration: InputDecoration(
+                          suffixIcon: const Icon(Icons.person),
+                          hintText: "${data['Name']}",
+                          contentPadding: const EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 20,
+                          ),
+                          border: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          enabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.grey,
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.green,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      TextFormField(
+                        keyboardType: TextInputType.name,
+                        textAlign: TextAlign.right,
+                        controller: userNameText,
+                        // The validator receives the text that the user has entered.
+                        validator: (value) => validations.validate(7, value!),
+                        onChanged: (value) {
+                          userName = value;
+                        },
+                        decoration: InputDecoration(
+                          suffixIcon: const Icon(Icons.person_outline),
+                          hintText: "${data['userName']}",
+                          contentPadding: const EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 20,
+                          ),
+                          border: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          enabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.grey,
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color.fromARGB(255, 26, 110, 29),
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      TextFormField(
+                        keyboardType: TextInputType.datetime,
+                        textAlign: TextAlign.right,
+                        controller: bdText,
+                        validator: (value) => validations.validate(0, value!),
+                        onChanged: (value) {
+                          bd = value;
+                        },
+                        decoration: InputDecoration(
+                          suffixIcon: const Icon(Icons.calendar_month),
+                          hintText: "${data['birthDate']}",
+                          contentPadding: const EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 20,
+                          ),
+                          border: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          enabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.grey,
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.green,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      TextFormField(
+                        keyboardType: TextInputType.number,
+                        textAlign: TextAlign.right,
+                        controller: phoneText,
+                        // The validator receives the text that the user has entered.
+                        validator: (value) => validations.validate(4, value!),
+                        onChanged: (value) {
+                          phone = value;
+                        },
+                        decoration: InputDecoration(
+                          suffixIcon: const Icon(Icons.phone),
+                          hintText: "${data['PhoneNO']}",
+                          contentPadding: const EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 20,
+                          ),
+                          border: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          enabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.grey,
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.green,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      TextFormField(
+                        enabled: false,
+                        keyboardType: TextInputType.emailAddress,
+                        textAlign: TextAlign.right,
+                        decoration: InputDecoration(
+                          suffixIcon: const Icon(Icons.email),
+                          hintText: "${data['Email']}",
+                          contentPadding: const EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 20,
+                          ),
+                          border: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          enabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.grey,
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.green,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      TextFormField(
+                        keyboardType: TextInputType.number,
+                        textAlign: TextAlign.right,
+                        controller: cardNumberText,
+                        validator: (value) => validations.validate(8, value!),
+                        onChanged: (value) {
+                          cardNumber = value;
+                        },
+                        decoration: const InputDecoration(
+                          suffixIcon: Icon(Icons.credit_card),
+                          hintText: "ادخل رقم البطاقة",
+                          contentPadding: EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 20,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.grey,
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.green,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      TextFormField(
+                        keyboardType: TextInputType.datetime,
+                        textAlign: TextAlign.right,
+                        controller: expDateText,
+                        validator: (value) => validations.validate(9, value!),
+                        onChanged: (value) {
+                          expDate = value;
+                        },
+                        decoration: const InputDecoration(
+                          suffixIcon: Icon(Icons.date_range),
+                          hintText: "ادخل تاريخ انتهاء الصلاحية",
+                          contentPadding: EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 20,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.grey,
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.green,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      TextFormField(
+                        keyboardType: TextInputType.number,
+                        textAlign: TextAlign.right,
+                        controller: cvvNumberText,
+                        validator: (value) => validations.validate(10, value!),
+                        onChanged: (value) {
+                          cvvNumber = value;
+                        },
+                        decoration: const InputDecoration(
+                          suffixIcon: Icon(Icons.password),
+                          hintText: "ادخل قيمة التحقق من البطاقة",
+                          contentPadding: EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 20,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.grey,
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.green,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      TextFormField(
+                        keyboardType: TextInputType.text,
+                        textAlign: TextAlign.right,
+                        controller: cardOwnerNameText,
+                        validator: (value) => validations.validate(11, value!),
+                        onChanged: (value) {
+                          cardOwnerName = value;
+                        },
+                        decoration: const InputDecoration(
+                          suffixIcon: Icon(Icons.abc),
+                          hintText: "ادخل اسم حامل البطاقة",
+                          contentPadding: EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 20,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.grey,
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.green,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Material(
+                          elevation: 5,
+                          color: Colors.green,
+                          borderRadius: BorderRadius.circular(10),
+                          child: MaterialButton(
+                            onPressed: () async {
+                              EasyLoading.show(status: 'تحميل ...');
+                              if (_formKey.currentState!.validate()) {
+                                await _firestore
+                                    .collection('users')
+                                    .doc(_auth.currentUser!.email)
+                                    .update({
+                                  'NID': nidText.text,
+                                  'Name': nameText.text,
+                                  'PhoneNO': phoneText.text,
+                                  'birthDate': bdText.text,
+                                  'userName': userNameText.text,
+                                  'cardNumber': cardNumberText.text,
+                                  'expDate': expDateText.text,
+                                  'cvv': cvvNumberText.text,
+                                  'cardOwner': cardOwnerNameText.text
+                                });
+                                EasyLoading.dismiss();
+                                if (mounted) {
+                                  Navigator.pop(context);
+                                }
+                              } else {
+                                EasyLoading.dismiss();
+                                EasyLoading.showError(
+                                    'حدث خطأ الرجاد المحاولة مرة اخرى');
+                              }
+                            },
+                            height: 42,
+                            child: const Text(
+                              "حفظ التغييرات",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        }
+
+        return const Scaffold(
+          body: Center(
+            child: Text('يتم التحميل'),
+          ),
+        );
+      },
+    ));
+  }
+}
