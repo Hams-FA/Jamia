@@ -1,12 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:sprint/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:sprint/screens/registration_screen.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:sprint/screens/form.dart';
+import 'package:sprint/screens/home.dart';
+import 'package:sprint/screens/login_screen.dart';
+import 'package:sprint/screens/forgot_password';
+import 'package:sprint/screens/profile_screen.dart';
+import 'package:sprint/screens/inviteFriends.dart';
+import 'package:sprint/screens/SearchFriends.dart';
+import 'package:sprint/screens/ViewAndDeleteFriends.dart';
+import 'RequestPageFinal.dart';
+//import 'package:sprint/screens/firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-);
+  );
   runApp(const MyApp());
 }
 
@@ -28,9 +40,26 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      routes: <String, WidgetBuilder>{
+        '/login': (BuildContext context) => const LoginScreen(),
+        '/RequestPageFinal': (BuildContext context) => const RequestPageFinal(),
+
+        '/registration': (BuildContext context) => const RegistrationScreen(),
+        '/forgotPassword': (BuildContext context) => const ForgotPassword(),
+        '/home': (BuildContext context) => const MyHomePage(),
+        '/profile': (BuildContext context) => const ProfileScreen(),
+        '/inviteFriends': (BuildContext context) => const inviteFriends(),
+        '/SearchFriends': (BuildContext context) => const SearchFriends(),
+        '/ViewAndDeleteFriends': (BuildContext context) =>
+            const ViewAndDeleteFriends(),
+      },
+      home: //const LoginScreen(),
+          const LoginScreen(), //const MyHomePage(title: 'Flutter Demo Home Page'),
+      //RegistrationScreen()
+      builder: EasyLoading.init(),
+      /*
     );
   }
 }
@@ -115,7 +144,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ), // This trailing comma makes auto-formatting nicer for build methods.*/
     );
   }
 }
