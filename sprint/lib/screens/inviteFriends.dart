@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:ui' as ui;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:http/http.dart' as http;
 
 class inviteFriends extends StatefulWidget {
   const inviteFriends({super.key, this.data});
@@ -19,6 +21,37 @@ class inviteFriends extends StatefulWidget {
 }
 
 class _inviteFriendsState extends State<inviteFriends> {
+  void sendPushMessage(String body, String title, String token) async {
+    try {
+      await http.post(
+        Uri.parse('https://fcm.googleapis.com/fcm/send'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization':
+              'key=AAAAiGTJayc:APA91bH8EQZpQtqKV_w9cYujZcxgl0HBCnYlN3xrYSfGWO1sOqKM2953gpAixiOBbEEhr4hm3RSZ4a0BXcZjmXMLZYFQazN26vAhiZFE7VL54Hx4fVyB6GGjvafVOLcP3wiG30ccJ4zK',
+        },
+        body: jsonEncode(
+          <String, dynamic>{
+            'notification': <String, dynamic>{
+              'body': body,
+              'title': title,
+            },
+            'priority': 'high',
+            'data': <String, dynamic>{
+              'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+              'id': '1',
+              'status': 'done'
+            },
+            "to": token,
+          },
+        ),
+      );
+      print('done');
+    } catch (e) {
+      print("error push notification");
+    }
+  }
+
   Map<String, bool?> checked = new Map();
   List<String> selectedEmails = List<String>.empty(growable: true);
   List<dynamic> invitedAlready = List<dynamic>.empty(growable: true);
@@ -191,6 +224,20 @@ class _inviteFriendsState extends State<inviteFriends> {
                                     docInviteFriends
                                         .doc(element)
                                         .set({'status': 'pending'});
+                                    FirebaseFirestore.instance
+                                        .collection('tokens')
+                                        .where('userID', isEqualTo: element)
+                                        //.limit(1)
+                                        .get()
+                                        .then((value) {
+                                      final tokens = value.docs;
+                                      tokens.forEach((e) {
+                                        sendPushMessage(
+                                            'انقر لمراجعتها الان',
+                                            '!لقد تمت دعوتك لجمعية جديدة',
+                                            e.get('token'));
+                                      });
+                                    });
 
                                     /*final updateRequestList = FirebaseFirestore.instance
                           .collection('requestList')
