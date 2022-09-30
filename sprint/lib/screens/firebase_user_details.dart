@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'dart:ui' as ui;
@@ -5,6 +6,9 @@ import 'dart:ui' as ui;
 import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -157,7 +161,7 @@ class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
                     children: [
                       Text(
                         ' السهم الشهري: ',
-                        style: TextStyle(fontSize: 18 ),
+                        style: TextStyle(fontSize: 18),
                       ),
                       Text(
                         widget.data['amount'].toString() +
@@ -222,38 +226,19 @@ class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
                     )),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    
-                    padding: const EdgeInsets.only(left: 130,right: 130),
+                    padding: const EdgeInsets.only(left: 130, right: 130),
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    
                   ),
-                  child: const Text(
-                    'ادفع ', style:TextStyle(fontSize: 15)
-                  ),
-                  onPressed: () async {
-                    
-                    var today = DateTime.now().day.toString();
-                    var yearNow = DateTime.now().year.toString();
-                    var yearstart2 =
-                        widget.data['startDate'].toString().length - 4;
-                    var yearstart = widget.data['startDate']
-                        .toString()
-                        .substring(yearstart2);
-                    //var parsedDate = DateTime.parse('1974-03-20 00:00:00.000');
-                    
-                    var start =
-                        widget.data['startDate'].toString().substring(0, 2);
-                    if (start.compareTo(today) == 0 &&
-                        yearNow.compareTo(yearstart) == 0) {
-                      await initPayment(
-                          amount: (widget.data['amount'] / 3.75) * 100,
-                          context: context,
-                          email: FirebaseAuth.instance.currentUser!.email
-                              .toString());
-                    } else {
-                      null;
-                    }
-                  },
+                  child: const Text('ادفع ', style: TextStyle(fontSize: 15)),
+                  onPressed: check()
+                      ? () async {
+                          await initPayment(
+                              amount: (widget.data['amount'] / 3.75) * 100,
+                              context: context,
+                              email: FirebaseAuth.instance.currentUser!.email
+                                  .toString());
+                        }
+                      : null,
                 )
               ],
             ),
@@ -262,53 +247,90 @@ class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
       ),
     ));
   }
-}
 
-Future<void> initPayment(
-    {required String email,
-    required double amount,
-    required BuildContext context}) async {
-  try {
-    // 1. Create a payment intent on the server
-    final response = await http.post(
-        Uri.parse(
-            'https://us-central1-jamia-2bcc1.cloudfunctions.net/stripePaymentIntentRequest'),
-        body: {
-          'email': email,
-          'amount': amount.toString(),
-        });
+  Future<bool> check() async {
+    var max;
 
-    final jsonResponse = jsonDecode(response.body);
-    log(jsonResponse.toString());
-    // 2. Initialize the payment sheet
-    await Stripe.instance.initPaymentSheet(
-        paymentSheetParameters: SetupPaymentSheetParameters(
-      paymentIntentClientSecret: jsonResponse['paymentIntent'],
-      merchantDisplayName: 'Jamias',
-      customerId: jsonResponse['customer'],
-      customerEphemeralKeySecret: jsonResponse['ephemeralKey'],
-      // testEnv: true,
-      //merchantCountryCode: 'SG',
-    ));
-    await Stripe.instance.presentPaymentSheet();
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Payment is successful'),
-      ),
-    );
-  } catch (errorr) {
-    if (errorr is StripeException) {
+    await FirebaseFirestore.instance
+        .collection('JamiaGroup')
+        .doc(widget.data['id'])
+        .collection('transaction')
+        .where('Email', isEqualTo: signedInUser.email)
+        .get()
+        .then((value) {
+      final alltransactions = value.docs;
+      List<dynamic> timelocal = List<dynamic>.empty(growable: true);
+
+      alltransactions.forEach((e) {
+        var timenow = DateTime.parse(e.get('time'));
+        timelocal.add(timenow);
+      });
+      max = timelocal.first;
+      for (var i = 1; i < timelocal.length; i++) {
+        if (timelocal[i].isAfter(max)) max = timelocal[i];
+      }
+    });
+    if ((max.month).compareTo(DateTime.now().month) == 0)
+      return true;
+    else {
+      return false;
+    }
+  }
+
+  Future<void> initPayment(
+      {required String email,
+      required double amount,
+      required BuildContext context}) async {
+    try {
+      // 1. Create a payment intent on the server
+      final response = await http.post(
+          Uri.parse(
+              'https://us-central1-jamia-2bcc1.cloudfunctions.net/stripePaymentIntentRequest'),
+          body: {
+            'email': email,
+            'amount': amount.toString(),
+          });
+
+      final jsonResponse = jsonDecode(response.body);
+      log(jsonResponse.toString());
+      // 2. Initialize the payment sheet
+      await Stripe.instance.initPaymentSheet(
+          paymentSheetParameters: SetupPaymentSheetParameters(
+        paymentIntentClientSecret: jsonResponse['paymentIntent'],
+        merchantDisplayName: 'Jamias',
+        customerId: jsonResponse['customer'],
+        customerEphemeralKeySecret: jsonResponse['ephemeralKey'],
+        // testEnv: true,
+        //merchantCountryCode: 'SG',
+      ));
+      await Stripe.instance.presentPaymentSheet();
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('An error occured ${errorr.error.localizedMessage}'),
+        const SnackBar(
+          content: Text('Payment is successful'),
         ),
       );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('An error occured $errorr'),
-        ),
-      );
+      final transDetail = FirebaseFirestore.instance
+          .collection('JamiaGroup')
+          .doc(widget.data['id'])
+          .collection('transaction')
+          .doc();
+
+      transDetail.set(
+          {'Email': signedInUser.email, 'time': DateTime.now().toString()});
+    } catch (errorr) {
+      if (errorr is StripeException) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('An error occured ${errorr.error.localizedMessage}'),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('An error occured $errorr'),
+          ),
+        );
+      }
     }
   }
 }
