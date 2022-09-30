@@ -17,32 +17,39 @@ import 'package:cron/cron.dart';
 //import 'package:sprint/screens/firebase_options.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  AwesomeNotifications().initialize(
+    //'resource://drawable/res_notificaion_app_icon.png'
+    'resource://drawable/res_notificaion_app_icon',
+    [
+      NotificationChannel(
+        channelKey: 'key1',
+        channelName: 'channel one awesome',
+        channelDescription: "channel one awesome",
+        defaultColor: Colors.green,
+        ledColor: Colors.white,
+        playSound: true,
+        enableLights: true,
+        enableVibration: true,
+        importance: NotificationImportance.High,
+      )
+    ],
+  );
   final cron = Cron();
   // 30 8 27 1,5,9 *         //in mounth 1 5 9 day 27 at 8:30
-  //'*/5 * * * 9 *'
   //*/5 * * 9 *
   cron.schedule(Schedule.parse('30 8 27 1,5,9 * '), () async {
     print('notification');
 
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
-            id: 2,
-            channelKey: 'key1',
-            title: 'تفكر تسوي جمعية؟',
-            body: 'تطبيقنا يساعدك تنشئ جمعيتك الخاصة بشكل منظم ومرتب'));
+      id: 2,
+      channelKey: 'key1',
+      title: 'تفكر تسوي جمعية؟',
+      body: 'تطبيقنا يساعدك تنشئ جمعيتك الخاصة بشكل منظم ومرتب',
+      //icon: 'resource://drawable/res_notificaion_app_icon.png',
+    ));
   });
-  WidgetsFlutterBinding.ensureInitialized();
-  AwesomeNotifications().initialize(null, [
-    NotificationChannel(
-        channelKey: 'key1',
-        channelName: 'Proto Coders Point',
-        channelDescription: "Notification example",
-        defaultColor: Colors.green,
-        ledColor: Colors.white,
-        playSound: true,
-        enableLights: true,
-        enableVibration: true)
-  ]);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
