@@ -190,7 +190,7 @@ class _inviteFriendsState extends State<inviteFriends> {
                       print(selectedEmails.length);*/
                                     docInviteFriends
                                         .doc(element)
-                                        .set({'status': 'pending'});
+                                        .set({'status': 'pending' });
 
                                     /*final updateRequestList = FirebaseFirestore.instance
                           .collection('requestList')

@@ -156,11 +156,15 @@ class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
                   child: Row(
                     children: [
                       Text(
-                        ' السهم الشهري  ',
-                        style: TextStyle(fontSize: 18),
+                        ' السهم الشهري: ',
+                        style: TextStyle(fontSize: 18 ),
                       ),
                       Text(
-                        widget.data['amount'].toString(),
+                        widget.data['amount'].toString() +
+                            " ريال " +
+                            "(\$ " +
+                            (widget.data['amount'] / 3.75).toString() +
+                            " )",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       SizedBox(
@@ -217,31 +221,37 @@ class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
                       ),
                     )),
                 ElevatedButton(
-                  child: const Text('pay'),
+                  style: ElevatedButton.styleFrom(
+                    
+                    padding: const EdgeInsets.only(left: 130,right: 130),
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    
+                  ),
+                  child: const Text(
+                    'ادفع ', style:TextStyle(fontSize: 15)
+                  ),
                   onPressed: () async {
-                    var today =
-                        DateTime.now().day.toString();
-                        var yearNow= DateTime.now().year.toString();
-                        var yearstart2 = widget.data['startDate'].toString().length -4  ;
-                        var yearstart = widget.data['startDate'].toString().substring(yearstart2);
-
+                    
+                    var today = DateTime.now().day.toString();
+                    var yearNow = DateTime.now().year.toString();
+                    var yearstart2 =
+                        widget.data['startDate'].toString().length - 4;
+                    var yearstart = widget.data['startDate']
+                        .toString()
+                        .substring(yearstart2);
+                    //var parsedDate = DateTime.parse('1974-03-20 00:00:00.000');
+                    
                     var start =
-                        widget.data['startDate'].toString().substring(0,2);
-                    if (start.compareTo(today) == 0 && yearNow.compareTo(yearstart)==0 ) {
+                        widget.data['startDate'].toString().substring(0, 2);
+                    if (start.compareTo(today) == 0 &&
+                        yearNow.compareTo(yearstart) == 0) {
                       await initPayment(
                           amount: (widget.data['amount'] / 3.75) * 100,
                           context: context,
                           email: FirebaseAuth.instance.currentUser!.email
                               .toString());
                     } else {
-                      Fluttertoast.showToast(
-                          msg: "This button will activate on day "+ start + " from each month in " + yearstart,
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.CENTER,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.red,
-                          textColor: Colors.white,
-                          fontSize: 16.0);
+                      null;
                     }
                   },
                 )
