@@ -34,7 +34,7 @@ class _MyHomePageState extends State<MyHomePage> {
           .doc(FirebaseAuth.instance.currentUser!.email)
           .set({
         'token': token,
-        'userID': FirebaseAuth.instance.currentUser!.email
+        //'userID': FirebaseAuth.instance.currentUser!.email
       });
     });
     super.initState();

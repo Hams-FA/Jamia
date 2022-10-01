@@ -221,17 +221,16 @@ class _inviteFriendsState extends State<inviteFriends> {
                                           .set({'status': 'pending'});
                                       FirebaseFirestore.instance
                                           .collection('tokens')
-                                          .where('userID', isEqualTo: element)
+                                          .doc(FirebaseAuth
+                                              .instance.currentUser!.uid)
                                           //.limit(1)
                                           .get()
                                           .then((value) {
-                                        final tokens = value.docs;
-                                        tokens.forEach((e) {
-                                          sendPushMessage(
-                                              'انقر لمراجعتها الان',
-                                              '!لقد تمت دعوتك لجمعية جديدة',
-                                              e.get('token'));
-                                        });
+                                        final tokens = value;
+                                        sendPushMessage(
+                                            'انقر لمراجعتها الان',
+                                            '!لقد تمت دعوتك لجمعية جديدة',
+                                            tokens.get('token'));
                                       });
 
                                       final docSnapshot =
