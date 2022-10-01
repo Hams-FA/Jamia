@@ -38,7 +38,9 @@ Future<void> main() async {
   final cron = Cron();
   // 30 8 27 1,5,9 *         //in mounth 1 5 9 day 27 at 8:30
   //*/5 * * 9 *
-  cron.schedule(Schedule.parse('30 8 27 1,5,9 * '), () async {
+  //20,25,30,35 8 2 10 *
+  //*/10 * * * * every 10 mins
+  cron.schedule(Schedule.parse('*/10 * * * *'), () async {
     print('notification');
 
     await AwesomeNotifications().createNotification(
