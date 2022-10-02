@@ -106,110 +106,140 @@ class _ViewAndDeleteFriendsState extends State<ViewAndDeleteFriends> {
                 .collection('friends')
                 .snapshots(),
             builder: (context, snapshots) {
-              return (snapshots.connectionState == ConnectionState.waiting)
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : ListView.builder(
-                      itemCount: snapshots.data!.docs.length,
-                      itemBuilder: (context, index) {
-                        var data = snapshots.data!.docs[index].data()
-                            as Map<String, dynamic>;
-                        showAlertDialog(BuildContext context) {
-                          // set up the buttons
-                          Widget cancelButton = TextButton(
-                            child: Text("تراجع"),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          );
-                          Widget continueButton = TextButton(
-                            style: TextButton.styleFrom(
-                                foregroundColor: Colors.red),
-                            child: Text("حذف"),
-                            onPressed: () {
-                              Colors.black38;
-                              var email = data['Email'];
+              if (snapshots.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              if (snapshots.hasError) {
+                return Center(
+                  child: Text("حدث خطأ ما ...."),
+                );
+              }
 
-                              /* final User =
+              if (snapshots.hasData) {
+                final reqts = snapshots.data!.docs;
+                if (reqts.isEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.hourglass_empty,
+                          size: 100,
+                        ),
+                        Text(
+                          ' لا يوجد لديك اصدقاءابدأ بإضافة الاصدقاء الآن',
+                        ),
+                      ],
+                    ),
+                  );
+                }
+
+                return ListView.builder(
+                    itemCount: snapshots.data!.docs.length,
+                    itemBuilder: (context, index) {
+                      var data = snapshots.data!.docs[index].data()
+                          as Map<String, dynamic>;
+                      showAlertDialog(BuildContext context) {
+                        // set up the buttons
+                        Widget cancelButton = TextButton(
+                          child: Text("تراجع"),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        );
+                        Widget continueButton = TextButton(
+                          style:
+                              TextButton.styleFrom(foregroundColor: Colors.red),
+                          child: Text("حذف"),
+                          onPressed: () {
+                            Colors.black38;
+                            var email = data['Email'];
+
+                            /* final User =
                                           FirebaseAuth.instance.currentUser!.uid; */
-                              final docUser = FirebaseFirestore.instance
-                                  .collection('users')
-                                  .doc(signedInUser.email)
-                                  .collection('friends')
-                                  .doc(email);
+                            final docUser = FirebaseFirestore.instance
+                                .collection('users')
+                                .doc(signedInUser.email)
+                                .collection('friends')
+                                .doc(email);
 
-                              docUser.delete();
-                              Navigator.pop(context);
-                            },
-                          );
-                          // set up the AlertDialog
-                          AlertDialog alert = AlertDialog(
-                            title: Text("إزالة صديق"),
-                            content: Text(
-                                " هل أنت متأكد من رغبتك في إزالة الصديق (" +
-                                    data['fname'] +
-                                    ")"),
-                            actions: [
-                              cancelButton,
-                              continueButton,
-                            ],
-                          );
-                          // show the dialog
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return alert;
-                            },
-                          );
-                        }
+                            docUser.delete();
+                            Navigator.pop(context);
+                          },
+                        );
+                        // set up the AlertDialog
+                        AlertDialog alert = AlertDialog(
+                          title: Text("إزالة صديق"),
+                          content: Text(
+                              " هل أنت متأكد من رغبتك في إزالة الصديق (" +
+                                  data['fname'] +
+                                  ")"),
+                          actions: [
+                            cancelButton,
+                            continueButton,
+                          ],
+                        );
+                        // show the dialog
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return alert;
+                          },
+                        );
+                      }
 
-                        if (data['fname']
-                            .toString()
-                            .toLowerCase()
-                            .startsWith(name.toLowerCase())) {
-                          return ListTile(
-                            title: Text(
-                              data['fname'] + " " + data['lname'],
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            subtitle: Text(
-                              data['Email'],
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.normal),
-                            ),
-                            leading: CircleAvatar(
-                              backgroundImage: NetworkImage(data['photo']),
-                            ),
-                            trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.remove_circle_outline,
-                                      size: 20.0,
-                                      color: Color.fromARGB(255, 169, 37, 4),
-                                    ),
-                                    onPressed: () {
-                                      showAlertDialog(context);
+                      /*if (data['fname']
+                          .toString()
+                          .toLowerCase()
+                          .startsWith(name.toLowerCase())) { */
+                      return ListTile(
+                        title: Text(
+                          data['fname'] + " " + data['lname'],
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              color: Colors.black54,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Text(
+                          data['Email'],
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              color: Colors.black54,
+                              fontSize: 13,
+                              fontWeight: FontWeight.normal),
+                        ),
+                        leading: CircleAvatar(
+                          backgroundImage: NetworkImage(data['photo']),
+                        ),
+                        trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              IconButton(
+                                icon: Icon(
+                                  Icons.remove_circle_outline,
+                                  size: 20.0,
+                                  color: Color.fromARGB(255, 169, 37, 4),
+                                ),
+                                onPressed: () {
+                                  showAlertDialog(context);
 
-                                      //_onAddIconPressed(data['userName']);
-                                    },
-                                  ),
-                                ]),
-                          );
-                        }
-                        return Container();
-                      });
+                                  //_onAddIconPressed(data['userName']);
+                                },
+                              ),
+                            ]),
+                      );
+                      /*return Container();
+                      } */
+                    });
+              }
+              return Expanded(
+                child: Center(child: Text('عذراً، لا يوجد لديك اصدقاء')),
+              );
             },
           ),
         ));

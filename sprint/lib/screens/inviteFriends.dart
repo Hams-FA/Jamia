@@ -3,6 +3,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'dart:math';
+
+import 'package:flutter/material.dart';
 import 'package:sprint/screens/user_model.dart';
 import 'package:sprint/screens/firestore_helper.dart';
 import 'package:sprint/firebase_options.dart';
@@ -266,6 +269,7 @@ class _inviteFriendsState extends State<inviteFriends> {
                       child: CircularProgressIndicator(),
                     );
                   }),
+              //],
             ],
           ),
         ));

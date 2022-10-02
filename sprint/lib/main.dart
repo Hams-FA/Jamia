@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:sprint/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:sprint/screens/registration_screen.dart';
@@ -14,6 +16,15 @@ import 'package:sprint/screens/ViewAndDeleteFriends.dart';
 import 'RequestPageFinal.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cron/cron.dart';
+
+import 'dart:convert';
+import 'dart:developer';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:http/http.dart' as http;
+
 //import 'package:sprint/screens/firebase_options.dart';
 
 Future<void> main() async {
@@ -40,6 +51,11 @@ Future<void> main() async {
   //*/5 * * 9 *
   //20,25,30,35 8 2 10 *
   //*/10 * * * * every 10 mins
+
+  Stripe.publishableKey =
+      "pk_test_51LlFPXHZFaMy2scT7EbXYBvQfQUCGj6FvxnI1lrW2xwPhmLowqzkCHeJ8hQ0SzgPn20OdCwGEFkXTP5Y0cM8j3w000NzK0A7VH";
+  Stripe.instance.applySettings();
+
   cron.schedule(Schedule.parse('*/10 * * * *'), () async {
     print('notification');
 
@@ -90,7 +106,7 @@ class MyApp extends StatelessWidget {
         '/ViewAndDeleteFriends': (BuildContext context) =>
             const ViewAndDeleteFriends(),
       },
-      home: //const LoginScreen(),
+      home: //const PaymentDemo(),//const LoginScreen(),
           const LoginScreen(), //const MyHomePage(title: 'Flutter Demo Home Page'),
       //RegistrationScreen()
       builder: EasyLoading.init(),
@@ -180,6 +196,72 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.*/
+    );
+  }
+}
+
+class PaymentDemo extends StatelessWidget {
+  const PaymentDemo({Key? key}) : super(key: key);
+  Future<void> initPayment(
+      {required String email,
+      required double amount,
+      required BuildContext context}) async {
+    try {
+      // 1. Create a payment intent on the server
+      final response = await http.post(
+          Uri.parse(
+              'https://us-central1-jamia-2bcc1.cloudfunctions.net/stripePaymentIntentRequest'),
+          body: {
+            'email': email,
+            'amount': amount.toString(),
+          });
+
+      final jsonResponse = jsonDecode(response.body);
+      log(jsonResponse.toString());
+      // 2. Initialize the payment sheet
+      await Stripe.instance.initPaymentSheet(
+          paymentSheetParameters: SetupPaymentSheetParameters(
+        paymentIntentClientSecret: jsonResponse['paymentIntent'],
+        merchantDisplayName: 'Grocery Flutter course',
+        customerId: jsonResponse['customer'],
+        customerEphemeralKeySecret: jsonResponse['ephemeralKey'],
+        // testEnv: true,
+        //merchantCountryCode: 'SG',
+      ));
+      await Stripe.instance.presentPaymentSheet();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Payment is successful'),
+        ),
+      );
+    } catch (errorr) {
+      if (errorr is StripeException) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('An error occured ${errorr.error.localizedMessage}'),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('An error occured $errorr'),
+          ),
+        );
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+          child: ElevatedButton(
+        child: const Text('Pay 20\$'),
+        onPressed: () async {
+          await initPayment(
+              amount: 50.0, context: context, email: 'email@test.com');
+        },
+      )),
     );
   }
 }
