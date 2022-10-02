@@ -266,6 +266,7 @@ class _inviteFriendsState extends State<inviteFriends> {
                       child: CircularProgressIndicator(),
                     );
                   }),
+              //],
             ],
           ),
         ));

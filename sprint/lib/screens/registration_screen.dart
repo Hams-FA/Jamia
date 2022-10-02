@@ -96,6 +96,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     onChanged: (value) {
                       nid = value.trim();
                     },
+                    maxLength: 10,
                     decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.fingerprint),
                       hintText: 'رقم الهوية الوطنية مكون من 10 ارقام',
@@ -193,8 +194,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     },
                     decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.people),
-                      labelText: 'ادخل اسمك العائلة',
-                      hintText: 'يجب ان يحتوي اسمك عائلتك على حرفين على الاقل',
+                      labelText: 'ادخل اسم العائلة',
+                      hintText: 'يجب ان يحتوي اسم عائلتك على حرفين على الاقل',
                       contentPadding: EdgeInsets.symmetric(
                         vertical: 10,
                         horizontal: 20,
@@ -239,6 +240,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     onChanged: (value) {
                       bd = value.trim();
                     },
+                    maxLength: 3,
+
                     decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.calendar_month),
                       labelText: 'ادخل عمرك',
@@ -390,10 +393,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     onChanged: (value) {
                       phone = value.trim();
                     },
+                    maxLength: 10,
                     decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.phone),
                       labelText: 'ادخل رقم جوالك ',
-                      hintText: '05xxxxxxxx : يجب ان يكون بهذا كالتالي',
+                      hintText: '05xxxxxxxx : يجب ان يكون كالتالي',
                       //hintText: '05xxxxxxxx :مثال ',
                       //alignLabelWithHint: true,
                       contentPadding: EdgeInsets.symmetric(

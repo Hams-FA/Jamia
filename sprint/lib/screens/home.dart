@@ -107,17 +107,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    'اسم الجمعية : ${data['name']}',
+                                                    'الجمعية : ${data['name']}',
                                                     style:
                                                         TextStyle(fontSize: 17),
                                                   ),
                                                   SizedBox(
                                                     height: 10,
-                                                  ),
-                                                  Text(
-                                                    'إجمالي أعضاء المجموعة: ${data['maxMembers'].toString()}',
-                                                    style:
-                                                        TextStyle(fontSize: 17),
                                                   ),
                                                 ],
                                               ),
@@ -129,8 +124,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                                           MaterialPageRoute(
                                                               builder: (context) =>
                                                                   FirebaseUserDetails(
-                                                                      data:
-                                                                          data)));
+                                                                    data: data,
+                                                                    jamiaId: '',
+                                                                  )));
                                                     },
                                                     child:
                                                         Icon(Icons.visibility)),

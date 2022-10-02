@@ -295,7 +295,12 @@ class _UserDetailsState extends State<UserDetails> {
     final docUser = FirebaseFirestore.instance.collection('JamiaGroup').doc();
 
     final docUser1 = docUser.collection('members').doc(signedInUser.email);
-    docUser1.set({'status': 'accepted'});
+    docUser1.set({
+      'status': 'accepted',
+      'turn': 1,
+      'name': signedInUser.email,
+      'date': DateTime.now()
+    });
 
     final docUser2 = FirebaseFirestore.instance
         .collection('users')
@@ -310,7 +315,7 @@ class _UserDetailsState extends State<UserDetails> {
       'amount': amount,
       'startDate': startDate,
       'endDate': endDate,
-      'id': docUser.id
+      'id': docUser.id,
     });
 
     final json = {
@@ -321,7 +326,8 @@ class _UserDetailsState extends State<UserDetails> {
       'amount': amount,
       'startDate': startDate,
       'endDate': endDate,
-      'id': docUser.id
+      'id': docUser.id,
+      'acceptedCount': 1
     };
 
     await docUser.set(json);

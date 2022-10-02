@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:sprint/screens/registration_screen.dart';
+
 class Validations {
   String? validate(int decide, String value) {
     //ناقص 0,3,7
