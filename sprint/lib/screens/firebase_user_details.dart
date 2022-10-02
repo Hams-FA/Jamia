@@ -477,12 +477,14 @@ class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
       Navigator.pushNamed(context, '/home');
     } catch (errorr) {
       if (errorr is StripeException) {
+        print(errorr);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('An error occured ${errorr.error.localizedMessage}'),
           ),
         );
       } else {
+        print(errorr);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('An error occured $errorr'),

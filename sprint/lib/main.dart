@@ -16,6 +16,8 @@ import 'package:sprint/screens/ViewAndDeleteFriends.dart';
 import 'RequestPageFinal.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cron/cron.dart';
+import 'package:sprint/screens/viewUserProfile.dart';
+import 'package:sprint/screens/editUserProfile.dart';
 
 import 'dart:convert';
 import 'dart:developer';
@@ -104,6 +106,8 @@ class MyApp extends StatelessWidget {
         '/profile': (BuildContext context) => const ProfileScreen(),
         '/inviteFriends': (BuildContext context) => const inviteFriends(),
         '/SearchFriends': (BuildContext context) => const SearchFriends(),
+        '/viewUserProfile': (BuildContext context) => const ViewUserProfile(),
+        '/editUserProfile': (BuildContext context) => const EditUserProfile(),
         '/ViewAndDeleteFriends': (BuildContext context) =>
             const ViewAndDeleteFriends(),
       },

@@ -206,7 +206,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   MaterialButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/profile');
+                      Navigator.pushNamed(context, '/viewUserProfile');
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
