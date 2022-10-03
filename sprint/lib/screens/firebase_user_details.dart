@@ -83,7 +83,7 @@ class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
                               child: Row(
                                 children: [
                                   const Text(
-                                    'اسم الجمعية:  ',
+                                    ' الجمعية:  ',
                                     style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
@@ -188,7 +188,13 @@ class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
                                   ),
                                 ),
                                 Text(
-                                  widget.data['amount']!.toString(),
+                                  widget.data['amount']!.toString() +
+                                      " ريال" +
+                                      " (" +
+                                      (widget.data['amount'] / 3.75)
+                                          .round()
+                                          .toString() +
+                                      "\$)",
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Color(0xFF545454)),

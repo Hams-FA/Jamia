@@ -59,7 +59,8 @@ Future<void> main() async {
 
   // 30 8 27 1,5,9 *         //in mounth 1 5 9 day 27 at 8:30
   //'*/5 * * * 9 *'
-  cron.schedule(Schedule.parse('*/10 * * 9 *'), () async {
+  /*
+  cron.schedule(Schedule.parse('5 * * * 9 *'), () async {
     print('notification');
 
     await AwesomeNotifications().createNotification(
@@ -71,6 +72,21 @@ Future<void> main() async {
       //icon: 'resource://drawable/res_notificaion_app_icon.png',
     ));
   });
+  */
+  //
+  cron.schedule(Schedule.parse('30 8 27 1,5,9 * '), () async {
+    print('notification');
+
+    await AwesomeNotifications().createNotification(
+        content: NotificationContent(
+      id: 2,
+      channelKey: 'key1',
+      title: 'تفكر تسوي جمعية؟',
+      body: 'تطبيقنا يساعدك تنشئ جمعيتك الخاصة بشكل منظم ومرتب',
+      //icon: 'resource://drawable/res_notificaion_app_icon.png',
+    ));
+  });
+  //
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

@@ -261,12 +261,12 @@ class Validations {
 
   String? validateUserName(String value) {
     RegExp regex = RegExp(r'^.{2,}$');
-    if (value.isEmpty || value.trim().isEmpty) return 'اسم المستخدم مطلوب';
+    if (value.isEmpty || value.trim().isEmpty) return 'اسم العائلة مطلوب';
     if (!regex.hasMatch(value)) {
       return ("يجب ان يحتوي على حرفين على الأقل");
     }
     if (value.length > 15) {
-      return ("يجب ان يكون اسم المستخدم لا يزيد عن 15 حرف");
+      return ("يجب ان يكون اسم العائلة لا يزيد عن 15 حرف");
     }
     return null;
   }

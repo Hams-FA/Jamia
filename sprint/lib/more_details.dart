@@ -49,7 +49,7 @@ class _more_detailsState extends State<more_details> {
                               child: Row(
                                 children: [
                                   const Text(
-                                    'اسم الجمعية:  ',
+                                    ' الجمعية:  ',
                                     style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
@@ -154,7 +154,13 @@ class _more_detailsState extends State<more_details> {
                                   ),
                                 ),
                                 Text(
-                                  widget.data['amount']!.toString(),
+                                  widget.data['amount']!.toString() +
+                                      " ريال" +
+                                      " (" +
+                                      (widget.data['amount'] / 3.75)
+                                          .round()
+                                          .toString() +
+                                      "\$)",
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Color(0xFF545454)),
@@ -205,8 +211,7 @@ class _more_detailsState extends State<more_details> {
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold),
                                 ),
-                                 Text(
-                                  
+                                Text(
                                   widget.data['acceptedCount'].toString(),
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
@@ -223,22 +228,20 @@ class _more_detailsState extends State<more_details> {
                         //padding: const EdgeInsets.all(10),
                         margin: const EdgeInsets.all(10),
                         //color: Colors.grey.shade200,
-                        child: 
-                          //textDirection: ui.TextDirection.
-                          //child: 
-                          Row(
-                            children: [
-                              Center(
-                                child: const Text(
-                                  ' ترتيب أعضاء الجمعية',
-                                  style: TextStyle(
-                                      fontSize: 18, fontWeight: FontWeight.bold ),
-                                ),
+                        child:
+                            //textDirection: ui.TextDirection.
+                            //child:
+                            Row(
+                          children: [
+                            Center(
+                              child: const Text(
+                                ' ترتيب أعضاء الجمعية',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
                               ),
-                              
-                            ],
-                          ),
-                        
+                            ),
+                          ],
+                        ),
                       ),
 
                       Container(

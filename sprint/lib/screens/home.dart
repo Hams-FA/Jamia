@@ -30,12 +30,8 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     _fcm.getToken().then((token) {
       //print("The token is:" + token!);
-      Firestore.collection('tokens')
-          .doc(FirebaseAuth.instance.currentUser!.email)
-          .set({
-        'token': token,
-        //'userID': FirebaseAuth.instance.currentUser!.email
-      });
+      Firestore.collection('tokens').add(
+          {'token': token, 'userID': FirebaseAuth.instance.currentUser!.email});
     });
     super.initState();
     fetchUserfromFirebase();

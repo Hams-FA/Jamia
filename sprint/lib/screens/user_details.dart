@@ -245,7 +245,7 @@ class _UserDetailsState extends State<UserDetails> {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: Text('لـلـخـلـف'))),
+                        child: Text('تراجع'))),
                 Container(
                     width: 100,
                     child: ElevatedButton(
