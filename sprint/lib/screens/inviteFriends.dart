@@ -72,7 +72,9 @@ class _inviteFriendsState extends State<inviteFriends> {
 
     //print(widget.data['maxMembers']);
     getCurrentUser();
+    print('before');
     readInvited211();
+    print(invitedAlready);
     //print('after invited');
     //print(invitedAlready);
     //print('why after');
@@ -108,7 +110,7 @@ class _inviteFriendsState extends State<inviteFriends> {
                 Center(child: Text('! دعيت كل أصحابك')),
               ] else ...[
                 */
-              StreamBuilder<List<UserModel>>(
+              StreamBuilder<QuerySnapshot>(
                   stream: FirestoreHelper.readFromUsers(signedInUser.email),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -132,134 +134,8 @@ class _inviteFriendsState extends State<inviteFriends> {
                       final userData = snapshot.data;
 
                       return Expanded(
-                        child: Column(
-                          children: [
-                            Expanded(
-                              child: ListView.builder(
-                                  itemCount: userData!.length,
-                                  itemBuilder: (context, index) {
-                                    final singleUser = userData[index];
-                                    if (!invitedAlready
-                                        .contains(singleUser.Email)) {
-                                      allinvited = false;
-                                      checked['${singleUser.Email}'] = false;
-                                      return Container(
-                                        margin:
-                                            EdgeInsets.symmetric(vertical: 5),
-                                        child: StatefulBuilder(
-                                          builder: (context, setState) =>
-                                              Directionality(
-                                            textDirection: ui.TextDirection.rtl,
-                                            child: (CheckboxListTile(
-                                              secondary: Container(
-                                                width: 40,
-                                                height: 40,
-                                                decoration: BoxDecoration(
-                                                    color: Colors.grey,
-                                                    shape: BoxShape.circle),
-                                              ),
-                                              title: Text(
-                                                "${singleUser.fname} ${singleUser.lname}",
-                                                style: TextStyle(
-                                                  color: Color(0xFF393737),
-                                                ),
-                                              ),
-                                              subtitle:
-                                                  Text("${singleUser.Email}"),
-                                              activeColor: Color.fromARGB(
-                                                  255, 76, 175, 80),
-                                              checkColor: Colors.white,
-                                              value: checked[
-                                                  '${singleUser.Email}'],
-                                              onChanged: (val) {
-                                                setState(() {
-                                                  checked['${singleUser.Email}'] =
-                                                      val;
-                                                  if (checked[
-                                                          '${singleUser.Email}'] ==
-                                                      true) {
-                                                    selectedEmails.add(
-                                                        '${singleUser.Email}');
-                                                  } else if (checked[
-                                                          '${singleUser.Email}'] ==
-                                                      false) {
-                                                    selectedEmails.removeWhere(
-                                                        (element) =>
-                                                            element ==
-                                                            '${singleUser.Email}');
-                                                  }
-                                                });
-                                              },
-                                            )),
-                                          ),
-                                        ),
-                                      );
-                                    } else {
-                                      return Text('');
-                                    }
-                                  }),
-                            ),
-                            SizedBox(
-                              height: 42, //height of button
-                              width: 200,
-                              //height: 42,
-                              //                  width: double.infinity,
-                              child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 76, 175, 80),
-                                  ),
-                                  onPressed: () {
-                                    selectedEmails.forEach((element) async {
-                                      final docInviteFriends = FirebaseFirestore
-                                          .instance
-                                          .collection('JamiaGroup')
-                                          .doc(jamiaId)
-                                          .collection('members');
-                                      docInviteFriends
-                                          .doc(element)
-                                          .set({'status': 'pending'});
-                                      FirebaseFirestore.instance
-                                          .collection('tokens')
-                                          .where('userID', isEqualTo: element)
-                                          .limit(1)
-                                          .get()
-                                          .then((value) {
-                                        final tokens = value.docs;
-                                        tokens.forEach((e) {
-                                          sendPushMessage(
-                                              'انقر لمراجعتها الان',
-                                              '!لقد تمت دعوتك لجمعية جديدة',
-                                              e.get('token'));
-                                        });
-                                      });
-
-                                      final docSnapshot =
-                                          await FirebaseFirestore.instance
-                                              .collection("requestList")
-                                              .add({
-                                        'email': element,
-                                        'jamiaID': jamiaId
-                                      });
-                                    });
-                                    Navigator.pushNamed(context, '/home');
-                                    //Navigator.pop(context);
-                                    //}
-
-                                    Fluttertoast.showToast(
-                                      msg:
-                                          "قمت بدعوة  ${selectedEmails.length} من أصدفائك",
-                                      toastLength: Toast.LENGTH_SHORT,
-                                      timeInSecForIosWeb: 1,
-                                      backgroundColor: Colors.black,
-                                      textColor: Colors.white,
-                                      fontSize: 16.0,
-                                    );
-                                  },
-                                  child: Text("دعوة")),
-                            ),
-                          ],
-                        ),
+                        child: userData?.map((e) => buildColumn(e)).toList();
+                        //buildColumn(userData),
                       );
                     }
 
@@ -274,6 +150,7 @@ class _inviteFriendsState extends State<inviteFriends> {
   }
 
   void readInvited211() async {
+    print('chick0');
     List<dynamic> feature = await readInvited2();
     feature.forEach((element) {
       invitedAlready.add(element);
@@ -288,6 +165,7 @@ class _inviteFriendsState extends State<inviteFriends> {
   }
 
   Future<List<dynamic>> readInvited2() async {
+    print('check');
     final querySnapshot = await FirebaseFirestore.instance
         .collection("JamiaGroup")
         .doc(jamiaId)
@@ -300,5 +178,113 @@ class _inviteFriendsState extends State<inviteFriends> {
       res.add(element.id);
     });
     return res;
+  }
+
+  Column buildColumn(List<UserModel>? userData) {
+    print('method');
+    return Column(
+      children: [
+        Expanded(
+          child: ListView.builder(
+              itemCount: userData!.length,
+              itemBuilder: (context, index) {
+                final singleUser = userData[index];
+                //!invitedAlready.contains(singleUser.Email)
+                if (true) {
+                  allinvited = false;
+                  checked['${singleUser.Email}'] = false;
+                  return Container(
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: StatefulBuilder(
+                      builder: (context, setState) => Directionality(
+                        textDirection: ui.TextDirection.rtl,
+                        child: (CheckboxListTile(
+                          secondary: Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                                color: Colors.grey, shape: BoxShape.circle),
+                          ),
+                          title: Text(
+                            "${singleUser.fname} ${singleUser.lname}",
+                            style: TextStyle(
+                              color: Color(0xFF393737),
+                            ),
+                          ),
+                          subtitle: Text("${singleUser.Email}"),
+                          activeColor: Color.fromARGB(255, 76, 175, 80),
+                          checkColor: Colors.white,
+                          value: checked['${singleUser.Email}'],
+                          onChanged: (val) {
+                            setState(() {
+                              checked['${singleUser.Email}'] = val;
+                              if (checked['${singleUser.Email}'] == true) {
+                                selectedEmails.add('${singleUser.Email}');
+                              } else if (checked['${singleUser.Email}'] ==
+                                  false) {
+                                selectedEmails.removeWhere((element) =>
+                                    element == '${singleUser.Email}');
+                              }
+                            });
+                          },
+                        )),
+                      ),
+                    ),
+                  );
+                } else {
+                  return Text('');
+                }
+              }),
+        ),
+        SizedBox(
+          height: 42, //height of button
+          width: 200,
+          //height: 42,
+          //                  width: double.infinity,
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 76, 175, 80),
+              ),
+              onPressed: () {
+                selectedEmails.forEach((element) async {
+                  final docInviteFriends = FirebaseFirestore.instance
+                      .collection('JamiaGroup')
+                      .doc(jamiaId)
+                      .collection('members');
+                  docInviteFriends.doc(element).set({'status': 'pending'});
+                  FirebaseFirestore.instance
+                      .collection('tokens')
+                      .where('userID', isEqualTo: element)
+                      .limit(1)
+                      .get()
+                      .then((value) {
+                    final tokens = value.docs;
+                    tokens.forEach((e) {
+                      sendPushMessage('انقر لمراجعتها الان',
+                          '!لقد تمت دعوتك لجمعية جديدة', e.get('token'));
+                    });
+                  });
+
+                  final docSnapshot = await FirebaseFirestore.instance
+                      .collection("requestList")
+                      .add({'email': element, 'jamiaID': jamiaId});
+                });
+                Navigator.pushNamed(context, '/home');
+                //Navigator.pop(context);
+                //}
+
+                Fluttertoast.showToast(
+                  msg: "قمت بدعوة  ${selectedEmails.length} من أصدفائك",
+                  toastLength: Toast.LENGTH_SHORT,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Colors.black,
+                  textColor: Colors.white,
+                  fontSize: 16.0,
+                );
+              },
+              child: Text("دعوة")),
+        ),
+      ],
+    );
   }
 }
