@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "C:\\Users\\96653\\Desktop\\sprint2new\\Jamia-mergesprint2_ARL\\sprint\\build\\image_picker_android\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\notify_panel_notification_icon_bg.png",
+        "source": "C:\\Users\\96653\\.gradle\\caches\\transforms-3\\1f4da3f8de14c22f191b37ee1da94297\\transformed\\core-1.8.0\\res\\drawable-xhdpi-v4\\notify_panel_notification_icon_bg.png"
+    },
+    {
+        "merged": "C:\\Users\\96653\\Desktop\\sprint2new\\Jamia-mergesprint2_ARL\\sprint\\build\\image_picker_android\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\notification_bg_low_normal.9.png",
+        "source": "C:\\Users\\96653\\.gradle\\caches\\transforms-3\\1f4da3f8de14c22f191b37ee1da94297\\transformed\\core-1.8.0\\res\\drawable-xhdpi-v4\\notification_bg_low_normal.9.png"
+    },
+    {
+        "merged": "C:\\Users\\96653\\Desktop\\sprint2new\\Jamia-mergesprint2_ARL\\sprint\\build\\image_picker_android\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\notification_bg_low_pressed.9.png",
+        "source": "C:\\Users\\96653\\.gradle\\caches\\transforms-3\\1f4da3f8de14c22f191b37ee1da94297\\transformed\\core-1.8.0\\res\\drawable-xhdpi-v4\\notification_bg_low_pressed.9.png"
+    },
+    {
+        "merged": "C:\\Users\\96653\\Desktop\\sprint2new\\Jamia-mergesprint2_ARL\\sprint\\build\\image_picker_android\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\notification_bg_normal_pressed.9.png",
+        "source": "C:\\Users\\96653\\.gradle\\caches\\transforms-3\\1f4da3f8de14c22f191b37ee1da94297\\transformed\\core-1.8.0\\res\\drawable-xhdpi-v4\\notification_bg_normal_pressed.9.png"
+    },
+    {
+        "merged": "C:\\Users\\96653\\Desktop\\sprint2new\\Jamia-mergesprint2_ARL\\sprint\\build\\image_picker_android\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\notification_bg_normal.9.png",
+        "source": "C:\\Users\\96653\\.gradle\\caches\\transforms-3\\1f4da3f8de14c22f191b37ee1da94297\\transformed\\core-1.8.0\\res\\drawable-xhdpi-v4\\notification_bg_normal.9.png"
+    }
+]
