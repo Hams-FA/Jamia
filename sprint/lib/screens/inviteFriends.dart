@@ -65,20 +65,10 @@ class _inviteFriendsState extends State<inviteFriends> {
   late User signedInUser;
 
   void initState() {
-    //print('befor invited');
-    //print(invitedAlready);
     super.initState();
     jamiaId = widget.data['id'];
-
-    //print(widget.data['maxMembers']);
     getCurrentUser();
     readInvited211();
-    //print('after invited');
-    //print(invitedAlready);
-    //print('why after');
-    //print(widget.data);
-    //print(jamiaId);
-    //print(signedInUser.email);
   }
 
   void getCurrentUser() {
@@ -200,10 +190,8 @@ class _inviteFriendsState extends State<inviteFriends> {
                                   }),
                             ),
                             SizedBox(
-                              height: 42, //height of button
+                              height: 42,
                               width: 200,
-                              //height: 42,
-                              //                  width: double.infinity,
                               child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor:
@@ -267,7 +255,6 @@ class _inviteFriendsState extends State<inviteFriends> {
                       child: CircularProgressIndicator(),
                     );
                   }),
-              //],
             ],
           ),
         ));

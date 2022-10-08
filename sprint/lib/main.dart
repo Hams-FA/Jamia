@@ -32,7 +32,6 @@ import 'package:http/http.dart' as http;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   AwesomeNotifications().initialize(
-    //'resource://drawable/res_notificaion_app_icon.png'
     'resource://drawable/res_notificaion_app_icon',
     [
       NotificationChannel(
@@ -48,32 +47,14 @@ Future<void> main() async {
       )
     ],
   );
-  final cron = Cron();
-  // 30 8 27 1,5,9 *         //in mounth 1 5 9 day 27 at 8:30
-  //*/5 * * 9 *
-  //20,25,30,35 8 2 10 *
-  //*/10 * * * * every 10 mins
+
   Stripe.publishableKey =
       "pk_test_51LlFPXHZFaMy2scT7EbXYBvQfQUCGj6FvxnI1lrW2xwPhmLowqzkCHeJ8hQ0SzgPn20OdCwGEFkXTP5Y0cM8j3w000NzK0A7VH";
   Stripe.instance.applySettings();
 
-  // 30 8 27 1,5,9 *         //in mounth 1 5 9 day 27 at 8:30
-  //'*/5 * * * 9 *'
-  /*
-  cron.schedule(Schedule.parse('5 * * * 9 *'), () async {
-    print('notification');
-
-    await AwesomeNotifications().createNotification(
-        content: NotificationContent(
-      id: 2,
-      channelKey: 'key1',
-      title: 'تفكر تسوي جمعية؟',
-      body: 'تطبيقنا يساعدك تنشئ جمعيتك الخاصة بشكل منظم ومرتب',
-      //icon: 'resource://drawable/res_notificaion_app_icon.png',
-    ));
-  });
-  */
-  //
+  final cron = Cron();
+  //*/10 * * * * every 10 mins
+  //in mounth 1 5 9 day 27 at 8:30
   cron.schedule(Schedule.parse('30 8 27 1,5,9 * '), () async {
     print('notification');
 
@@ -83,10 +64,24 @@ Future<void> main() async {
       channelKey: 'key1',
       title: 'تفكر تسوي جمعية؟',
       body: 'تطبيقنا يساعدك تنشئ جمعيتك الخاصة بشكل منظم ومرتب',
-      //icon: 'resource://drawable/res_notificaion_app_icon.png',
     ));
   });
-  //
+
+//remind of payment start of each mounth
+  ///should  check if in active jamia before
+  ///add name of jamias?
+  cron.schedule(Schedule.parse('30 8 1 * * '), () async {
+    print('second notification');
+
+    await AwesomeNotifications().createNotification(
+        content: NotificationContent(
+      id: 2,
+      channelKey: 'key1',
+      title: 'لا تنسى تدفع للجمعيات المشارك فيها',
+      body: 'جميعاتك:',
+    ));
+  });
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
