@@ -1,17 +1,13 @@
-import 'dart:convert';
-
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:sprint/screens/firebase_user_details.dart';
-import 'package:sprint/screens/inviteFriends.dart';
-
-import 'package:sprint/screens/form.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-
 import 'dart:ui' as ui;
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:sprint/screens/firebase_user_details.dart';
+import 'package:sprint/screens/form.dart';
+import 'package:sprint/screens/inviteFriends.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -30,12 +26,8 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     _fcm.getToken().then((token) {
       //print("The token is:" + token!);
-      Firestore.collection('tokens')
-          .doc(FirebaseAuth.instance.currentUser!.email)
-          .set({
-        'token': token,
-        //'userID': FirebaseAuth.instance.currentUser!.email
-      });
+      Firestore.collection('tokens').add(
+          {'token': token, 'userID': FirebaseAuth.instance.currentUser!.email});
     });
     super.initState();
     fetchUserfromFirebase();
@@ -114,11 +106,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                                   SizedBox(
                                                     height: 10,
                                                   ),
-                                                  Text(
-                                                    'إجمالي أعضاء المجموعة: ${data['maxMembers'].toString()}',
-                                                    style:
-                                                        TextStyle(fontSize: 17),
-                                                  ),
                                                 ],
                                               ),
                                               Column(children: [
@@ -129,9 +116,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                                           MaterialPageRoute(
                                                               builder: (context) =>
                                                                   FirebaseUserDetails(
-                                                                    data: data,
-                                                                    jamiaId: '',
-                                                                  )));
+                                                                      data:
+                                                                          data,
+                                                                      jamiaId: snapshot
+                                                                          .data!
+                                                                          .docs[
+                                                                              index]
+                                                                          .id)));
                                                     },
                                                     child:
                                                         Icon(Icons.visibility)),
@@ -211,7 +202,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   MaterialButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/profile');
+                      Navigator.pushNamed(context, '/viewUserProfile');
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,

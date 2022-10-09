@@ -16,6 +16,8 @@ import 'package:sprint/screens/ViewAndDeleteFriends.dart';
 import 'RequestPageFinal.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cron/cron.dart';
+import 'package:sprint/screens/viewUserProfile.dart';
+import 'package:sprint/screens/editUserProfile.dart';
 
 import 'dart:convert';
 import 'dart:developer';
@@ -51,12 +53,14 @@ Future<void> main() async {
   //*/5 * * 9 *
   //20,25,30,35 8 2 10 *
   //*/10 * * * * every 10 mins
-
   Stripe.publishableKey =
       "pk_test_51LlFPXHZFaMy2scT7EbXYBvQfQUCGj6FvxnI1lrW2xwPhmLowqzkCHeJ8hQ0SzgPn20OdCwGEFkXTP5Y0cM8j3w000NzK0A7VH";
   Stripe.instance.applySettings();
 
-  cron.schedule(Schedule.parse('*/10 * * * *'), () async {
+  // 30 8 27 1,5,9 *         //in mounth 1 5 9 day 27 at 8:30
+  //'*/5 * * * 9 *'
+  /*
+  cron.schedule(Schedule.parse('5 * * * 9 *'), () async {
     print('notification');
 
     await AwesomeNotifications().createNotification(
@@ -68,6 +72,21 @@ Future<void> main() async {
       //icon: 'resource://drawable/res_notificaion_app_icon.png',
     ));
   });
+  */
+  //
+  cron.schedule(Schedule.parse('30 8 27 1,5,9 * '), () async {
+    print('notification');
+
+    await AwesomeNotifications().createNotification(
+        content: NotificationContent(
+      id: 2,
+      channelKey: 'key1',
+      title: 'تفكر تسوي جمعية؟',
+      body: 'تطبيقنا يساعدك تنشئ جمعيتك الخاصة بشكل منظم ومرتب',
+      //icon: 'resource://drawable/res_notificaion_app_icon.png',
+    ));
+  });
+  //
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -103,6 +122,8 @@ class MyApp extends StatelessWidget {
         '/profile': (BuildContext context) => const ProfileScreen(),
         '/inviteFriends': (BuildContext context) => const inviteFriends(),
         '/SearchFriends': (BuildContext context) => const SearchFriends(),
+        '/viewUserProfile': (BuildContext context) => const ViewUserProfile(),
+        '/editUserProfile': (BuildContext context) => const EditUserProfile(),
         '/ViewAndDeleteFriends': (BuildContext context) =>
             const ViewAndDeleteFriends(),
       },

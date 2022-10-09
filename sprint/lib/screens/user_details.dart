@@ -1,11 +1,10 @@
-import 'package:sprint/screens/home.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
-import 'package:flutter/material.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:sprint/screens/home.dart';
 
 class UserDetails extends StatefulWidget {
   const UserDetails(
@@ -246,7 +245,7 @@ class _UserDetailsState extends State<UserDetails> {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: Text('لـلـخـلـف'))),
+                        child: Text('تراجع'))),
                 Container(
                     width: 100,
                     child: ElevatedButton(
@@ -316,7 +315,7 @@ class _UserDetailsState extends State<UserDetails> {
       'amount': amount,
       'startDate': startDate,
       'endDate': endDate,
-      'id': docUser.id,
+      'id': signedInUser.email,
     });
 
     final json = {
@@ -327,7 +326,7 @@ class _UserDetailsState extends State<UserDetails> {
       'amount': amount,
       'startDate': startDate,
       'endDate': endDate,
-      'id': docUser.id,
+      'id': signedInUser.email,
       'acceptedCount': 1
     };
 

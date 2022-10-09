@@ -3,9 +3,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'dart:math';
-
-import 'package:flutter/material.dart';
 import 'package:sprint/screens/user_model.dart';
 import 'package:sprint/screens/firestore_helper.dart';
 import 'package:sprint/firebase_options.dart';
@@ -224,16 +221,17 @@ class _inviteFriendsState extends State<inviteFriends> {
                                           .set({'status': 'pending'});
                                       FirebaseFirestore.instance
                                           .collection('tokens')
-                                          .doc(FirebaseAuth
-                                              .instance.currentUser!.uid)
-                                          //.limit(1)
+                                          .where('userID', isEqualTo: element)
+                                          .limit(1)
                                           .get()
                                           .then((value) {
-                                        final tokens = value;
-                                        sendPushMessage(
-                                            'انقر لمراجعتها الان',
-                                            '!لقد تمت دعوتك لجمعية جديدة',
-                                            tokens.get('token'));
+                                        final tokens = value.docs;
+                                        tokens.forEach((e) {
+                                          sendPushMessage(
+                                              'انقر لمراجعتها الان',
+                                              '!لقد تمت دعوتك لجمعية جديدة',
+                                              e.get('token'));
+                                        });
                                       });
 
                                       final docSnapshot =

@@ -194,8 +194,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     },
                     decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.people),
-                      labelText: 'ادخل اسمك العائلة',
-                      hintText: 'يجب ان يحتوي اسمك عائلتك على حرفين على الاقل',
+                      labelText: 'ادخل اسم العائلة',
+                      hintText: 'يجب ان يحتوي اسم عائلتك على حرفين على الاقل',
                       contentPadding: EdgeInsets.symmetric(
                         vertical: 10,
                         horizontal: 20,

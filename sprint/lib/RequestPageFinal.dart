@@ -18,11 +18,6 @@ class RequestPageFinal extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           actions: <Widget>[
-            IconButton(
-                icon: Icon(Icons.home),
-                onPressed: () async {
-                  Navigator.pushNamed(context, '/home');
-                }),
             /*IconButton(
                 icon: Icon(Icons.home),
                 onPressed: () async {

@@ -1,23 +1,18 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'dart:ui' as ui;
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-
 import 'dart:convert';
 import 'dart:developer';
-import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
+import 'dart:ui' as ui;
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-
+import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
+import 'package:sprint/screens/editJamia.dart';
 
 class FirebaseUserDetails extends StatefulWidget {
-  FirebaseUserDetails({Key? key, required this.data, required this.jamiaId})
+  const FirebaseUserDetails(
+      {Key? key, required this.data, required this.jamiaId})
       : super(key: key);
   final Map<String, dynamic> data;
   final String jamiaId;
@@ -28,7 +23,6 @@ class FirebaseUserDetails extends StatefulWidget {
 class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
   final _auth = FirebaseAuth.instance;
   late User signedInUser;
-
   @override
   void initState() {
     super.initState();
@@ -83,7 +77,7 @@ class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
                               child: Row(
                                 children: [
                                   const Text(
-                                    'اسم الجمعية:  ',
+                                    ' الجمعية:  ',
                                     style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
@@ -152,26 +146,6 @@ class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
                               ],
                             ),
                           )),
-                      // Container(
-                      //   padding: EdgeInsets.all(10),
-                      //   margin: EdgeInsets.all(10),
-                      //   color: Colors.grey.shade200,
-                      //   child: Row(
-                      //     children: [
-                      //       Text(
-                      //         widget.data['days'].toString(),
-                      //         style: TextStyle(fontWeight: FontWeight.bold),
-                      //       ),
-                      //       SizedBox(
-                      //         width: 20,
-                      //       ),
-                      //       Text(
-                      //         ' Days',
-                      //         style: TextStyle(fontSize: 18),
-                      //       )
-                      //     ],
-                      //   ),
-                      // ),
                       Container(
                           padding: const EdgeInsets.all(10),
                           margin: const EdgeInsets.all(10),
@@ -188,7 +162,13 @@ class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
                                   ),
                                 ),
                                 Text(
-                                  widget.data['amount']!.toString(),
+                                  widget.data['amount']!.toString() +
+                                      " ريال" +
+                                      " (" +
+                                      (widget.data['amount'] / 3.75)
+                                          .round()
+                                          .toString() +
+                                      "\$)",
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Color(0xFF545454)),
@@ -291,25 +271,103 @@ class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
                                       fontSize: 24),
                                 );
                               else {
-                                return ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      padding: const EdgeInsets.only(
-                                          left: 130, right: 130),
-                                      tapTargetSize:
-                                          MaterialTapTargetSize.shrinkWrap,
-                                    ),
-                                    child: const Text('ادفع ',
-                                        style: TextStyle(fontSize: 15)),
-                                    onPressed: () async {
-                                      await initPayment(
-                                          amount:
-                                              (widget.data['amount'] / 3.75) *
+                                return Column(
+                                  children: [
+                                    ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          padding: const EdgeInsets.only(
+                                              left: 125, right: 130),
+                                          tapTargetSize:
+                                              MaterialTapTargetSize.shrinkWrap,
+                                        ),
+                                        child: const Text('ادفع ',
+                                            style: TextStyle(fontSize: 15)),
+                                        onPressed: () async {
+                                          await initPayment(
+                                              amount: (widget.data['amount'] /
+                                                      3.75) *
                                                   100,
-                                          context: context,
-                                          email: FirebaseAuth
-                                              .instance.currentUser!.email
-                                              .toString());
-                                    });
+                                              context: context,
+                                              email: FirebaseAuth
+                                                  .instance.currentUser!.email
+                                                  .toString());
+                                        }),
+                                    const SizedBox(height: 8),
+                                    ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          padding: const EdgeInsets.only(
+                                              left: 120, right: 130),
+                                          tapTargetSize:
+                                              MaterialTapTargetSize.shrinkWrap,
+                                        ),
+                                        child: const Text('تعديل',
+                                            style: TextStyle(fontSize: 15)),
+                                        onPressed: () async {
+                                          print('edit jamia');
+                                          if (widget.data['id'] ==
+                                              signedInUser.email) {
+                                            var d = await FirebaseFirestore
+                                                .instance
+                                                .collection('JamiaGroup')
+                                                .doc(widget.jamiaId)
+                                                .collection('members')
+                                                .where('status',
+                                                    isEqualTo: 'accepted')
+                                                .get();
+                                            print('--------------------');
+                                            // print(widget.jamiaId);
+                                            print(d.docs.length);
+                                            if (d.docs.length > 1) {
+                                              print('1');
+                                              EasyLoading.showError(
+                                                  'لا يمكنك الالغاء هناك مشتركين في الجمعية');
+                                            } else {
+                                              if (mounted) {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) => EditJamia(
+                                                            jamiaId:
+                                                                widget.jamiaId,
+                                                            name: widget
+                                                                .data['name'],
+                                                            minMembers: widget
+                                                                    .data[
+                                                                'minMembers'],
+                                                            maxMembers: widget
+                                                                    .data[
+                                                                'maxMembers'],
+                                                            amount: widget
+                                                                .data['amount'],
+                                                            startDate: widget
+                                                                .data[
+                                                                    'startDate']
+                                                                .toString(),
+                                                            endDate: widget
+                                                                .data['endDate']
+                                                                .toString())));
+                                              }
+                                            }
+                                          } else {
+                                            EasyLoading.showError(
+                                                'لا يمكنك التعديل لست المالك لهذة الجمعية');
+                                          }
+                                        }),
+                                    const SizedBox(height: 8),
+                                    ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          padding: const EdgeInsets.only(
+                                              left: 130, right: 130),
+                                          tapTargetSize:
+                                              MaterialTapTargetSize.shrinkWrap,
+                                        ),
+                                        child: const Text('إلغاء',
+                                            style: TextStyle(fontSize: 15)),
+                                        onPressed: () {
+                                          print('cancel jamia');
+                                        }),
+                                  ],
+                                );
                               }
                             } else {
                               return CircularProgressIndicator();
@@ -477,12 +535,14 @@ class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
       Navigator.pushNamed(context, '/home');
     } catch (errorr) {
       if (errorr is StripeException) {
+        print(errorr);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('An error occured ${errorr.error.localizedMessage}'),
           ),
         );
       } else {
+        print(errorr);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('An error occured $errorr'),
