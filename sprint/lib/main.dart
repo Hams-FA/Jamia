@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -64,21 +65,6 @@ Future<void> main() async {
       channelKey: 'key1',
       title: 'تفكر تسوي جمعية؟',
       body: 'تطبيقنا يساعدك تنشئ جمعيتك الخاصة بشكل منظم ومرتب',
-    ));
-  });
-
-//remind of payment start of each mounth
-  ///should  check if in active jamia before
-  ///add name of jamias?
-  cron.schedule(Schedule.parse('30 8 1 * * '), () async {
-    print('second notification');
-
-    await AwesomeNotifications().createNotification(
-        content: NotificationContent(
-      id: 2,
-      channelKey: 'key1',
-      title: 'لا تنسى تدفع للجمعيات المشارك فيها',
-      body: 'جميعاتك:',
     ));
   });
 

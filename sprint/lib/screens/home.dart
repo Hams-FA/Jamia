@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:cron/cron.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:sprint/screens/firebase_user_details.dart';
 import 'package:sprint/screens/inviteFriends.dart';
@@ -36,6 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     fetchUserfromFirebase();
     getCurrentUser();
+    paymentReminderFirstOfMounth();
   }
 
   void getCurrentUser() {
@@ -259,5 +262,32 @@ class _MyHomePageState extends State<MyHomePage> {
 
   fetchUserfromFirebase() {
     return FirebaseFirestore.instance.collection('users').snapshots();
+  }
+
+//remind of payment start of each mounth
+  ///should  check if in active jamia before --> started not finished
+  ///add name of jamias?
+  ///30 8 1 * * '
+  void paymentReminderFirstOfMounth() async {
+    final cron = Cron();
+    final querySnapshots = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(signedInUser.email)
+        .collection("JamiaGroups")
+        .get();
+    if (querySnapshots.docs.length != 0) {
+      cron.schedule(Schedule.parse('* * * * 9 * '), () async {
+        print('second notification');
+
+        await AwesomeNotifications().createNotification(
+            content: NotificationContent(
+          id: 2,
+          channelKey: 'key1',
+          title: 'لا تنسى تدفع للجمعيات المشارك فيها',
+          body: 'جميعاتك:',
+        ));
+      });
+      print('more than 0');
+    }
   }
 }
