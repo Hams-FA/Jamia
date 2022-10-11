@@ -303,7 +303,6 @@ class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
                                         child: const Text('تعديل',
                                             style: TextStyle(fontSize: 15)),
                                         onPressed: () async {
-                                          print('edit jamia');
                                           if (widget.data['id'] ==
                                               signedInUser.email) {
                                             var d = await FirebaseFirestore
@@ -314,11 +313,7 @@ class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
                                                 .where('status',
                                                     isEqualTo: 'accepted')
                                                 .get();
-                                            print('--------------------');
-                                            // print(widget.jamiaId);
-                                            print(d.docs.length);
                                             if (d.docs.length > 1) {
-                                              print('1');
                                               EasyLoading.showError(
                                                   'لا يمكنك الالغاء هناك مشتركين في الجمعية');
                                             } else {
@@ -350,7 +345,7 @@ class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
                                             }
                                           } else {
                                             EasyLoading.showError(
-                                                'لا يمكنك التعديل لست المالك لهذة الجمعية');
+                                                'لا يمكنك التعديل');
                                           }
                                         }),
                                     const SizedBox(height: 8),
@@ -363,8 +358,15 @@ class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
                                         ),
                                         child: const Text('إلغاء',
                                             style: TextStyle(fontSize: 15)),
-                                        onPressed: () {
-                                          print('cancel jamia');
+                                        onPressed: () async {
+                                          if (widget.data['id'] ==
+                                              signedInUser.email) {
+                                            //confirm first
+                                            _showAlertDialog();
+                                          } else {
+                                            EasyLoading.showError(
+                                                'لا يمكنك التعديل');
+                                          }
                                         }),
                                   ],
                                 );
@@ -456,6 +458,47 @@ class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
                 ),
               ),
             )));
+  }
+
+  Future<void> _showAlertDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('تحذير'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(' هل انت متأكد من رغبتك بحذف جمعية${widget.data['name']}'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text("تراجع"),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(foregroundColor: Colors.red),
+              child: const Text("حذف"),
+              onPressed: () {
+                if (mounted) {
+                  EasyLoading.showSuccess('تم الغاء الجمعية بنجاح');
+                  FirebaseFirestore.instance
+                      .collection('JamiaGroup')
+                      .doc(widget.jamiaId)
+                      .delete();
+                  Navigator.pop(context);
+                }
+              },
+            )
+          ],
+        );
+      },
+    );
   }
 
   Future<bool> check() async {
