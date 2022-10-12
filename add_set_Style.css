@@ -1,0 +1,137 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #f3e4d0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.Scontainer {
+    font-size: 10px;
+    max-width: 90%;
+    width: 100%;
+    background: #f3e4d0;
+    margin: 50px auto;
+    padding: 30px;
+}
+
+.Scontainer .title {
+    font-weight: 700;
+    font-size: 23px;
+    margin-bottom: 35px;
+    color: #000000;
+    text-align: left;
+}
+
+.Scontainer .form {
+    width: 100%;
+}
+
+.Scontainer .form .inputfield {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.Scontainer .form .inputfield label {
+    width: 400px;
+    color: #000000;
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+.Scontainer .form .inputfield .custom_select {
+    position: relative;
+    width: 100%;
+    height: 37px;
+}
+
+.Scontainer .form .inputfield .custom_select select {
+    border: 1px solid #ffffff;
+    width: 100%;
+    font-size: 15px;
+    font-weight: 400;
+    height: 100%;
+    padding: 8px 10px;
+    font-size: 15px;
+    border-radius: 3px;
+}
+
+.Scontainer .form .inputfield input,
+.Scontainer .form .inputfield textarea {
+    width: 100%;
+    outline: none;
+    border: 1px solid #d5dbd9;
+    font-size: 15px;
+    padding: 8px 10px;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.Scontainer .form .inputfield textarea {
+    width: 100%;
+    height: 125px;
+    resize: none;
+}
+
+.Scontainer .form .inputfield textarea:focus,
+.Scontainer .form .inputfield .custom_select select:focus {
+    border: 1px solid #d5dbd9;
+}
+
+.Scontainer .form .inputfield .btn {
+    width: 7%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 5px 7px;
+    font-size: 22px;
+    border: 0px;
+    background: #d5dbd9;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 3px;
+    outline: none;
+}
+
+.container-1 {
+    margin-top: 5%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.Scontainer .form .inputfield .btn:hover {
+    background: #d8ae78;
+}
+
+.Scontainer .form .inputfield:last-child {
+    margin-bottom: 0;
+}
+
+.success-submission {
+    margin-top: 10px;
+    text-align: left;
+    color: rgb(32, 153, 32);
+    font-size: 1.5rem;
+    font-weight: 300;
+}
+
+.required {
+    margin-top: 10px;
+    text-align: left;
+    color: red;
+    font-size: 1.3rem;
+    font-weight: 100;
+}
+
+@media (max-width:420px) {
+    .Scontainer .form .inputfield {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .Scontainer .form .inputfield label {
+        margin-bottom: 5px;
+    }
+}

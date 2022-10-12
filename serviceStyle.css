@@ -1,0 +1,110 @@
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    /*
+    body {
+        background: #90b3e7;
+        padding: 0 10px;
+    }*/
+    
+    .Scontainer {
+        max-width: 800px;
+        width: 100%;
+        background: #fff;
+        margin: 50px auto;
+        box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.125);
+        padding: 30px;
+    }
+    
+    .Scontainer .title {
+        font-weight: 500;
+        margin-bottom: 25px;
+        color: #f78f07;
+        text-align: center;
+    }
+    
+    .Scontainer .form {
+        width: 100%;
+    }
+    
+    .Scontainer .form .inputfield {
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .Scontainer .form .inputfield label {
+        width: 200px;
+        color: #757575;
+        margin-right: 10px;
+        font-size: 14px;
+    }
+    
+    .Scontainer .form .inputfield .custom_select {
+        position: relative;
+        width: 100%;
+        height: 37px;
+    }
+    
+    .Scontainer .form .inputfield .custom_select select {
+        border: 1px solid #d5dbd9;
+        width: 100%;
+        height: 100%;
+        padding: 8px 10px;
+        font-size: 15px;
+        border-radius: 3px;
+    }
+    
+    .Scontainer .form .inputfield input,
+    .Scontainer .form .inputfield textarea {
+        width: 100%;
+        outline: none;
+        border: 1px solid #f78f07;
+        font-size: 15px;
+        padding: 8px 10px;
+        border-radius: 3px;
+        transition: all 0.3s ease;
+    }
+    
+    .Scontainer .form .inputfield textarea {
+        width: 100%;
+        height: 125px;
+        resize: none;
+    }
+    
+    .Scontainer .form .inputfield textarea:focus,
+    .Scontainer .form .inputfield .custom_select select:focus {
+        border: 1px solid #f78f07;
+    }
+    
+    .Scontainer .form .inputfield .btn {
+        width: 100%;
+        padding: 8px 10px;
+        font-size: 15px;
+        border: 0px;
+        background: #f78f07;
+        color: #fff;
+        cursor: pointer;
+        border-radius: 3px;
+        outline: none;
+    }
+    
+    .Scontainer .form .inputfield .btn:hover {
+        background: #d8ae78;
+    }
+    
+    .Scontainer .form .inputfield:last-child {
+        margin-bottom: 0;
+    }
+    
+    @media (max-width:420px) {
+        .Scontainer .form .inputfield {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .Scontainer .form .inputfield label {
+            margin-bottom: 5px;
+        }
+    }
