@@ -279,30 +279,28 @@ class _MyHomePageState extends State<MyHomePage> {
             .doc(element.data()['id'])
             .get();
         print('after');
-        print(jamia.data()!['acceptedCount']);
-        // need to change first
-        print(jamia.data()!['startDate'].toString());
         DateTime start = DateTime.parse(jamia.data()!['startDate'].toString());
         //DateTime start = DateTime.now();
         print(start);
-        if (start.isBefore(DateTime.now()))
+        if (start.isBefore(DateTime.now())) {
           print('yay');
-        else
+          cron.schedule(Schedule.parse('* * * * 9 * '), () async {
+            print('second notification');
+
+            await AwesomeNotifications().createNotification(
+                content: NotificationContent(
+              id: 2,
+              channelKey: 'key1',
+              title: 'لا تنسى تدفع للجمعيات المشارك فيها',
+              body: 'جميعاتك:',
+            ));
+          });
+        } else
           print('no');
         print('really after');
       }
       //another if
-      cron.schedule(Schedule.parse('* * * * 9 * '), () async {
-        print('second notification');
 
-        await AwesomeNotifications().createNotification(
-            content: NotificationContent(
-          id: 2,
-          channelKey: 'key1',
-          title: 'لا تنسى تدفع للجمعيات المشارك فيها',
-          body: 'جميعاتك:',
-        ));
-      });
       print('more than 0');
     }
   }
