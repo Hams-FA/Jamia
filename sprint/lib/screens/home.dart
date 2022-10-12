@@ -270,12 +270,26 @@ class _MyHomePageState extends State<MyHomePage> {
   ///30 8 1 * * '
   void paymentReminderFirstOfMounth() async {
     final cron = Cron();
-    final querySnapshots = await FirebaseFirestore.instance
-        .collection("users")
-        .doc(signedInUser.email)
-        .collection("JamiaGroups")
-        .get();
+    final querySnapshots = await getJamias();
     if (querySnapshots.docs.length != 0) {
+      for (var element in querySnapshots.docs) {
+        print(element.data()['id']);
+        final jamia = await FirebaseFirestore.instance
+            .collection('JamiaGroup')
+            .doc(element.data()['id'])
+            .get();
+        print('after');
+        print(jamia.data()!['acceptedCount']);
+        /* need to change first
+        DateTime start = DateTime.parse(jamia.data()!['startDate']);
+        if (start.isBefore(DateTime.now()))
+          print('yay');
+        else
+          print('no');
+        print('really after');
+        */
+      }
+      //another if
       cron.schedule(Schedule.parse('* * * * 9 * '), () async {
         print('second notification');
 
@@ -289,5 +303,13 @@ class _MyHomePageState extends State<MyHomePage> {
       });
       print('more than 0');
     }
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getJamias() async {
+    return FirebaseFirestore.instance
+        .collection("users")
+        .doc(signedInUser.email)
+        .collection("JamiaGroups")
+        .get();
   }
 }
