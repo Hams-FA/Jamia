@@ -280,14 +280,16 @@ class _MyHomePageState extends State<MyHomePage> {
             .get();
         print('after');
         print(jamia.data()!['acceptedCount']);
-        /* need to change first
-        DateTime start = DateTime.parse(jamia.data()!['startDate']);
+        // need to change first
+        print(jamia.data()!['startDate'].toString());
+        DateTime start = DateTime.parse(jamia.data()!['startDate'].toString());
+        //DateTime start = DateTime.now();
+        print(start);
         if (start.isBefore(DateTime.now()))
           print('yay');
         else
           print('no');
         print('really after');
-        */
       }
       //another if
       cron.schedule(Schedule.parse('* * * * 9 * '), () async {
