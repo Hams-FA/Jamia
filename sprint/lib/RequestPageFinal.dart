@@ -3,7 +3,10 @@ import 'package:sprint/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sprint/more_details.dart';
 import 'dart:ui' as ui;
+
+import 'package:sprint/screens/firebase_user_details.dart';
 
 class RequestPageFinal extends StatelessWidget {
   const RequestPageFinal({super.key});
@@ -15,11 +18,11 @@ class RequestPageFinal extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           actions: <Widget>[
-            IconButton(
+            /*IconButton(
                 icon: Icon(Icons.home),
                 onPressed: () async {
                   Navigator.pushNamed(context, '/home');
-                }),
+                }),*/
           ],
           title: const Text('طلبات الإضافة',
               textAlign: TextAlign.right,
@@ -53,7 +56,7 @@ class RequestPageFinal extends StatelessWidget {
                   );
                 }
                 return ListView(
-                  children: reqts.map((e) => buildCard(e)).toList(),
+                  children: reqts.map((e) => buildCard(e, context)).toList(),
                 );
               } else {
                 return Text('حدث خطأ ما',
@@ -69,7 +72,7 @@ class RequestPageFinal extends StatelessWidget {
 }
 
 // card with title and subtitle and action buttons
-Card buildCard(DocumentSnapshot doc) {
+Card buildCard(DocumentSnapshot doc, BuildContext context) {
   return Card(
     child: Column(
       mainAxisSize: MainAxisSize.min,
@@ -100,12 +103,22 @@ Card buildCard(DocumentSnapshot doc) {
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             TextButton(
-              onPressed: () {
-                
-                //forgot password screen
+              onPressed: () async {
+                final jamiah = await FirebaseFirestore.instance
+                    .collection('JamiaGroup')
+                    .doc(doc['jamiaID'])
+                    .get();
+                print(jamiah.data());
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => more_details(
+                            data: jamiah.data() as Map<String, dynamic>,
+                            jamiaId: doc.id)));
               },
               child: const Text('للمزيد من التفاصيل',
                   style: const TextStyle(
+                      decoration: TextDecoration.underline,
                       fontWeight: FontWeight.bold,
                       fontFamily: "Montsterrat Classic",
                       color: Color(0xFF545454))),
@@ -120,16 +133,18 @@ Card buildCard(DocumentSnapshot doc) {
                     .collection('JamiaGroup')
                     .doc(doc['jamiaID'])
                     .get();
-                final members =
-                    await jamia.reference.collection('members').get();
+                final members = await jamia.reference
+                    .collection('members')
+                    .where('status', isEqualTo: 'accepted')
+                    .get();
                 final limit = jamia['maxMembers'];
                 if (members.size < limit) {
                   // add user to jamia members
 
-                  await FirebaseFirestore.instance
-                      .collection('JamiaGroup')
-                      .doc(doc['jamiaID'])
-                      .update({'members': members});
+                  // await FirebaseFirestore.instance
+                  //     .collection('JamiaGroup')
+                  //     .doc(doc['jamiaID'])
+                  //     .update({'members': members});
                   // add jamia to user jamia list
                   // final user = await FirebaseFirestore.instance
                   //     .collection('users')
@@ -151,15 +166,20 @@ Card buildCard(DocumentSnapshot doc) {
                   FirebaseFirestore.instance
                       .collection('JamiaGroup')
                       .doc(doc['jamiaID'])
+                      .update({'acceptedCount': FieldValue.increment(1)});
+                  FirebaseFirestore.instance
+                      .collection('JamiaGroup')
+                      .doc(doc['jamiaID'])
                       .collection('members')
-                      .doc(doc.id)
+                      .doc(FirebaseAuth.instance.currentUser!.email)
                       .update({
-                    'name': doc.id,
+                    'name': FirebaseAuth.instance.currentUser!.email,
                     // 'email': doc['email'],
                     // 'phone': doc['phone'],
                     // 'amount': doc['amount'],
                     // 'endDate': doc['endDate'],
-                    'status': 'Active',
+                    'turn': members.size + 1,
+                    'status': 'accepted',
                     'date': DateTime.now(),
                   });
                   FirebaseFirestore.instance
@@ -174,18 +194,19 @@ Card buildCard(DocumentSnapshot doc) {
                         .doc(doc.id)
                         .set(value.data()!);
                   });
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('تمت العملية بنجاح'),
+                    duration: Duration(seconds: 2),
+                  ));
 
-                  doc.reference.delete();
+                  await doc.reference.delete();
                 } else {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('تم الوصول للحد الأقصى لعدد الأعضاء'),
+                    duration: Duration(seconds: 2),
+                  ));
                   // show error message
-                  SnackBar(
-                    content: Text('تم الوصول للحد الأقصى لعدد الأعضاء',
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontFamily: "Montsterrat Classic",
-                            color: Color(0xFF545454))),
-                    backgroundColor: Colors.red,
-                  );
+
                 }
                 // // add user to jamiahGroup to members collection
                 // FirebaseFirestore.instance
