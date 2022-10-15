@@ -368,7 +368,8 @@ class _FormPageState extends State<FormPage> {
                     amount: amount,
                     startDate: startDate.toString(),
                     //formatedStartDate,
-                    endDate: formatedEndDate,
+                    endDate: endDate.toString(),
+                    //formatedEndDate,
                   )));
     }
   }

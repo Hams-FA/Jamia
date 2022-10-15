@@ -27,6 +27,10 @@ class _MyHomePageState extends State<MyHomePage> {
   final Firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   late User signedInUser;
+  final cron1 = Cron();
+  final cron27 = Cron();
+  ScheduledTask? task1;
+  ScheduledTask? task27;
 
   @override
   void initState() {
@@ -38,7 +42,11 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     fetchUserfromFirebase();
     getCurrentUser();
-    paymentReminderFirstOfMounth();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      paymentReminderFirstOfMounth();
+      paymentReminderAt27();
+    });
+    paymetnNotificationCheck();
   }
 
   void getCurrentUser() {
@@ -264,44 +272,104 @@ class _MyHomePageState extends State<MyHomePage> {
     return FirebaseFirestore.instance.collection('users').snapshots();
   }
 
-//remind of payment start of each mounth
-  ///should  check if in active jamia before --> started not finished
-  ///add name of jamias?
   ///30 8 1 * * '
   void paymentReminderFirstOfMounth() async {
-    final cron = Cron();
     final querySnapshots = await getJamias();
     if (querySnapshots.docs.length != 0) {
       for (var element in querySnapshots.docs) {
-        print(element.data()['id']);
+        final paymentRecords = await FirebaseFirestore.instance
+            .collection('JamiaGroup')
+            .doc(element.data()['id'])
+            .collection('transaction')
+            .where('Email', isEqualTo: signedInUser.email)
+            .get();
+        var paid = false;
+        List<dynamic> timelocal = List<dynamic>.empty(growable: true);
+        paymentRecords.docs.forEach((element) {
+          var timenow = DateTime.parse(element.get('time'));
+          timelocal.add(timenow);
+        });
+        var max = DateTime.parse('1969-07-20 20:18:04Z');
+        if (timelocal.isNotEmpty) max = timelocal.first;
+        for (var i = 1; i < timelocal.length; i++) {
+          if (timelocal[i].isAfter(max)) max = timelocal[i];
+        }
+        if ((max.month).compareTo(DateTime.now().month) == 0) paid = true;
         final jamia = await FirebaseFirestore.instance
             .collection('JamiaGroup')
             .doc(element.data()['id'])
             .get();
-        print('after');
         DateTime start = DateTime.parse(jamia.data()!['startDate'].toString());
-        //DateTime start = DateTime.now();
-        print(start);
-        if (start.isBefore(DateTime.now())) {
+        DateTime end = DateTime.parse(jamia.data()!['endDate']);
+        if (start.isBefore(DateTime.now()) &&
+            end.isAfter(DateTime.now()) &&
+            !paid) {
           print('yay');
-          cron.schedule(Schedule.parse('* * * * 9 * '), () async {
-            print('second notification');
+          task1 = cron1.schedule(Schedule.parse('*/6 * * * * * '), () async {
+            print('second notification 1');
 
             await AwesomeNotifications().createNotification(
                 content: NotificationContent(
               id: 2,
               channelKey: 'key1',
-              title: 'لا تنسى تدفع للجمعيات المشارك فيها',
-              body: 'جميعاتك:',
+              title: 'حبينا نذكرك',
+              body: 'لا تنسى تدفع للجمعيات المشارك فيها',
             ));
           });
-        } else
-          print('no');
-        print('really after');
+        } else {
+          print('nooooooooo');
+        }
       }
-      //another if
+    }
+  }
 
-      print('more than 0');
+  void paymentReminderAt27() async {
+    final querySnapshots = await getJamias();
+    if (querySnapshots.docs.length != 0) {
+      for (var element in querySnapshots.docs) {
+        final paymentRecords = await FirebaseFirestore.instance
+            .collection('JamiaGroup')
+            .doc(element.data()['id'])
+            .collection('transaction')
+            .where('Email', isEqualTo: signedInUser.email)
+            .get();
+        var paid = false;
+        List<dynamic> timelocal = List<dynamic>.empty(growable: true);
+        paymentRecords.docs.forEach((element) {
+          var timenow = DateTime.parse(element.get('time'));
+          timelocal.add(timenow);
+        });
+        var max = DateTime.parse('1969-07-20 20:18:04Z');
+        if (timelocal.isNotEmpty) max = timelocal.first;
+        for (var i = 1; i < timelocal.length; i++) {
+          if (timelocal[i].isAfter(max)) max = timelocal[i];
+        }
+        if ((max.month).compareTo(DateTime.now().month) == 0) paid = true;
+        final jamia = await FirebaseFirestore.instance
+            .collection('JamiaGroup')
+            .doc(element.data()['id'])
+            .get();
+        DateTime start = DateTime.parse(jamia.data()!['startDate'].toString());
+        DateTime end = DateTime.parse(jamia.data()!['endDate']);
+        if (start.isBefore(DateTime.now()) &&
+            end.isAfter(DateTime.now()) &&
+            !paid) {
+          print('yay');
+          task27 = cron27.schedule(Schedule.parse('*/7 * * * * * '), () async {
+            print('second notification 27');
+
+            await AwesomeNotifications().createNotification(
+                content: NotificationContent(
+              id: 2,
+              channelKey: 'key1',
+              title: 'حبينا نذكرك',
+              body: 'اليوم 27 الشهر قرب ينتهي ! لا تنسى تدفع لجمعياتك',
+            ));
+          });
+        } else {
+          print('nooooooooo');
+        }
+      }
     }
   }
 
@@ -311,5 +379,51 @@ class _MyHomePageState extends State<MyHomePage> {
         .doc(signedInUser.email)
         .collection("JamiaGroups")
         .get();
+  }
+
+  void paymetnNotificationCheck() {
+    final cron = Cron();
+    cron.schedule(Schedule.parse('*/5 * * * * * '), () async {
+      print('notification check');
+      final querySnapshots = await getJamias();
+      if (querySnapshots.docs.length != 0) {
+        for (var element in querySnapshots.docs) {
+          final paymentRecords = await FirebaseFirestore.instance
+              .collection('JamiaGroup')
+              .doc(element.data()['id'])
+              .collection('transaction')
+              .where('Email', isEqualTo: signedInUser.email)
+              .get();
+          var paid = false;
+          List<dynamic> timelocal = List<dynamic>.empty(growable: true);
+          paymentRecords.docs.forEach((element) {
+            var timenow = DateTime.parse(element.get('time'));
+            timelocal.add(timenow);
+          });
+          var max = DateTime.parse('1969-07-20 20:18:04Z');
+          if (timelocal.isNotEmpty) max = timelocal.first;
+          for (var i = 1; i < timelocal.length; i++) {
+            if (timelocal[i].isAfter(max)) max = timelocal[i];
+          }
+          if ((max.month).compareTo(DateTime.now().month) == 0) paid = true;
+          final jamia = await FirebaseFirestore.instance
+              .collection('JamiaGroup')
+              .doc(element.data()['id'])
+              .get();
+          if (paid) {
+            print('really cancel');
+            canedlnot();
+          }
+        }
+      }
+    });
+  }
+
+  void canedlnot() {
+    print('cancel');
+    print(task1.toString());
+    print(task27.toString());
+    task1?.cancel();
+    task27?.cancel();
   }
 }
