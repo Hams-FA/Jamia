@@ -20,10 +20,10 @@ class _more_detailsState extends State<more_details> {
             child: Scaffold(
               appBar: AppBar(
                   title: const Text(
-                    'تفاصيل الجمعية',
+                    '        تفاصيل الجمعية',
                     style: TextStyle(
                         fontSize: 25,
-                        color: Color(0xFF393737),
+                        color: Color.fromARGB(255, 255, 255, 255),
                         fontWeight: FontWeight.bold),
                     textAlign: TextAlign.right,
                   ),

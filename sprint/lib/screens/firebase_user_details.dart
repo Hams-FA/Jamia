@@ -48,362 +48,370 @@ class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Directionality(
-            textDirection: ui.TextDirection.rtl,
-            child: Scaffold(
-              appBar: AppBar(
-                  title: const Text(
-                    'تفاصيل الجمعية',
-                    style: TextStyle(
-                        fontSize: 25,
-                        color: Color(0xFF393737),
-                        fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.right,
-                  ),
-                  backgroundColor: const Color.fromARGB(255, 76, 175, 80),
-                  leading: GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Icon(Icons.arrow_back))),
-              body: SingleChildScrollView(
-                child: Container(
-                  padding: const EdgeInsets.all(10),
-                  margin: const EdgeInsets.all(10),
-                  color: Colors.grey.shade100,
-                  child: Column(
-                    children: [
-                      Container(
-                          padding: const EdgeInsets.all(10),
-                          margin: const EdgeInsets.all(10),
-                          color: Colors.grey.shade200,
-                          child: Directionality(
-                              textDirection: ui.TextDirection.rtl,
-                              child: Row(
-                                children: [
-                                  const Text(
-                                    ' الجمعية:  ',
-                                    style: TextStyle(
+    return Directionality(
+        textDirection: ui.TextDirection.rtl,
+        child: SafeArea(
+            child: Directionality(
+                textDirection: ui.TextDirection.rtl,
+                child: Scaffold(
+                  appBar: AppBar(
+                      title: const Text(
+                        '         تفاصيل الجمعية',
+                        style: TextStyle(
+                            fontSize: 25,
+                            color: Color.fromARGB(255, 255, 255, 255),
+                            fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.right,
+                      ),
+                      backgroundColor: const Color.fromARGB(255, 76, 175, 80),
+                      leading: GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Icon(Icons.arrow_back))),
+                  body: SingleChildScrollView(
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      margin: const EdgeInsets.all(10),
+                      color: Colors.grey.shade100,
+                      child: Column(
+                        children: [
+                          Container(
+                              padding: const EdgeInsets.all(10),
+                              margin: const EdgeInsets.all(10),
+                              color: Colors.grey.shade200,
+                              child: Directionality(
+                                  textDirection: ui.TextDirection.rtl,
+                                  child: Row(
+                                    children: [
+                                      const Text(
+                                        ' الجمعية:  ',
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: "Montsterrat Classic"),
+                                      ),
+                                      Text(
+                                        widget.data['name'] ?? '',
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xFF545454)),
+                                      ),
+                                      const SizedBox(
+                                        width: 20,
+                                      ),
+                                    ],
+                                  ))),
+                          Container(
+                              padding: const EdgeInsets.all(10),
+                              margin: const EdgeInsets.all(10),
+                              color: Colors.grey.shade200,
+                              child: Directionality(
+                                  textDirection: ui.TextDirection.rtl,
+                                  child: Row(
+                                    children: [
+                                      const Text(
+                                        ' الحد الادنى من الاعضاء:  ',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        widget.data['minMembers']!.toString() ??
+                                            '',
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xFF545454)),
+                                      ),
+                                      const SizedBox(
+                                        width: 20,
+                                      ),
+                                    ],
+                                  ))),
+                          Container(
+                              padding: const EdgeInsets.all(10),
+                              margin: const EdgeInsets.all(10),
+                              color: Colors.grey.shade200,
+                              child: Directionality(
+                                textDirection: ui.TextDirection.rtl,
+                                child: Row(
+                                  children: [
+                                    const Text(
+                                      ' الحد الاعلى من الاعضاء:  ',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18),
+                                    ),
+                                    Text(
+                                      widget.data['maxMembers']!.toString(),
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xFF545454)),
+                                    ),
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
+                                  ],
+                                ),
+                              )),
+                          // Container(
+                          //   padding: EdgeInsets.all(10),
+                          //   margin: EdgeInsets.all(10),
+                          //   color: Colors.grey.shade200,
+                          //   child: Row(
+                          //     children: [
+                          //       Text(
+                          //         widget.data['days'].toString(),
+                          //         style: TextStyle(fontWeight: FontWeight.bold),
+                          //       ),
+                          //       SizedBox(
+                          //         width: 20,
+                          //       ),
+                          //       Text(
+                          //         ' Days',
+                          //         style: TextStyle(fontSize: 18),
+                          //       )
+                          //     ],
+                          //   ),
+                          // ),
+                          Container(
+                              padding: const EdgeInsets.all(10),
+                              margin: const EdgeInsets.all(10),
+                              color: Colors.grey.shade200,
+                              child: Directionality(
+                                textDirection: ui.TextDirection.rtl,
+                                child: Row(
+                                  children: [
+                                    const Text(
+                                      ' السهم الشهري: ',
+                                      style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
-                                        fontFamily: "Montsterrat Classic"),
-                                  ),
-                                  Text(
-                                    widget.data['name'] ?? '',
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0xFF545454)),
-                                  ),
-                                  const SizedBox(
-                                    width: 20,
-                                  ),
-                                ],
-                              ))),
-                      Container(
-                          padding: const EdgeInsets.all(10),
-                          margin: const EdgeInsets.all(10),
-                          color: Colors.grey.shade200,
-                          child: Directionality(
+                                      ),
+                                    ),
+                                    Text(
+                                      widget.data['amount']!.toString() +
+                                          " ريال" +
+                                          " (" +
+                                          (widget.data['amount'] / 3.75)
+                                              .round()
+                                              .toString() +
+                                          "\$)",
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xFF545454)),
+                                    ),
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
+                                  ],
+                                ),
+                              )),
+                          Container(
+                              padding: const EdgeInsets.all(10),
+                              margin: const EdgeInsets.all(10),
+                              color: Colors.grey.shade200,
+                              child: Directionality(
+                                textDirection: ui.TextDirection.rtl,
+                                child: Row(
+                                  children: [
+                                    const Text(
+                                      ' تاريخ بدء الجمعية:  ',
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      widget.data['startDate'].toString(),
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xFF545454)),
+                                    ),
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
+                                  ],
+                                ),
+                              )),
+                          Container(
+                              padding: const EdgeInsets.all(10),
+                              margin: const EdgeInsets.all(10),
+                              color: Colors.grey.shade200,
+                              child: Directionality(
+                                textDirection: ui.TextDirection.rtl,
+                                child: Row(
+                                  children: [
+                                    const Text(
+                                      ' عدد الأعضاء الحالي : ',
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      widget.data['acceptedCount'].toString(),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xFF545454)),
+                                    ),
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
+                                  ],
+                                ),
+                              )),
+                          ////////////afnan
+                          FutureBuilder(
+                              future: FirebaseFirestore.instance
+                                  .collection('JamiaGroup')
+                                  .doc(widget.data['id'])
+                                  .collection('transaction')
+                                  .where('Email', isEqualTo: signedInUser.email)
+                                  .get(),
+                              builder: ((context, snapshot) {
+                                // if(!(DateTime.now().isBefore(DateTime.parse(widget.data['startDate'])))){
+                                if (snapshot.hasData) {
+                                  final alltransactions = snapshot.data!.docs;
+                                  List<dynamic> timelocal =
+                                      List<dynamic>.empty(growable: true);
+                                  alltransactions.forEach(
+                                    (element) {
+                                      var timenow =
+                                          DateTime.parse(element.get('time'));
+                                      timelocal.add(timenow);
+                                    },
+                                  );
+                                  var max =
+                                      DateTime.parse('1969-07-20 20:18:04Z');
+
+                                  if (timelocal.isNotEmpty)
+                                    max = timelocal.first;
+                                  for (var i = 1; i < timelocal.length; i++) {
+                                    if (timelocal[i].isAfter(max))
+                                      max = timelocal[i];
+                                  }
+                                  if ((max.month)
+                                          .compareTo(DateTime.now().month) ==
+                                      0)
+                                    return Text(
+                                      'لقد قمت بدفع جميعة هذا الشهر',
+                                      style: TextStyle(
+                                          color: Colors.green[800],
+                                          fontWeight: FontWeight.w900,
+                                          fontStyle: FontStyle.italic,
+                                          fontFamily: 'Open Sans',
+                                          fontSize: 24),
+                                    );
+                                  else {
+                                    return ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          padding: const EdgeInsets.only(
+                                              left: 130, right: 130),
+                                          tapTargetSize:
+                                              MaterialTapTargetSize.shrinkWrap,
+                                        ),
+                                        child: const Text('ادفع ',
+                                            style: TextStyle(fontSize: 15)),
+                                        onPressed: () async {
+                                          await initPayment(
+                                              amount: (widget.data['amount'] /
+                                                      3.75) *
+                                                  100,
+                                              context: context,
+                                              email: FirebaseAuth
+                                                  .instance.currentUser!.email
+                                                  .toString());
+                                        });
+                                  }
+                                } else {
+                                  return CircularProgressIndicator();
+                                }
+                                //   }else {
+                                return Text(' لايمكنك الدفع قبل بدء الجمعية');
+
+                                //  }
+                              })),
+
+                          ///////////////
+                          // get members collection from firebase and show it in list view using stream builder and jamia id
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            margin: const EdgeInsets.all(10),
+                            //color: Colors.grey.shade200,
+                            child: Directionality(
                               textDirection: ui.TextDirection.rtl,
                               child: Row(
                                 children: [
                                   const Text(
-                                    ' الحد الادنى من الاعضاء:  ',
+                                    ' ترتيب أعضاء الجمعية',
                                     style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
                                   ),
-                                  Text(
-                                    widget.data['minMembers']!.toString() ?? '',
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0xFF545454)),
-                                  ),
-                                  const SizedBox(
+                                  SizedBox(
                                     width: 20,
                                   ),
                                 ],
-                              ))),
-                      Container(
-                          padding: const EdgeInsets.all(10),
-                          margin: const EdgeInsets.all(10),
-                          color: Colors.grey.shade200,
-                          child: Directionality(
-                            textDirection: ui.TextDirection.rtl,
-                            child: Row(
-                              children: [
-                                const Text(
-                                  ' الحد الاعلى من الاعضاء:  ',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18),
-                                ),
-                                Text(
-                                  widget.data['maxMembers']!.toString(),
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Color(0xFF545454)),
-                                ),
-                                const SizedBox(
-                                  width: 20,
-                                ),
-                              ],
-                            ),
-                          )),
-                      // Container(
-                      //   padding: EdgeInsets.all(10),
-                      //   margin: EdgeInsets.all(10),
-                      //   color: Colors.grey.shade200,
-                      //   child: Row(
-                      //     children: [
-                      //       Text(
-                      //         widget.data['days'].toString(),
-                      //         style: TextStyle(fontWeight: FontWeight.bold),
-                      //       ),
-                      //       SizedBox(
-                      //         width: 20,
-                      //       ),
-                      //       Text(
-                      //         ' Days',
-                      //         style: TextStyle(fontSize: 18),
-                      //       )
-                      //     ],
-                      //   ),
-                      // ),
-                      Container(
-                          padding: const EdgeInsets.all(10),
-                          margin: const EdgeInsets.all(10),
-                          color: Colors.grey.shade200,
-                          child: Directionality(
-                            textDirection: ui.TextDirection.rtl,
-                            child: Row(
-                              children: [
-                                const Text(
-                                  ' السهم الشهري: ',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(
-                                  widget.data['amount']!.toString() +
-                                      " ريال" +
-                                      " (" +
-                                      (widget.data['amount'] / 3.75)
-                                          .round()
-                                          .toString() +
-                                      "\$)",
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Color(0xFF545454)),
-                                ),
-                                const SizedBox(
-                                  width: 20,
-                                ),
-                              ],
-                            ),
-                          )),
-                      Container(
-                          padding: const EdgeInsets.all(10),
-                          margin: const EdgeInsets.all(10),
-                          color: Colors.grey.shade200,
-                          child: Directionality(
-                            textDirection: ui.TextDirection.rtl,
-                            child: Row(
-                              children: [
-                                const Text(
-                                  ' تاريخ بدء الجمعية:  ',
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  widget.data['startDate'].toString(),
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Color(0xFF545454)),
-                                ),
-                                const SizedBox(
-                                  width: 20,
-                                ),
-                              ],
-                            ),
-                          )),
-                      Container(
-                          padding: const EdgeInsets.all(10),
-                          margin: const EdgeInsets.all(10),
-                          color: Colors.grey.shade200,
-                          child: Directionality(
-                            textDirection: ui.TextDirection.rtl,
-                            child: Row(
-                              children: [
-                                const Text(
-                                  ' عدد الأعضاء الحالي : ',
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  widget.data['acceptedCount'].toString(),
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Color(0xFF545454)),
-                                ),
-                                const SizedBox(
-                                  width: 20,
-                                ),
-                              ],
-                            ),
-                          )),
-                      ////////////afnan
-                      FutureBuilder(
-                          future: FirebaseFirestore.instance
-                              .collection('JamiaGroup')
-                              .doc(widget.data['id'])
-                              .collection('transaction')
-                              .where('Email', isEqualTo: signedInUser.email)
-                              .get(),
-                          builder: ((context, snapshot) {
-                            // if(!(DateTime.now().isBefore(DateTime.parse(widget.data['startDate'])))){
-                            if (snapshot.hasData) {
-                              final alltransactions = snapshot.data!.docs;
-                              List<dynamic> timelocal =
-                                  List<dynamic>.empty(growable: true);
-                              alltransactions.forEach(
-                                (element) {
-                                  var timenow =
-                                      DateTime.parse(element.get('time'));
-                                  timelocal.add(timenow);
-                                },
-                              );
-                              var max = DateTime.parse('1969-07-20 20:18:04Z');
-
-                              if (timelocal.isNotEmpty) max = timelocal.first;
-                              for (var i = 1; i < timelocal.length; i++) {
-                                if (timelocal[i].isAfter(max))
-                                  max = timelocal[i];
-                              }
-                              if ((max.month).compareTo(DateTime.now().month) ==
-                                  0)
-                                return Text(
-                                  'لقد قمت بدفع جميعة هذا الشهر',
-                                  style: TextStyle(
-                                      color: Colors.green[800],
-                                      fontWeight: FontWeight.w900,
-                                      fontStyle: FontStyle.italic,
-                                      fontFamily: 'Open Sans',
-                                      fontSize: 24),
-                                );
-                              else {
-                                return ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      padding: const EdgeInsets.only(
-                                          left: 130, right: 130),
-                                      tapTargetSize:
-                                          MaterialTapTargetSize.shrinkWrap,
-                                    ),
-                                    child: const Text('ادفع ',
-                                        style: TextStyle(fontSize: 15)),
-                                    onPressed: () async {
-                                      await initPayment(
-                                          amount:
-                                              (widget.data['amount'] / 3.75) *
-                                                  100,
-                                          context: context,
-                                          email: FirebaseAuth
-                                              .instance.currentUser!.email
-                                              .toString());
-                                    });
-                              }
-                            } else {
-                              return CircularProgressIndicator();
-                            }
-                            //   }else {
-                            return Text(' لايمكنك الدفع قبل بدء الجمعية');
-
-                            //  }
-                          })),
-
-                      ///////////////
-                      // get members collection from firebase and show it in list view using stream builder and jamia id
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        margin: const EdgeInsets.all(10),
-                        //color: Colors.grey.shade200,
-                        child: Directionality(
-                          textDirection: ui.TextDirection.rtl,
-                          child: Row(
-                            children: [
-                              const Text(
-                                ' ترتيب أعضاء الجمعية',
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
                               ),
-                              SizedBox(
-                                width: 20,
-                              ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ),
 
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        margin: const EdgeInsets.all(10),
-                        color: Colors.grey.shade200,
-                        child: StreamBuilder(
-                          stream: FirebaseFirestore.instance
-                              .collection('JamiaGroup')
-                              .doc(widget.data['id'])
-                              .collection('members')
-                              .where('status', isEqualTo: 'accepted')
-                              .orderBy('turn')
-                              // .orderBy('date')
-                              .snapshots(),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              print(snapshot.data!.docs.length);
-                              return ListView.builder(
-                                  // disable scroll
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: snapshot.data?.docs.length,
-                                  itemBuilder: (context, index) {
-                                    DocumentSnapshot data =
-                                        snapshot.data!.docs[index];
-                                    return Container(
-                                      padding: const EdgeInsets.all(10),
-                                      margin: const EdgeInsets.all(10),
-                                      color: Colors.grey.shade200,
-                                      child: Directionality(
-                                        textDirection: ui.TextDirection.rtl,
-                                        child: ListTile(
-                                            title: Text(data.id),
-                                            //subtitle: Text(data['date']),
-                                            // current in
-                                            leading: Text(
-                                              '${data['turn']}',
-                                            )),
-                                      ),
-                                    );
-                                  });
-                            } else {
-                              return const Center(
-                                  child: CircularProgressIndicator());
-                            }
-                          },
-                        ),
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            margin: const EdgeInsets.all(10),
+                            color: Colors.grey.shade200,
+                            child: StreamBuilder(
+                              stream: FirebaseFirestore.instance
+                                  .collection('JamiaGroup')
+                                  .doc(widget.data['id'])
+                                  .collection('members')
+                                  .where('status', isEqualTo: 'accepted')
+                                  .orderBy('turn')
+                                  // .orderBy('date')
+                                  .snapshots(),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  print(snapshot.data!.docs.length);
+                                  return ListView.builder(
+                                      // disable scroll
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: snapshot.data?.docs.length,
+                                      itemBuilder: (context, index) {
+                                        DocumentSnapshot data =
+                                            snapshot.data!.docs[index];
+                                        return Container(
+                                          padding: const EdgeInsets.all(10),
+                                          margin: const EdgeInsets.all(10),
+                                          color: Colors.grey.shade200,
+                                          child: Directionality(
+                                            textDirection: ui.TextDirection.rtl,
+                                            child: ListTile(
+                                                title: Text(data.id),
+                                                //subtitle: Text(data['date']),
+                                                // current in
+                                                leading: Text(
+                                                  '${data['turn']}',
+                                                )),
+                                          ),
+                                        );
+                                      });
+                                } else {
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                }
+                              },
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            )));
+                ))));
   }
 
   Future<bool> check() async {

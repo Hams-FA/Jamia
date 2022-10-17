@@ -39,22 +39,22 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 350,
                 ),
                 const Text(
-                  " مرحبا بك في تطبيق جمعية",
+                  " مرحباً بك في تطبيق جمعية",
                   style: TextStyle(
                       fontSize: 35,
                       color: Color(0xFF393737),
                       fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),
-                const Text(
+                /*const Text(
                   "تسجيل الدخول",
                   style: TextStyle(
                       fontSize: 20,
                       color: Color(0xFF393737),
                       fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 48),
+                ),*/
+                //const SizedBox(height: 48),
                 Directionality(
                   textDirection: TextDirection.rtl,
                   child: TextFormField(

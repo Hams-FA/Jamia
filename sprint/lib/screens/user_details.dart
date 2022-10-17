@@ -60,7 +60,7 @@ class _UserDetailsState extends State<UserDetails> {
             'معلومات الجمعية التي تم إنشائها',
             style: TextStyle(
                 fontSize: 25,
-                color: Color(0xFF393737),
+                color: Color.fromARGB(255, 253, 253, 253),
                 fontWeight: FontWeight.bold),
             textAlign: TextAlign.right,
           ),

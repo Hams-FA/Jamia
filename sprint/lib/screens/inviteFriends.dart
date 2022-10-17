@@ -84,180 +84,189 @@ class _inviteFriendsState extends State<inviteFriends> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-            title: Text("دعوة صديق إلى الجمعية"),
-            centerTitle: true,
-            backgroundColor: Color.fromARGB(255, 76, 175, 80)),
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              /*
+    return Directionality(
+        textDirection: ui.TextDirection.rtl,
+        child: Scaffold(
+            appBar: AppBar(
+                title: Text("دعوة صديق إلى الجمعية"),
+                centerTitle: true,
+                backgroundColor: Color.fromARGB(255, 76, 175, 80)),
+            body: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  /*
               if (allinvited) ...[
                 Center(child: Text('! دعيت كل أصحابك')),
               ] else ...[
                 */
-              StreamBuilder<List<UserModel>>(
-                  stream: FirestoreHelper.readFromUsers(signedInUser.email),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                    if (snapshot.hasError) {
-                      return Center(
-                        child: Text("حدث خطأ ما ...."),
-                      );
-                    }
+                  StreamBuilder<List<UserModel>>(
+                      stream: FirestoreHelper.readFromUsers(signedInUser.email),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        if (snapshot.hasError) {
+                          return Center(
+                            child: Text("حدث خطأ ما ...."),
+                          );
+                        }
 
-                    if (snapshot.data!.isEmpty) {
-                      return Expanded(
-                          child: Center(
-                              child: Text('عذراً، لا يوجد لديك اصدقاء')));
-                    }
+                        if (snapshot.data!.isEmpty) {
+                          return Expanded(
+                              child: Center(
+                                  child: Text('عذراً، لا يوجد لديك اصدقاء')));
+                        }
 
-                    if (snapshot.hasData) {
-                      final userData = snapshot.data;
+                        if (snapshot.hasData) {
+                          final userData = snapshot.data;
 
-                      return Expanded(
-                        child: Column(
-                          children: [
-                            Expanded(
-                              child: ListView.builder(
-                                  itemCount: userData!.length,
-                                  itemBuilder: (context, index) {
-                                    final singleUser = userData[index];
-                                    if (!invitedAlready
-                                        .contains(singleUser.Email)) {
-                                      allinvited = false;
-                                      checked['${singleUser.Email}'] = false;
-                                      return Container(
-                                        margin:
-                                            EdgeInsets.symmetric(vertical: 5),
-                                        child: StatefulBuilder(
-                                          builder: (context, setState) =>
-                                              Directionality(
-                                            textDirection: ui.TextDirection.rtl,
-                                            child: (CheckboxListTile(
-                                              secondary: Container(
-                                                width: 40,
-                                                height: 40,
-                                                decoration: BoxDecoration(
-                                                    color: Colors.grey,
-                                                    shape: BoxShape.circle),
-                                              ),
-                                              title: Text(
-                                                "${singleUser.fname} ${singleUser.lname}",
-                                                style: TextStyle(
-                                                  color: Color(0xFF393737),
-                                                ),
-                                              ),
-                                              subtitle:
-                                                  Text("${singleUser.Email}"),
-                                              activeColor: Color.fromARGB(
-                                                  255, 76, 175, 80),
-                                              checkColor: Colors.white,
-                                              value: checked[
-                                                  '${singleUser.Email}'],
-                                              onChanged: (val) {
-                                                setState(() {
-                                                  checked['${singleUser.Email}'] =
-                                                      val;
-                                                  if (checked[
-                                                          '${singleUser.Email}'] ==
-                                                      true) {
-                                                    selectedEmails.add(
-                                                        '${singleUser.Email}');
-                                                  } else if (checked[
-                                                          '${singleUser.Email}'] ==
-                                                      false) {
-                                                    selectedEmails.removeWhere(
-                                                        (element) =>
-                                                            element ==
+                          return Expanded(
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: ListView.builder(
+                                      itemCount: userData!.length,
+                                      itemBuilder: (context, index) {
+                                        final singleUser = userData[index];
+                                        if (!invitedAlready
+                                            .contains(singleUser.Email)) {
+                                          allinvited = false;
+                                          checked['${singleUser.Email}'] =
+                                              false;
+                                          return Container(
+                                            margin: EdgeInsets.symmetric(
+                                                vertical: 5),
+                                            child: StatefulBuilder(
+                                              builder: (context, setState) =>
+                                                  Directionality(
+                                                textDirection:
+                                                    ui.TextDirection.rtl,
+                                                child: (CheckboxListTile(
+                                                  secondary: Container(
+                                                    width: 40,
+                                                    height: 40,
+                                                    decoration: BoxDecoration(
+                                                        color: Colors.grey,
+                                                        shape: BoxShape.circle),
+                                                  ),
+                                                  title: Text(
+                                                    "${singleUser.fname} ${singleUser.lname}",
+                                                    style: TextStyle(
+                                                      color: Color(0xFF393737),
+                                                    ),
+                                                  ),
+                                                  subtitle: Text(
+                                                      "${singleUser.Email}"),
+                                                  activeColor: Color.fromARGB(
+                                                      255, 76, 175, 80),
+                                                  checkColor: Colors.white,
+                                                  value: checked[
+                                                      '${singleUser.Email}'],
+                                                  onChanged: (val) {
+                                                    setState(() {
+                                                      checked['${singleUser.Email}'] =
+                                                          val;
+                                                      if (checked[
+                                                              '${singleUser.Email}'] ==
+                                                          true) {
+                                                        selectedEmails.add(
                                                             '${singleUser.Email}');
-                                                  }
-                                                });
-                                              },
-                                            )),
-                                          ),
-                                        ),
-                                      );
-                                    } else {
-                                      return Text('');
-                                    }
-                                  }),
-                            ),
-                            SizedBox(
-                              height: 42,
-                              width: 200,
-                              child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 76, 175, 80),
-                                  ),
-                                  onPressed: () {
-                                    selectedEmails.forEach((element) async {
-                                      final docInviteFriends = FirebaseFirestore
-                                          .instance
-                                          .collection('JamiaGroup')
-                                          .doc(jamiaId)
-                                          .collection('members');
-                                      docInviteFriends
-                                          .doc(element)
-                                          .set({'status': 'pending'});
-                                      FirebaseFirestore.instance
-                                          .collection('tokens')
-                                          .where('userID', isEqualTo: element)
-                                          .limit(1)
-                                          .get()
-                                          .then((value) {
-                                        final tokens = value.docs;
-                                        tokens.forEach((e) {
-                                          sendPushMessage(
-                                              'انقر لمراجعتها الان',
-                                              '!لقد تمت دعوتك لجمعية جديدة',
-                                              e.get('token'));
+                                                      } else if (checked[
+                                                              '${singleUser.Email}'] ==
+                                                          false) {
+                                                        selectedEmails.removeWhere(
+                                                            (element) =>
+                                                                element ==
+                                                                '${singleUser.Email}');
+                                                      }
+                                                    });
+                                                  },
+                                                )),
+                                              ),
+                                            ),
+                                          );
+                                        } else {
+                                          return Text('');
+                                        }
+                                      }),
+                                ),
+                                SizedBox(
+                                  height: 42, //height of button
+                                  width: 200,
+                                  //height: 42,
+                                  //                  width: double.infinity,
+                                  child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            Color.fromARGB(255, 76, 175, 80),
+                                      ),
+                                      onPressed: () {
+                                        selectedEmails.forEach((element) async {
+                                          final docInviteFriends =
+                                              FirebaseFirestore.instance
+                                                  .collection('JamiaGroup')
+                                                  .doc(jamiaId)
+                                                  .collection('members');
+                                          docInviteFriends
+                                              .doc(element)
+                                              .set({'status': 'pending'});
+                                          FirebaseFirestore.instance
+                                              .collection('tokens')
+                                              .where('userID',
+                                                  isEqualTo: element)
+                                              .limit(1)
+                                              .get()
+                                              .then((value) {
+                                            final tokens = value.docs;
+                                            tokens.forEach((e) {
+                                              sendPushMessage(
+                                                  'انقر لمراجعتها الان',
+                                                  '!لقد تمت دعوتك لجمعية جديدة',
+                                                  e.get('token'));
+                                            });
+                                          });
+
+                                          final docSnapshot =
+                                              await FirebaseFirestore.instance
+                                                  .collection("requestList")
+                                                  .add({
+                                            'email': element,
+                                            'jamiaID': jamiaId
+                                          });
                                         });
-                                      });
+                                        Navigator.pushNamed(context, '/home');
+                                        //Navigator.pop(context);
+                                        //}
 
-                                      final docSnapshot =
-                                          await FirebaseFirestore.instance
-                                              .collection("requestList")
-                                              .add({
-                                        'email': element,
-                                        'jamiaID': jamiaId
-                                      });
-                                    });
-                                    Navigator.pushNamed(context, '/home');
-                                    //Navigator.pop(context);
-                                    //}
-
-                                    Fluttertoast.showToast(
-                                      msg:
-                                          "قمت بدعوة  ${selectedEmails.length} من أصدفائك",
-                                      toastLength: Toast.LENGTH_SHORT,
-                                      timeInSecForIosWeb: 1,
-                                      backgroundColor: Colors.black,
-                                      textColor: Colors.white,
-                                      fontSize: 16.0,
-                                    );
-                                  },
-                                  child: Text("دعوة")),
+                                        Fluttertoast.showToast(
+                                          msg:
+                                              "قمت بدعوة  ${selectedEmails.length} من أصدفائك",
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          timeInSecForIosWeb: 1,
+                                          backgroundColor: Colors.black,
+                                          textColor: Colors.white,
+                                          fontSize: 16.0,
+                                        );
+                                      },
+                                      child: Text("دعوة")),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      );
-                    }
+                          );
+                        }
 
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }),
-            ],
-          ),
-        ));
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }),
+                  //],
+                ],
+              ),
+            )));
   }
 
   void readInvited211() async {

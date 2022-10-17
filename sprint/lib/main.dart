@@ -4,6 +4,9 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:sprint/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:sprint/screens/JamiaHistory.dart';
+import 'package:sprint/screens/JamiaHistory4.dart';
+//import 'package:sprint/screens/JamiaHistory2.dart';
 import 'package:sprint/screens/registration_screen.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:sprint/screens/form.dart';
@@ -33,6 +36,7 @@ import 'package:http/http.dart' as http;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   AwesomeNotifications().initialize(
+    //'resource://drawable/res_notificaion_app_icon.png'
     'resource://drawable/res_notificaion_app_icon',
     [
       NotificationChannel(
@@ -48,7 +52,6 @@ Future<void> main() async {
       )
     ],
   );
-
   Stripe.publishableKey =
       "pk_test_51LlFPXHZFaMy2scT7EbXYBvQfQUCGj6FvxnI1lrW2xwPhmLowqzkCHeJ8hQ0SzgPn20OdCwGEFkXTP5Y0cM8j3w000NzK0A7VH";
   Stripe.instance.applySettings();
@@ -100,6 +103,7 @@ class MyApp extends StatelessWidget {
         '/registration': (BuildContext context) => const RegistrationScreen(),
         '/forgotPassword': (BuildContext context) => const ForgotPassword(),
         '/home': (BuildContext context) => const MyHomePage(),
+        '/form': (BuildContext context) => const FormPage(),
         '/profile': (BuildContext context) => const ProfileScreen(),
         '/inviteFriends': (BuildContext context) => const inviteFriends(),
         '/SearchFriends': (BuildContext context) => const SearchFriends(),
@@ -107,6 +111,8 @@ class MyApp extends StatelessWidget {
         '/editUserProfile': (BuildContext context) => const EditUserProfile(),
         '/ViewAndDeleteFriends': (BuildContext context) =>
             const ViewAndDeleteFriends(),
+        '/JamiaHistory': (BuildContext context) => const JamiaHistory4(),
+        //'/JamiaHistory2': (BuildContext context) => const JamiaHistory2(),
       },
       home: //const PaymentDemo(),//const LoginScreen(),
           const LoginScreen(), //const MyHomePage(title: 'Flutter Demo Home Page'),

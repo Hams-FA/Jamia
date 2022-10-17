@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:sprint/screens/form.dart';
 
 import '../firebase_options.dart';
 
@@ -63,7 +64,9 @@ class _ViewAndDeleteFriendsState extends State<ViewAndDeleteFriends> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Directionality(
+      textDirection: ui.TextDirection.rtl,
+      child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
           title: Text('أصدقائي'),
@@ -124,10 +127,10 @@ class _ViewAndDeleteFriendsState extends State<ViewAndDeleteFriends> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(
-                          Icons.hourglass_empty,
-                          size: 100,
-                        ),
+                        /*Icon(
+                              Icons.hourglass_empty,
+                              size: 100,
+                            ),*/
                         Text(
                           ' لا يوجد لديك اصدقاءابدأ بإضافة الاصدقاء الآن',
                         ),
@@ -242,6 +245,85 @@ class _ViewAndDeleteFriendsState extends State<ViewAndDeleteFriends> {
               );
             },
           ),
-        ));
+        ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Color.fromARGB(255, 76, 175, 80),
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => FormPage()));
+          },
+          mini: true,
+          child: const Icon(
+            Icons.add,
+            color: Color(0xFF393737),
+          ),
+        ), // This trailing comma makes auto-formatting nicer for build methods.
+        floatingActionButtonLocation:
+            FloatingActionButtonLocation.miniCenterDocked,
+
+        bottomNavigationBar: BottomAppBar(
+            shape: CircularNotchedRectangle(),
+            child: Container(
+              height: 60,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  MaterialButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/viewUserProfile');
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.person),
+                        Text("الملف الشخصي"),
+                      ],
+                    ),
+                    minWidth: 40,
+                  ),
+                  MaterialButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/ViewAndDeleteFriends');
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.man),
+                        Text("قائمة اصدقائك"),
+                      ],
+                    ),
+                    minWidth: 40,
+                  ),
+                  MaterialButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/home');
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.people),
+                        Text("جمعياتي"),
+                      ],
+                    ),
+                    minWidth: 40,
+                  ),
+                  MaterialButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/RequestPageFinal');
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.list_alt),
+                        Text("قائمة الطلبات"),
+                      ],
+                    ),
+                    minWidth: 40,
+                  ),
+                ],
+              ),
+            )),
+      ),
+    );
   }
 }
