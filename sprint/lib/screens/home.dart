@@ -240,7 +240,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(Icons.man),
-                            Text("قائمة اصدقائك"),
+                            Text(" اصدقائك"),
                           ],
                         ),
                         minWidth: 40,
@@ -253,7 +253,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(Icons.people),
-                            Text(" جمعياتي السابقة"),
+                            Text("الجمعيات السابقة"),
                           ],
                         ),
                         minWidth: 40,

@@ -289,7 +289,7 @@ class _ViewAndDeleteFriendsState extends State<ViewAndDeleteFriends> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.man),
-                        Text("قائمة اصدقائك"),
+                        Text("اصدقائك"),
                       ],
                     ),
                     minWidth: 40,

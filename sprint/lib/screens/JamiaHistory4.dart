@@ -77,7 +77,7 @@ class _JamiaHistory4State extends State<JamiaHistory4> {
                   Navigator.pushNamed(context, '/home');
                 }),*/
             ],
-            title: const Text('جمعياتي السابقة',
+            title: const Text('              جمعياتي السابقة',
                 textAlign: TextAlign.right,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
@@ -167,7 +167,7 @@ class _JamiaHistory4State extends State<JamiaHistory4> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.man),
-                        Text("قائمة اصدقائك"),
+                        Text("اصدقائك"),
                       ],
                     ),
                     minWidth: 40,

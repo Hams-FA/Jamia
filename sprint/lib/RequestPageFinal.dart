@@ -25,7 +25,7 @@ class RequestPageFinal extends StatelessWidget {
                   Navigator.pushNamed(context, '/home');
                 }),*/
             ],
-            title: const Text('طلبات الإضافة',
+            title: const Text('                 طلبات الإضافة',
                 textAlign: TextAlign.right,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
@@ -110,7 +110,7 @@ class RequestPageFinal extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.man),
-                        Text("قائمة اصدقائك"),
+                        Text("اصدقائك"),
                       ],
                     ),
                     minWidth: 40,
