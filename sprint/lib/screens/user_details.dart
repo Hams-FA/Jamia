@@ -22,8 +22,8 @@ class UserDetails extends StatefulWidget {
   final int maxMembers;
   // final String week;
   final double amount;
-  final String startDate;
-  final String endDate;
+  final DateTime startDate;
+  final DateTime endDate;
 
   @override
   State<UserDetails> createState() => _UserDetailsState();
@@ -290,8 +290,8 @@ class _UserDetailsState extends State<UserDetails> {
       required int maxMembers,
       // required String week,
       required double amount,
-      required String startDate,
-      required String endDate}) async {
+      required DateTime startDate,
+      required DateTime endDate}) async {
     final docUser = FirebaseFirestore.instance.collection('JamiaGroup').doc();
 
     final docUser1 = docUser.collection('members').doc(signedInUser.email);

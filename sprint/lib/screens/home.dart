@@ -299,13 +299,15 @@ class _MyHomePageState extends State<MyHomePage> {
             .collection('JamiaGroup')
             .doc(element.data()['id'])
             .get();
-        DateTime start = DateTime.parse(jamia.data()!['startDate'].toString());
-        DateTime end = DateTime.parse(jamia.data()!['endDate']);
+        DateTime start = jamia.data()!['startDate'].toDate();
+        //DateTime.parse(jamia.data()!['startDate'].toString());
+        DateTime end = jamia.data()!['endDate'].toDate();
+        //DateTime.parse(jamia.data()!['endDate']);
         if (start.isBefore(DateTime.now()) &&
             end.isAfter(DateTime.now()) &&
             !paid) {
           print('yay');
-          task1 = cron1.schedule(Schedule.parse('*/6 * * * * * '), () async {
+          task1 = cron1.schedule(Schedule.parse('*/10 * * * * * '), () async {
             print('second notification 1');
 
             await AwesomeNotifications().createNotification(
@@ -349,13 +351,15 @@ class _MyHomePageState extends State<MyHomePage> {
             .collection('JamiaGroup')
             .doc(element.data()['id'])
             .get();
-        DateTime start = DateTime.parse(jamia.data()!['startDate'].toString());
-        DateTime end = DateTime.parse(jamia.data()!['endDate']);
+        DateTime start = jamia.data()!['startDate'].toDate();
+        //DateTime.parse(jamia.data()!['startDate'].toString());
+        DateTime end = jamia.data()!['endDate'].toDate();
+        //DateTime.parse(jamia.data()!['endDate']);
         if (start.isBefore(DateTime.now()) &&
             end.isAfter(DateTime.now()) &&
             !paid) {
           print('yay');
-          task27 = cron27.schedule(Schedule.parse('*/7 * * * * * '), () async {
+          task27 = cron27.schedule(Schedule.parse('*/15 * * * * * '), () async {
             print('second notification 27');
 
             await AwesomeNotifications().createNotification(
@@ -384,7 +388,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void paymetnNotificationCheck() {
     final cron = Cron();
     cron.schedule(Schedule.parse('*/5 * * * * * '), () async {
-      print('notification check');
+      //print('notification check');
       final querySnapshots = await getJamias();
       if (querySnapshots.docs.length != 0) {
         for (var element in querySnapshots.docs) {
@@ -411,7 +415,7 @@ class _MyHomePageState extends State<MyHomePage> {
               .doc(element.data()['id'])
               .get();
           if (paid) {
-            print('really cancel');
+            //print('really cancel');
             canedlnot();
           }
         }
@@ -420,9 +424,9 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void canedlnot() {
-    print('cancel');
-    print(task1.toString());
-    print(task27.toString());
+    //print('cancel');
+    //print(task1.toString());
+    //print(task27.toString());
     task1?.cancel();
     task27?.cancel();
   }
