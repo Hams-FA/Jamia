@@ -301,7 +301,15 @@ Card buildCard(DocumentSnapshot doc, BuildContext context) {
                         .collection('JamiaGroups')
                         .doc(doc.id)
                         .set(value.data()!);
+
+                    FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(FirebaseAuth.instance.currentUser!.email)
+                        .collection('JamiaGroups')
+                        .doc(doc.id)
+                        .update({'endDate': value.get('endDate')});
                   });
+
                   /*
 
                   FirebaseFirestore.instance

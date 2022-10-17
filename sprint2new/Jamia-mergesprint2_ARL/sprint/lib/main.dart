@@ -4,6 +4,7 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:sprint/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:sprint/screens/JamiaHistory.dart';
+import 'package:sprint/screens/JamiaHistory4.dart';
 //import 'package:sprint/screens/JamiaHistory2.dart';
 import 'package:sprint/screens/registration_screen.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -129,7 +130,7 @@ class MyApp extends StatelessWidget {
         '/editUserProfile': (BuildContext context) => const EditUserProfile(),
         '/ViewAndDeleteFriends': (BuildContext context) =>
             const ViewAndDeleteFriends(),
-        '/JamiaHistory': (BuildContext context) => const JamiaHistory(),
+        '/JamiaHistory': (BuildContext context) => const JamiaHistory4(),
         //'/JamiaHistory2': (BuildContext context) => const JamiaHistory2(),
       },
       home: //const PaymentDemo(),//const LoginScreen(),

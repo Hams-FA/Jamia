@@ -1,6 +1,7 @@
-import 'dart:convert';
+/*import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:sprint/more_details.dart';
 import 'package:sprint/screens/firebase_user_details.dart';
 import 'package:sprint/screens/inviteFriends.dart';
 
@@ -29,6 +30,7 @@ class _JamiaHistoryState extends State<JamiaHistory> {
     super.initState();
     fetchUserfromFirebase();
     getCurrentUser();
+    getMyPastjamiah();
   }
 
   void getCurrentUser() {
@@ -72,22 +74,47 @@ class _JamiaHistoryState extends State<JamiaHistory> {
                               .doc(signedInUser.email)
                               .collection('JamiaGroups')
                               .snapshots(),
-                          builder: ((context, snapshot) {
-                            if (snapshot.hasData) {
+                          builder: ((context, snapshot1) {
+                            if (snapshot1.hasData) {
+                              return StreamBuilder<QuerySnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection('JamiaGroup')
+                              .snapshots(),
+                          builder: ((context, snapshot2) {
+                            if (snapshot2.hasData) {
+
+
                               return ListView.builder(
-                                  itemCount: snapshot.data!.docs.length,
+                                  itemCount: snapshot1.data!.docs.length,
                                   itemBuilder: (context, index) {
-                                    var data = snapshot.data!.docs[index].data()
+                                    //index what does it means ????????????
+                                    var data = snapshot1.data!.docs[index].data()
                                         as Map<String, dynamic>;
-                                    final jamia =
-                                        fetchJamiafromFirebase(data['id']);
+                                    
+
+
+                                    var data2 = snapshot2.data!.docs[index].data()
+                                        as Map<String, dynamic>;
+
+
+                                    //late Map<String, dynamic>? dataj = data;
+                                    //data;
+                                    /*FirebaseFirestore.instance
+                                        .collection('JamiaGroup')
+                                        .doc(data['id'])
+                                        .get()
+                                        .then((value) {
+                                      dataj = value.data();
+                                    });*/
 
                                     DateTime today = DateTime.now();
-                                    ///////////////
-                                    DateTime endDate = jamia['endDate'];
-                                    ///////////////
 
-                                    if (today.isAfter(endDate)) {
+                                    DateTime endDate2 = DateTime.parse(
+                                        dataj!['endDate'].toString());
+                                    print(dataj);
+                                    print(endDate2);
+
+                                    if (today.isAfter(endDate2)) {
                                       return Column(
                                         children: [
                                           Container(
@@ -128,7 +155,7 @@ class _JamiaHistoryState extends State<JamiaHistory> {
                                                                 MaterialPageRoute(
                                                                     builder:
                                                                         (context) =>
-                                                                            FirebaseUserDetails(
+                                                                            more_details(
                                                                               data: data,
                                                                               jamiaId: '',
                                                                             )));
@@ -170,8 +197,7 @@ class _JamiaHistoryState extends State<JamiaHistory> {
                                       );
                                     }
                                     return Column(children: [
-                                      Text(
-                                          "لايوجد لديك جمعيات سابقة ,أبدأ الان جمعيتك الاولى!!")
+                                      Text("لايوجد لديك جمعيات سابقة !!")
                                     ]);
                                   });
                             }
@@ -278,10 +304,21 @@ class _JamiaHistoryState extends State<JamiaHistory> {
     return FirebaseFirestore.instance.collection('users').snapshots();
   }
 
+  /*
+
   fetchJamiafromFirebase(String id) async {
     final jamia =
         await FirebaseFirestore.instance.collection('JamiaGroup').doc(id).get();
 
-    return jamia;
+    return jamia["endDate"];
+  }*/
+  getMyPastjamiah() async {
+    final jamiahs = await FirebaseFirestore.instance
+        .collectionGroup('members')
+        .where('name', isEqualTo: FirebaseAuth.instance.currentUser!.email)
+        .get();
+    jamiahs.docs.forEach((element) {
+      print(element.data());
+    });
   }
-}
+}*/
