@@ -198,7 +198,7 @@ class _UserDetailsState extends State<UserDetails> {
                         style: TextStyle(fontSize: 18),
                       ),
                       Text(
-                        widget.startDate.toString(),
+                        "${widget.startDate.year}-${widget.startDate.month}-${widget.startDate.day}",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       SizedBox(

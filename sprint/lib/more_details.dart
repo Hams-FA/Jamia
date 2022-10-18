@@ -186,7 +186,7 @@ class _more_detailsState extends State<more_details> {
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Text(
-                                  widget.data['startDate'].toString(),
+                                  "${widget.data['startDate'].toDate().year}-${widget.data['startDate'].toDate().month}-${widget.data['startDate'].toDate().day}",
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Color(0xFF545454)),
