@@ -67,17 +67,19 @@ class _MyHomePageState extends State<MyHomePage> {
         child: SafeArea(
           child: Scaffold(
             appBar: AppBar(
-                title: const Directionality(
-                    textDirection: ui.TextDirection.rtl,
-                    child: Text(
-                      '           جـمـعـيـاتـي ',
-                      style: TextStyle(
-                          fontSize: 25,
-                          color: Color.fromARGB(255, 255, 254, 254),
-                          fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.right,
-                    )),
-                backgroundColor: Color.fromARGB(255, 76, 175, 80)),
+              title: const Directionality(
+                  textDirection: ui.TextDirection.rtl,
+                  child: Text(
+                    '                      جـمـعـيـاتـي ',
+                    style: TextStyle(
+                        fontSize: 25,
+                        color: Color.fromARGB(255, 255, 254, 254),
+                        fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  )),
+              backgroundColor: Color.fromARGB(255, 76, 175, 80),
+              automaticallyImplyLeading: false,
+            ),
             body: Container(
               margin: EdgeInsets.symmetric(horizontal: 10),
               child: Column(
