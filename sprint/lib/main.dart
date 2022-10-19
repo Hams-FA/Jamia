@@ -1,6 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:sprint/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:sprint/screens/JamiaHistory.dart';
+import 'package:sprint/screens/JamiaHistory4.dart';
+//import 'package:sprint/screens/JamiaHistory2.dart';
 import 'package:sprint/screens/registration_screen.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:sprint/screens/form.dart';
@@ -12,10 +18,59 @@ import 'package:sprint/screens/inviteFriends.dart';
 import 'package:sprint/screens/SearchFriends.dart';
 import 'package:sprint/screens/ViewAndDeleteFriends.dart';
 import 'RequestPageFinal.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:cron/cron.dart';
+import 'package:sprint/screens/viewUserProfile.dart';
+import 'package:sprint/screens/editUserProfile.dart';
+import 'package:sprint/screens/ViewFriendProfile.dart';
+import 'dart:convert';
+import 'dart:developer';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:http/http.dart' as http;
+
 //import 'package:sprint/screens/firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  AwesomeNotifications().initialize(
+    //'resource://drawable/res_notificaion_app_icon.png'
+    'resource://drawable/res_notificaion_app_icon',
+    [
+      NotificationChannel(
+        channelKey: 'key1',
+        channelName: 'channel one awesome',
+        channelDescription: "channel one awesome",
+        defaultColor: Colors.green,
+        ledColor: Colors.white,
+        playSound: true,
+        enableLights: true,
+        enableVibration: true,
+        importance: NotificationImportance.High,
+      )
+    ],
+  );
+  Stripe.publishableKey =
+      "pk_test_51LlFPXHZFaMy2scT7EbXYBvQfQUCGj6FvxnI1lrW2xwPhmLowqzkCHeJ8hQ0SzgPn20OdCwGEFkXTP5Y0cM8j3w000NzK0A7VH";
+  Stripe.instance.applySettings();
+
+  final cron = Cron();
+  //*/10 * * * * every 10 mins
+  //in mounth 1 5 9 day 27 at 8:30
+  cron.schedule(Schedule.parse('30 8 27 1,5,9 * '), () async {
+    print('notification');
+
+    await AwesomeNotifications().createNotification(
+        content: NotificationContent(
+      id: 2,
+      channelKey: 'key1',
+      title: 'تفكر تسوي جمعية؟',
+      body: 'تطبيقنا يساعدك تنشئ جمعيتك الخاصة بشكل منظم ومرتب',
+    ));
+  });
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -45,17 +100,21 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         '/login': (BuildContext context) => const LoginScreen(),
         '/RequestPageFinal': (BuildContext context) => const RequestPageFinal(),
-
         '/registration': (BuildContext context) => const RegistrationScreen(),
         '/forgotPassword': (BuildContext context) => const ForgotPassword(),
         '/home': (BuildContext context) => const MyHomePage(),
+        '/form': (BuildContext context) => const FormPage(),
         '/profile': (BuildContext context) => const ProfileScreen(),
         '/inviteFriends': (BuildContext context) => const inviteFriends(),
         '/SearchFriends': (BuildContext context) => const SearchFriends(),
+        '/viewUserProfile': (BuildContext context) => const ViewUserProfile(),
+        '/editUserProfile': (BuildContext context) => const EditUserProfile(),
         '/ViewAndDeleteFriends': (BuildContext context) =>
             const ViewAndDeleteFriends(),
+        '/JamiaHistory': (BuildContext context) => const JamiaHistory4(),
+        //'/JamiaHistory2': (BuildContext context) => const JamiaHistory2(),
       },
-      home: //const LoginScreen(),
+      home: //const PaymentDemo(),//const LoginScreen(),
           const LoginScreen(), //const MyHomePage(title: 'Flutter Demo Home Page'),
       //RegistrationScreen()
       builder: EasyLoading.init(),
@@ -63,28 +122,21 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
   // how it looks.
-
   // This class is the configuration for the state. It holds the values (in this
   // case the title) provided by the parent (in this case the App widget) and
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
-
   final String title;
-
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
-
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -95,7 +147,6 @@ class _MyHomePageState extends State<MyHomePage> {
       _counter++;
     });
   }
-
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -145,6 +196,72 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.*/
+    );
+  }
+}
+
+class PaymentDemo extends StatelessWidget {
+  const PaymentDemo({Key? key}) : super(key: key);
+  Future<void> initPayment(
+      {required String email,
+      required double amount,
+      required BuildContext context}) async {
+    try {
+      // 1. Create a payment intent on the server
+      final response = await http.post(
+          Uri.parse(
+              'https://us-central1-jamia-2bcc1.cloudfunctions.net/stripePaymentIntentRequest'),
+          body: {
+            'email': email,
+            'amount': amount.toString(),
+          });
+
+      final jsonResponse = jsonDecode(response.body);
+      log(jsonResponse.toString());
+      // 2. Initialize the payment sheet
+      await Stripe.instance.initPaymentSheet(
+          paymentSheetParameters: SetupPaymentSheetParameters(
+        paymentIntentClientSecret: jsonResponse['paymentIntent'],
+        merchantDisplayName: 'Grocery Flutter course',
+        customerId: jsonResponse['customer'],
+        customerEphemeralKeySecret: jsonResponse['ephemeralKey'],
+        // testEnv: true,
+        //merchantCountryCode: 'SG',
+      ));
+      await Stripe.instance.presentPaymentSheet();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Payment is successful'),
+        ),
+      );
+    } catch (errorr) {
+      if (errorr is StripeException) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('An error occured ${errorr.error.localizedMessage}'),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('An error occured $errorr'),
+          ),
+        );
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+          child: ElevatedButton(
+        child: const Text('Pay 20\$'),
+        onPressed: () async {
+          await initPayment(
+              amount: 50.0, context: context, email: 'email@test.com');
+        },
+      )),
     );
   }
 }

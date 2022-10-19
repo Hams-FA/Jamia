@@ -56,7 +56,7 @@ class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
                     'تفاصيل الجمعية',
                     style: TextStyle(
                         fontSize: 25,
-                        color: Color(0xFF393737),
+                        color: ui.Color.fromARGB(255, 243, 238, 238),
                         fontWeight: FontWeight.bold),
                     textAlign: TextAlign.right,
                   ),

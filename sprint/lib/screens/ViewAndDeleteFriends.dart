@@ -245,3 +245,4 @@ class _ViewAndDeleteFriendsState extends State<ViewAndDeleteFriends> {
         ));
   }
 }
+
