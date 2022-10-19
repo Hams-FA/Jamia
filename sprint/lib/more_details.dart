@@ -189,67 +189,7 @@ class _more_detailsState extends State<more_details> {
                                   "${widget.data['startDate'].toDate().year}-${widget.data['startDate'].toDate().month}-${widget.data['startDate'].toDate().day}",
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      color: Color(0xFF545454)),
-                                ),
-                                const SizedBox(
-                                  width: 20,
-                                ),
-                              ],
-                            ),
-                          )),
-                      Container(
-                          padding: const EdgeInsets.all(10),
-                          margin: const EdgeInsets.all(10),
-                          color: Colors.grey.shade200,
-                          child: Directionality(
-                            textDirection: ui.TextDirection.rtl,
-                            child: Row(
-                              children: [
-                                const Text(
-                                  ' عدد الأعضاء الحالي : ',
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  widget.data['acceptedCount'].toString(),
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Color(0xFF545454)),
-                                ),
-                                const SizedBox(
-                                  width: 20,
-                                ),
-                              ],
-                            ),
-                          )),
-                      // get members collection from firebase and show it in list view using stream builder and jamia id
-                      Container(
-                        //padding: const EdgeInsets.all(10),
                         margin: const EdgeInsets.all(10),
-                        //color: Colors.grey.shade200,
-                        child:
-                            //textDirection: ui.TextDirection.
-                            //child:
-                            Row(
-                          children: [
-                            Center(
-                              child: const Text(
-                                ' ترتيب أعضاء الجمعية',
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        margin: const EdgeInsets.all(10),
-                        color: Colors.grey.shade200,
-                        child: StreamBuilder(
-                          stream: FirebaseFirestore.instance
                               .collection('JamiaGroup')
                               .doc(widget.data['id'])
                               .collection('members')

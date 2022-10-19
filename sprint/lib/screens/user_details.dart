@@ -27,38 +27,8 @@ class UserDetails extends StatefulWidget {
 
   @override
   State<UserDetails> createState() => _UserDetailsState();
-}
 
-class _UserDetailsState extends State<UserDetails> {
-  final _auth = FirebaseAuth.instance;
-  late User signedInUser;
-
-  @override
-  void initState() {
-    super.initState();
-    getCurrentUser();
-  }
-
-  void getCurrentUser() {
-    try {
-      final user = _auth.currentUser;
-      if (user != null) {
-        signedInUser = user;
-      }
-    } catch (e) {
-      EasyLoading.showError("حدث خطأ ما ....");
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
       appBar: AppBar(
-          title: //Text('معلومات الجمعية التي تم إنشائها')
-              const Text(
-            'معلومات الجمعية التي تم إنشائها',
-            style: TextStyle(
                 fontSize: 25,
                 color: Color.fromARGB(255, 253, 253, 253),
                 fontWeight: FontWeight.bold),
@@ -96,11 +66,7 @@ class _UserDetailsState extends State<UserDetails> {
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         SizedBox(
-                          width: 20,
                         ),
-                      ],
-                    ))),
-            Container(
                 padding: EdgeInsets.all(10),
                 margin: EdgeInsets.all(10),
                 color: Colors.grey.shade200,
@@ -238,11 +204,7 @@ class _UserDetailsState extends State<UserDetails> {
               children: [
                 Container(
                     width: 100,
-                    child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: Color.fromARGB(255, 76, 175, 80),
-                        ),
-                        onPressed: () {
                           Navigator.pop(context);
                         },
                         child: Text('تراجع'))),
@@ -316,6 +278,7 @@ class _UserDetailsState extends State<UserDetails> {
       'startDate': startDate,
       'endDate': endDate,
       'id': docUser.id,
+      //'id': signedInUser.email,
     });
 
     final json = {
@@ -327,6 +290,7 @@ class _UserDetailsState extends State<UserDetails> {
       'startDate': startDate,
       'endDate': endDate,
       'id': docUser.id,
+     // 'id': signedInUser.email,?
       'acceptedCount': 1
     };
 
