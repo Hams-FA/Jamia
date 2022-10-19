@@ -281,7 +281,9 @@ Card buildCard(DocumentSnapshot doc, BuildContext context) {
                       .collection('members')
                       .doc(FirebaseAuth.instance.currentUser!.email)
                       .update({
-                    'name': FirebaseAuth.instance.currentUser!.email,
+                      'name' : doc['fname'],
+
+                    // 'name': FirebaseAuth.instance.currentUser!.email,
                     // 'email': doc['email'],
                     // 'phone': doc['phone'],
                     // 'amount': doc['amount'],

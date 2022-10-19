@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_profile_picture/flutter_profile_picture.dart';
 
 import 'dart:convert';
 import 'dart:developer';
@@ -13,7 +16,7 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
+import 'ViewFriendProfile.dart';
 import 'package:http/http.dart' as http;
 
 class FirebaseUserDetails extends StatefulWidget {
@@ -28,6 +31,8 @@ class FirebaseUserDetails extends StatefulWidget {
 class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
   final _auth = FirebaseAuth.instance;
   late User signedInUser;
+    late String? imageURL;
+
 
   @override
   void initState() {
@@ -370,88 +375,158 @@ class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
                               return Text('');
                             }),
                           ),
+                          
 
                           ///////////////
                           // get members collection from firebase and show it in list view using stream builder and jamia id
                           SizedBox(
                             width: 20,
                           ),
-                          Container(
-                            padding: const EdgeInsets.all(10),
-                            margin: const EdgeInsets.all(10),
-                            //color: Colors.grey.shade200,
-                            child: Directionality(
-                              textDirection: ui.TextDirection.rtl,
-                              child: Row(
-                                children: [
-                                  const Text(
-                                    ' ترتيب أعضاء الجمعية',
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                ],
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        margin: const EdgeInsets.all(10),
+                        //color: Colors.grey.shade200,
+                        child: Directionality(
+                          textDirection: ui.TextDirection.rtl,
+                          child: Row(
+                            children: [
+                              const Text(
+                                ' ترتيب أعضاء الجمعية',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
                               ),
-                            ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                            ],
                           ),
-
-                          Container(
-                            padding: const EdgeInsets.all(10),
-                            margin: const EdgeInsets.all(10),
-                            color: Colors.grey.shade200,
-                            child: StreamBuilder(
-                              stream: FirebaseFirestore.instance
-                                  .collection('JamiaGroup')
-                                  .doc(widget.data['id'])
-                                  .collection('members')
-                                  .where('status', isEqualTo: 'accepted')
-                                  .orderBy('turn')
-                                  // .orderBy('date')
-                                  .snapshots(),
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData) {
-                                  print(snapshot.data!.docs.length);
-                                  return ListView.builder(
-                                      // disable scroll
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
-                                      itemCount: snapshot.data?.docs.length,
-                                      itemBuilder: (context, index) {
-                                        DocumentSnapshot data =
-                                            snapshot.data!.docs[index];
-                                        return Container(
-                                          padding: const EdgeInsets.all(10),
-                                          margin: const EdgeInsets.all(10),
-                                          color: Colors.grey.shade200,
-                                          child: Directionality(
-                                            textDirection: ui.TextDirection.rtl,
-                                            child: ListTile(
-                                                title: Text(data.id),
-                                                //subtitle: Text(data['date']),
-                                                // current in
-                                                leading: Text(
-                                                  '${data['turn']}',
-                                                )),
-                                          ),
-                                        );
-                                      });
-                                } else {
-                                  return const Center(
-                                      child: CircularProgressIndicator());
-                                }
-                              },
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
+                      Container(
+                        margin: const EdgeInsets.all(10),
+                        color: Colors.grey.shade200,
+                        child: StreamBuilder(
+                          stream: FirebaseFirestore.instance
+                              .collection('JamiaGroup')
+                              .doc(widget.data['id'])
+                              .collection('members')
+                              .where('status', isEqualTo: 'accepted')
+                              .orderBy('turn')
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              print(snapshot);
+                              return ListView.builder(
+                                  // disable scroll
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: snapshot.data?.docs.length,
+                                  itemBuilder: (context, index) {
+                                    DocumentSnapshot data =
+                                        snapshot.data!.docs[index];
+                                    return Container(
+                                      // padding: const EdgeInsets.all(8),
+                                      margin: const EdgeInsets.all(10),
+                                      color: Colors.grey.shade200,
+                                      child: Directionality(
+                                        textDirection: ui.TextDirection.rtl,
+                                        child: Row(
+                                          children: [
+                                            FutureBuilder<String>(
+                                              future: FirebaseStorage.instance
+                                                  .ref()
+                                                  .child(
+                                                      'usersProfileImages/${data.id}')
+                                                  .getDownloadURL(),
+                                              builder: (BuildContext context,
+                                                  AsyncSnapshot<String>
+                                                      snapshot) {
+                                                if (snapshot.connectionState ==
+                                                        ConnectionState.done ||
+                                                    snapshot.data == null ||
+                                                    snapshot.hasError) {
+                                                  if (snapshot.data == null ||
+                                                      snapshot.hasError) {
+                                                    imageURL = null;
+                                                  } else {
+                                                    imageURL = snapshot.data;
+                                                  }
+                                                  return Row(
+                                                    children: [
+                                                      Text('${data['turn']}-'),
+                                                      const SizedBox(width: 16),
+                                                      ProfilePicture(
+                                                        name: '',
+                                                        radius: 20,
+                                                        fontsize: 20,
+                                                        img: imageURL,
+                                                      ),
+                                                      const SizedBox(width: 16),
+                                                      // Text(data['name'])
+                                                      // -- if you don't want this feature --
+                                                      // the line above will make it as before
+                                                      // and uncomment the line below
+                                                      RichText(
+                                                        text: TextSpan(
+                                                          style:
+                                                              const TextStyle(
+                                                            color: Colors.blue,
+                                                          ),
+                                                          children: <TextSpan>[
+                                                            TextSpan(
+                                                                text: data.id ==
+                                                                        signedInUser
+                                                                            .email
+                                                                    ? 'انت'
+                                                                    : '${data['name']}',
+                                                                style:
+                                                                    const TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  decoration:
+                                                                      TextDecoration
+                                                                          .underline,
+                                                                ),
+                                                                recognizer:
+                                                                    TapGestureRecognizer()
+                                                                      ..onTap =
+                                                                          () {
+                                                                        Navigator.of(context).push(MaterialPageRoute(
+                                                                            builder: (context) =>
+                                                                                ViewFriendProfile(email: data.id)));
+                                                                      }),
+                                                          ],
+                                                        ),
+                                                      )
+                                                    ],
+                                                  );
+                                                }
+
+                                                return const Center(
+                                                  child: Text('يتم التحميل'),
+                                                );
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  });
+                            } else {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            }
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                ))));
+                ),
+              ),
+            ))));
   }
+            
+  
 
   Future<bool> check() async {
     var max;

@@ -1,15 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:sprint/firebase_options.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:sprint/more_details.dart';
 import 'dart:ui' as ui;
 
-import 'package:sprint/screens/firebase_user_details.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:sprint/screens/JamiaMembersDetails.dart';
 import 'package:sprint/screens/form.dart';
-
-import '../main.dart';
 
 class JamiaHistory4 extends StatefulWidget {
   const JamiaHistory4({super.key});
@@ -77,7 +72,7 @@ class _JamiaHistory4State extends State<JamiaHistory4> {
                   Navigator.pushNamed(context, '/home');
                 }),*/
             ],
-            title: const Text('              جمعياتي السابقة',
+            title: const Text('جمعياتي السابقة',
                 textAlign: TextAlign.right,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
@@ -107,7 +102,7 @@ class _JamiaHistory4State extends State<JamiaHistory4> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => more_details(
+                                      builder: (context) => JamiaMembersDetails(
                                           data: reqt.data()
                                               as Map<String, dynamic>,
                                           jamiaId: reqt.id)));
@@ -167,7 +162,7 @@ class _JamiaHistory4State extends State<JamiaHistory4> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.man),
-                        Text("اصدقائك"),
+                        Text("قائمة اصدقائك"),
                       ],
                     ),
                     minWidth: 40,
