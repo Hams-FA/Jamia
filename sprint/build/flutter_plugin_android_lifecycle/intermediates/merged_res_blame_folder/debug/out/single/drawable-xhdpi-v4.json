@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "C:\\Users\\afnan\\Desktop\\5th semester\\SWE 444\\Jamia\\sprint\\build\\flutter_plugin_android_lifecycle\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\notification_bg_normal_pressed.9.png",
+        "source": "C:\\Users\\afnan\\.gradle\\caches\\transforms-3\\05562a045b7a8f80494ffbc47e915a19\\transformed\\core-1.6.0\\res\\drawable-xhdpi-v4\\notification_bg_normal_pressed.9.png"
+    },
+    {
+        "merged": "C:\\Users\\afnan\\Desktop\\5th semester\\SWE 444\\Jamia\\sprint\\build\\flutter_plugin_android_lifecycle\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\notify_panel_notification_icon_bg.png",
+        "source": "C:\\Users\\afnan\\.gradle\\caches\\transforms-3\\05562a045b7a8f80494ffbc47e915a19\\transformed\\core-1.6.0\\res\\drawable-xhdpi-v4\\notify_panel_notification_icon_bg.png"
+    },
+    {
+        "merged": "C:\\Users\\afnan\\Desktop\\5th semester\\SWE 444\\Jamia\\sprint\\build\\flutter_plugin_android_lifecycle\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\notification_bg_low_pressed.9.png",
+        "source": "C:\\Users\\afnan\\.gradle\\caches\\transforms-3\\05562a045b7a8f80494ffbc47e915a19\\transformed\\core-1.6.0\\res\\drawable-xhdpi-v4\\notification_bg_low_pressed.9.png"
+    },
+    {
+        "merged": "C:\\Users\\afnan\\Desktop\\5th semester\\SWE 444\\Jamia\\sprint\\build\\flutter_plugin_android_lifecycle\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\notification_bg_low_normal.9.png",
+        "source": "C:\\Users\\afnan\\.gradle\\caches\\transforms-3\\05562a045b7a8f80494ffbc47e915a19\\transformed\\core-1.6.0\\res\\drawable-xhdpi-v4\\notification_bg_low_normal.9.png"
+    },
+    {
+        "merged": "C:\\Users\\afnan\\Desktop\\5th semester\\SWE 444\\Jamia\\sprint\\build\\flutter_plugin_android_lifecycle\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\notification_bg_normal.9.png",
+        "source": "C:\\Users\\afnan\\.gradle\\caches\\transforms-3\\05562a045b7a8f80494ffbc47e915a19\\transformed\\core-1.6.0\\res\\drawable-xhdpi-v4\\notification_bg_normal.9.png"
+    }
+]
