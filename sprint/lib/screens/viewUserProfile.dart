@@ -1,10 +1,11 @@
+import 'dart:ui' as ui;
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_profile_picture/flutter_profile_picture.dart';
-import 'dart:ui' as ui;
 
 import '../widgets/validations.dart';
 
@@ -150,22 +151,6 @@ class _ViewUserProfileState extends State<ViewUserProfile> {
                         IBANText.text = data['IBAN'];
                         IBAN = data['IBAN'];
                       }
-                      //CVV Number
-                      // if (data['expDate'] == null) {
-                      //   cvvNumberText.text = "";
-                      //   cvvNumber = "";
-                      // } else {
-                      //   cvvNumberText.text = data['cvv'];
-                      //   cvvNumber = data['cvv'];
-                      // }
-                      //card owner name
-                      // if (data['expDate'] == null) {
-                      //   cardOwnerNameText.text = "";
-                      //   cardOwnerName = "";
-                      // } else {
-                      //   cardOwnerNameText.text = data['cardOwner'];
-                      //   cardOwnerName = data['cardOwner'];
-                      // }
 
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -532,7 +517,7 @@ class _ViewUserProfileState extends State<ViewUserProfile> {
                                     },
                                     height: 42,
                                     child: const Text(
-                                      "تعديل الملف الشخصي",
+                                      "تعديل",
                                       style: TextStyle(color: Colors.white),
                                     ),
                                   ),
@@ -567,6 +552,26 @@ class _ViewUserProfileState extends State<ViewUserProfile> {
                                   ),
                                 ),
                               ),
+                              const SizedBox(width: 8),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8),
+                                child: Material(
+                                  elevation: 5,
+                                  color: Colors.green,
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: MaterialButton(
+                                    onPressed: () {
+                                      showAlertDialog(context);
+                                    },
+                                    height: 42,
+                                    child: const Text(
+                                      "حذف",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -583,4 +588,68 @@ class _ViewUserProfileState extends State<ViewUserProfile> {
           ),
         ));
   }
+}
+
+showAlertDialog(BuildContext context) {
+  // Create button
+  Widget okButton = TextButton(
+    child: const Text("نعم"),
+    onPressed: () async {
+      Navigator.pop(context);
+      // await FirebaseFirestore.instance
+      //     .collection('JamiaGroup')
+      //     .get()
+      //     .then((value) => {
+      //           value.docs.forEach((element) {
+      //             print(element.id);
+      //             element.reference.collection('members')
+      //           })
+      //         });
+      var found = false;
+      await FirebaseFirestore.instance
+          .collectionGroup('members')
+          .get()
+          .then((value) => {
+                value.docs.forEach((element) {
+                  if (element.id == FirebaseAuth.instance.currentUser?.email) {
+                    found = true;
+                  }
+                })
+              });
+      if (found) {
+        EasyLoading.showError('لايمكنك حذف الحساب');
+      } else {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(FirebaseAuth.instance.currentUser?.email)
+            .delete();
+        await FirebaseAuth.instance.currentUser?.delete();
+        await FirebaseAuth.instance.signOut();
+        Navigator.pushNamed(context, '/login');
+        EasyLoading.showSuccess('تم حذف حسابك بنجاح');
+      }
+    },
+  );
+
+  Widget cancelButton = TextButton(
+    child: const Text("الغاء"),
+    onPressed: () {
+      Navigator.pop(context);
+    },
+  );
+
+  // Create AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: const Text("تحذير"),
+    content: const Text("هل انت متأكد من حذف حسابك ؟"),
+    actions: [cancelButton, okButton],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }
