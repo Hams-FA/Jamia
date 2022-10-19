@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="style1.css" rel="stylesheet"
+    type="text/css">
+    <style>
+                body {
+            margin: 1%;
+            background-image: url("back2.png");
+            background-repeat: no-repeat;
+            /* overflow: hidden; */
+            background-size: cover;
+
+        }
+        td{
+        border:3px solid green;
+        padding: 8px;
+        text-align: center;
+        }
+        th{
+            border:3px solid green;
+        padding: 8px;
+        text-align: center;
+            color: green;
+            font-size: larger;
+        }
+        body {background-color :#c7d4c0;
+        }
+        table {
+
+
+        border:1px solid green;
+        border-collapse: collapse;
+        width: 80%;
+        margin: auto;
+        }
+        tr.hovertr:hover {background-color: green;}
+    </style>
+    <title>Jamia Deatails</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">About us</a>
+                </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">logout</a>
+                </li>
+                </ul>
+            </div>
+            </div>
+          </nav>
+
+        <table >
+            <tr>
+
+                    <th colspan="2" >الجمعيات</th>
+
+            </tr>
+
+            <tr class="hovertr">  
+               <td> التفاصيل</td>
+               <td > اسم الجمعية</td>
+            </tr>
+             
+                <!-- <tr class="hovertr">
+                 <td id="findJname" type=" text"> </td>
+                 <td id="findJdetails" type=" text"> </td>
+                </tr> -->
+                <tbody id="tbody"></tbody>
+         </table>
+ 
+         
+
+           <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-firestore.js"></script>
+        <script id="MainScript">
+
+        
+        
+        var users = [];
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyAPD2rLWY3Nvbs3cW19-SkCQ7NtfeIr_xk",
+            authDomain: "jamia-2bcc1.firebaseapp.com",
+            projectId: "jamia-2bcc1",
+            storageBucket: "jamia-2bcc1.appspot.com",
+            messagingSenderId: "585806474023",
+            appId: "1:585806474023:web:1eb6cd2f2a2166704c1702",
+            measurementId: "G-0GXW0ST5VC"
+        };
+        firebase.initializeApp(firebaseConfig);
+    let db = firebase.firestore();
+    
+    
+    function realtimeChanges(){
+            
+            db.collection('JamiaGroup').onSnapshot((querySnapshot)=>{
+                
+                querySnapshot.forEach(doc => {
+                    users.push(doc.data());
+                    addAllUserItemToTable(users);
+                    
+                });
+            });
+            
+    }
+
+    var tbody = document.getElementById('tbody');
+    
+    function addUserItemToTable(name,acceptedCount,amount,startDate,id,maxMembers){
+        
+        
+        var trow = document.createElement('tr');
+        
+        var td1 = document.createElement('td');
+        var td2 = document.createElement('td');
+        startDate.getYear;
+        td2.innerHTML = name;
+        td1.innerHTML = 'عدد الأعضاء: '+acceptedCount+'<br>'+'السهم: '+amount+'<br>'+startDate.toDate()+' :تاريخ البدء '+'<br>'+id +' :رقم المجموعة '+'<br>'+'الاعضاء: '+maxMembers;
+        
+        
+        
+        
+
+        trow.appendChild(td1);
+        trow.appendChild(td2);
+
+        tbody.appendChild(trow);
+    }
+    
+    
+
+    function addAllUserItemToTable(userDocsList){
+        
+            tbody.innerHTML = '';
+            userDocsList.forEach(element => {
+                
+            addUserItemToTable(element.name,element.acceptedCount,element.amount,element.startDate,element.id,element.maxMembers)
+        });
+    }
+
+    window.onload = realtimeChanges;
+        </script>
+</body>
+</html>
