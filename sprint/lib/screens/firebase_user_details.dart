@@ -262,75 +262,114 @@ class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
                               )),
                           ////////////afnan
                           FutureBuilder(
-                              future: FirebaseFirestore.instance
-                                  .collection('JamiaGroup')
-                                  .doc(widget.data['id'])
-                                  .collection('transaction')
-                                  .where('Email', isEqualTo: signedInUser.email)
-                                  .get(),
-                              builder: ((context, snapshot) {
-                                // if(!(DateTime.now().isBefore(DateTime.parse(widget.data['startDate'])))){
-                                if (snapshot.hasData) {
-                                  final alltransactions = snapshot.data!.docs;
-                                  List<dynamic> timelocal =
-                                      List<dynamic>.empty(growable: true);
-                                  alltransactions.forEach(
-                                    (element) {
-                                      var timenow =
-                                          DateTime.parse(element.get('time'));
-                                      timelocal.add(timenow);
-                                    },
+                            future: FirebaseFirestore.instance
+                                .collection('JamiaGroup')
+                                .doc(widget.data['id'])
+                                .get(),
+                            builder: ((context, snapshot) {
+                              if (snapshot.hasData) {
+                                final checkStart = snapshot.data!.data();
+                                final startDateCheck =
+                                    checkStart!['startDate'].toDate();
+                                if (startDateCheck.isAfter(DateTime.now())) {
+                                  return Text(
+                                    'لم تبدأ الجمعية',
+                                    style: TextStyle(
+                                        color: Colors.green[800],
+                                        fontWeight: FontWeight.w900,
+                                        fontStyle: FontStyle.italic,
+                                        fontFamily: 'Open Sans',
+                                        fontSize: 24),
                                   );
-                                  var max =
-                                      DateTime.parse('1969-07-20 20:18:04Z');
-
-                                  if (timelocal.isNotEmpty)
-                                    max = timelocal.first;
-                                  for (var i = 1; i < timelocal.length; i++) {
-                                    if (timelocal[i].isAfter(max))
-                                      max = timelocal[i];
-                                  }
-                                  if ((max.month)
-                                          .compareTo(DateTime.now().month) ==
-                                      0)
-                                    return Text(
-                                      'لقد قمت بدفع جميعة هذا الشهر',
-                                      style: TextStyle(
-                                          color: Colors.green[800],
-                                          fontWeight: FontWeight.w900,
-                                          fontStyle: FontStyle.italic,
-                                          fontFamily: 'Open Sans',
-                                          fontSize: 24),
-                                    );
-                                  else {
-                                    return ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          padding: const EdgeInsets.only(
-                                              left: 130, right: 130),
-                                          tapTargetSize:
-                                              MaterialTapTargetSize.shrinkWrap,
-                                        ),
-                                        child: const Text('ادفع ',
-                                            style: TextStyle(fontSize: 15)),
-                                        onPressed: () async {
-                                          await initPayment(
-                                              amount: (widget.data['amount'] /
-                                                      3.75) *
-                                                  100,
-                                              context: context,
-                                              email: FirebaseAuth
-                                                  .instance.currentUser!.email
-                                                  .toString());
-                                        });
-                                  }
                                 } else {
-                                  return CircularProgressIndicator();
-                                }
-                                //   }else {
-                                return Text(' لايمكنك الدفع قبل بدء الجمعية');
+                                  return FutureBuilder(
+                                      future: FirebaseFirestore.instance
+                                          .collection('JamiaGroup')
+                                          .doc(widget.data['id'])
+                                          .collection('transaction')
+                                          .where('Email',
+                                              isEqualTo: signedInUser.email)
+                                          .get(),
+                                      builder: ((context, snapshot) {
+                                        // if(!(DateTime.now().isBefore(DateTime.parse(widget.data['startDate'])))){
+                                        if (snapshot.hasData) {
+                                          final alltransactions =
+                                              snapshot.data!.docs;
+                                          List<dynamic> timelocal =
+                                              List<dynamic>.empty(
+                                                  growable: true);
+                                          alltransactions.forEach(
+                                            (element) {
+                                              var timenow = DateTime.parse(
+                                                  element.get('time'));
+                                              timelocal.add(timenow);
+                                            },
+                                          );
+                                          var max = DateTime.parse(
+                                              '1969-07-20 20:18:04Z');
 
-                                //  }
-                              })),
+                                          if (timelocal.isNotEmpty)
+                                            max = timelocal.first;
+                                          for (var i = 1;
+                                              i < timelocal.length;
+                                              i++) {
+                                            if (timelocal[i].isAfter(max))
+                                              max = timelocal[i];
+                                          }
+                                          if ((max.month).compareTo(
+                                                  DateTime.now().month) ==
+                                              0)
+                                            return Text(
+                                              'لقد قمت بدفع جميعة هذا الشهر',
+                                              style: TextStyle(
+                                                  color: Colors.green[800],
+                                                  fontWeight: FontWeight.w900,
+                                                  fontStyle: FontStyle.italic,
+                                                  fontFamily: 'Open Sans',
+                                                  fontSize: 24),
+                                            );
+                                          else {
+                                            return ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 130,
+                                                          right: 130),
+                                                  tapTargetSize:
+                                                      MaterialTapTargetSize
+                                                          .shrinkWrap,
+                                                ),
+                                                child: const Text('ادفع ',
+                                                    style: TextStyle(
+                                                        fontSize: 15)),
+                                                onPressed: () async {
+                                                  await initPayment(
+                                                      amount: (widget.data[
+                                                                  'amount'] /
+                                                              3.75) *
+                                                          100,
+                                                      context: context,
+                                                      email: FirebaseAuth
+                                                          .instance
+                                                          .currentUser!
+                                                          .email
+                                                          .toString());
+                                                });
+                                          }
+                                        } else {
+                                          return CircularProgressIndicator();
+                                        }
+                                        //   }else {
+                                        return Text(
+                                            ' لايمكنك الدفع قبل بدء الجمعية');
+
+                                        //  }
+                                      }));
+                                }
+                              }
+                              return Text('');
+                            }),
+                          ),
 
                           ///////////////
                           // get members collection from firebase and show it in list view using stream builder and jamia id
