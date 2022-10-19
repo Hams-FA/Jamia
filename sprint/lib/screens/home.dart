@@ -25,6 +25,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
   final Firestore = FirebaseFirestore.instance;
+  late List<QueryDocumentSnapshot> pastJamiah;
+  bool _isLoading = true;
   final _auth = FirebaseAuth.instance;
   late User signedInUser;
   final cron1 = Cron();
@@ -47,6 +49,42 @@ class _MyHomePageState extends State<MyHomePage> {
       paymentReminderAt27();
     });
     paymetnNotificationCheck();
+    pastJamiah = getPastJamiah();
+  }
+
+  final auth = FirebaseAuth.instance;
+  final firestore = FirebaseFirestore.instance;
+
+  List<QueryDocumentSnapshot> getPastJamiah() {
+    final User user = auth.currentUser!;
+    final uid = user.email;
+    List<QueryDocumentSnapshot> pastJamiah = [];
+
+    firestore.collection('JamiaGroup').get().then((value) {
+      value.docs.forEach((element) {
+        element.reference
+            .collection('members')
+            .where(FieldPath.documentId, isEqualTo: uid)
+            .get()
+            .then((value) {
+          value.docs.forEach((member) {
+            if ((element.data()['endDate'] as Timestamp)
+                .toDate()
+                .isAfter(DateTime.now())) {
+              print('isCurrentJamia ${element.data()}');
+              pastJamiah.add(element);
+            }
+          });
+          setState(() {
+            _isLoading = false;
+            pastJamiah = pastJamiah;
+          });
+        });
+      });
+    });
+    print('CurrentJamiah $pastJamiah');
+
+    return pastJamiah;
   }
 
   void getCurrentUser() {
@@ -61,6 +99,176 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
+  Widget build(BuildContext context) {
+    bool visibilityController = true;
+    return Directionality(
+      textDirection: ui.TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+            actions: <Widget>[],
+            title: const Text('                  جمعياتي ',
+                textAlign: TextAlign.right,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                    //fontFamily: "Montsterrat Classic",
+                    color: Color.fromARGB(255, 255, 255, 255))),
+            backgroundColor: Color.fromARGB(255, 76, 175, 80)),
+        body: _isLoading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : pastJamiah.isEmpty
+                ? Center(
+                    child: Text("لا يوجد لديك جمعيات!!"),
+                  )
+                : ListView(
+                    children: pastJamiah.map((reqt) {
+                      return Card(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            ListTile(
+                              title: Text(reqt.get('name')),
+                              leading: CircleAvatar(
+                                  backgroundColor: Color(0xFF0F7C0D),
+                                  child: Image.asset('images/logo.jpg')),
+                              subtitle:
+                                  Text(" هل تريد معرفة المزيد من التفاصيل "),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Column(children: [
+                                  GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    FirebaseUserDetails(
+                                                      data: reqt,
+                                                      jamiaId: '',
+                                                    )));
+                                      },
+                                      child: Icon(Icons.visibility,
+                                          color: Color(0xFF545454))),
+                                  Text('   التفاصيل  ',
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Montsterrat Classic",
+                                          color: Color(0xFF545454))),
+                                ]),
+                                Column(
+                                  children: [
+                                    GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      inviteFriends(
+                                                          data: reqt)));
+                                        },
+                                        child: const Icon(
+                                          Icons.person_add_alt,
+                                          color: Color(0xFF545454),
+                                        )),
+                                    const Text('   ادعو اصدقائك    ',
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: "Montsterrat Classic",
+                                            color: Color(0xFF545454))),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  ),
+
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Color.fromARGB(255, 76, 175, 80),
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => FormPage()));
+          },
+          mini: true,
+          child: const Icon(
+            Icons.add,
+            color: Color(0xFF393737),
+          ),
+        ), // This trailing comma makes auto-formatting nicer for build methods.
+        floatingActionButtonLocation:
+            FloatingActionButtonLocation.miniCenterDocked,
+
+        bottomNavigationBar: BottomAppBar(
+            shape: CircularNotchedRectangle(),
+            child: Container(
+              height: 60,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  MaterialButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/viewUserProfile');
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.person),
+                        Text("الملف الشخصي"),
+                      ],
+                    ),
+                    minWidth: 40,
+                  ),
+                  MaterialButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/ViewAndDeleteFriends');
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.man),
+                        Text("اصدقائك"),
+                      ],
+                    ),
+                    minWidth: 40,
+                  ),
+                  MaterialButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/JamiaHistory');
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.people),
+                        Text("جمعياتي السابقة"),
+                      ],
+                    ),
+                    minWidth: 40,
+                  ),
+                  MaterialButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/RequestPageFinal');
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.list_alt),
+                        Text("الطلبات"),
+                      ],
+                    ),
+                    minWidth: 40,
+                  ),
+                ],
+              ),
+            )),
+      ),
+    );
+  }
+  /*
   Widget build(BuildContext context) {
     return Directionality(
         textDirection: ui.TextDirection.rtl,
@@ -279,6 +487,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ));
   }
+  */
 
   fetchUserfromFirebase() {
     return FirebaseFirestore.instance.collection('users').snapshots();

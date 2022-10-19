@@ -19,7 +19,7 @@ import 'package:http/http.dart' as http;
 class FirebaseUserDetails extends StatefulWidget {
   FirebaseUserDetails({Key? key, required this.data, required this.jamiaId})
       : super(key: key);
-  final Map<String, dynamic> data;
+  final data; //Map<String, dynamic>
   final String jamiaId;
   @override
   State<FirebaseUserDetails> createState() => _FirebaseUserDetailsState();
