@@ -38,6 +38,7 @@ font-variation-settings:
 	margin: -20px -25px 10px;
 	border-radius: 3px 3px 0 0;
 	background-image: url("wrap.jpg");
+	background-image: fixed;
 }
 .table-title h2 {
 	margin: 5px 0 0;

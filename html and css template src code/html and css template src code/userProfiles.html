@@ -37,7 +37,10 @@
                 <li class="nav-item">
                     <a href="activation.html" class="nav-link">إدارة المستخدمين</a>
                 </li>
-                </ul>
+                <li style = "float: right; "class="nav-item">
+                    <a href="#" id="logout" class="nav-link">تسجيل خروج</a>
+                </li>
+                </ul> 
             </div>
             </div>
           </nav>
@@ -47,7 +50,7 @@
                     <div style="text-align: center; "  class="table-title">
                         <div style="text-align: center; "  class="row">
                             <div style="text-align: center; " class="col-sm-6">
-                                <h2 style="text-align: center; ">الأشخاص</h2>
+                                <h2 style="text-align: right;"><h8 style = "color:#0c7b0c">.................................................</h8>الأشخاص</h2>
                             </div>
                         </div>
                     </div>
@@ -157,7 +160,21 @@
         ++lengthOfUsers;
         
     }
+     
+    function logout(){
+    document.getElementById("logout").addEventListener('click', function(){
+      signOut(auth).then(() => {
+  // Sign-out successful.
+      alert("لقد تم تسجيل خروجك بنجاح!");
+      location.replace("login.html");
 
+}).catch((error) => {
+    console.log('Error singing in, ',error.message);
+    alert("حدث خطأ!! حاول مرة اخرى");
+});
+
+});
+    }
     window.onload = realtimeChanges;
         </script>
 </body>
