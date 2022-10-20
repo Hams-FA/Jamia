@@ -151,6 +151,7 @@ class RequestPageFinal extends StatelessWidget {
 
 // card with title and subtitle and action buttons
 Card buildCard(DocumentSnapshot doc, BuildContext context) {
+  print(doc.data());
   return Card(
     child: Column(
       mainAxisSize: MainAxisSize.min,
@@ -281,7 +282,7 @@ Card buildCard(DocumentSnapshot doc, BuildContext context) {
                       .collection('members')
                       .doc(FirebaseAuth.instance.currentUser!.email)
                       .update({
-                      'name' : doc['fname'],
+                    'name': doc['email'], //fname cause errer!!!!!!!
 
                     // 'name': FirebaseAuth.instance.currentUser!.email,
                     // 'email': doc['email'],
