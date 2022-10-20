@@ -1,10 +1,10 @@
-import 'package:sprint/screens/home.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:sprint/screens/home.dart';
 
 class UserDetails extends StatefulWidget {
   const UserDetails(
@@ -22,8 +22,8 @@ class UserDetails extends StatefulWidget {
   final int maxMembers;
   // final String week;
   final double amount;
-  final DateTime startDate;
-  final DateTime endDate;
+  final String startDate;
+  final String endDate;
 
   @override
   State<UserDetails> createState() => _UserDetailsState();
@@ -60,7 +60,7 @@ class _UserDetailsState extends State<UserDetails> {
             'معلومات الجمعية التي تم إنشائها',
             style: TextStyle(
                 fontSize: 25,
-                color: Color.fromARGB(255, 253, 253, 253),
+                color: Color(0xFF393737),
                 fontWeight: FontWeight.bold),
             textAlign: TextAlign.right,
           ),
@@ -198,7 +198,7 @@ class _UserDetailsState extends State<UserDetails> {
                         style: TextStyle(fontSize: 18),
                       ),
                       Text(
-                        "${widget.startDate.year}-${widget.startDate.month}-${widget.startDate.day}",
+                        widget.startDate.toString(),
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       SizedBox(
@@ -290,8 +290,8 @@ class _UserDetailsState extends State<UserDetails> {
       required int maxMembers,
       // required String week,
       required double amount,
-      required DateTime startDate,
-      required DateTime endDate}) async {
+      required String startDate,
+      required String endDate}) async {
     final docUser = FirebaseFirestore.instance.collection('JamiaGroup').doc();
 
     final docUser1 = docUser.collection('members').doc(signedInUser.email);
@@ -315,8 +315,7 @@ class _UserDetailsState extends State<UserDetails> {
       'amount': amount,
       'startDate': startDate,
       'endDate': endDate,
-      'id': docUser.id,
-      'emailid': signedInUser.email,
+      'id': signedInUser.email,
     });
 
     final json = {
@@ -327,8 +326,7 @@ class _UserDetailsState extends State<UserDetails> {
       'amount': amount,
       'startDate': startDate,
       'endDate': endDate,
-      'id': docUser.id,
-      'emailid': signedInUser.email,
+      'id': signedInUser.email,
       'acceptedCount': 1
     };
 

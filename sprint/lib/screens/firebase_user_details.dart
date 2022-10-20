@@ -18,6 +18,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'ViewFriendProfile.dart';
 import 'package:http/http.dart' as http;
+import 'package:sprint/screens/editJamia.dart';
 
 class FirebaseUserDetails extends StatefulWidget {
   FirebaseUserDetails({Key? key, required this.data, required this.jamiaId})
@@ -374,6 +375,79 @@ class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
                               return Text('');
                             }),
                           ),
+                          SizedBox(height: 8),
+                          ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.only(
+                                    left: 120, right: 130),
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              ),
+                              child: const Text('تعديل',
+                                  style: TextStyle(fontSize: 15)),
+                              onPressed: () async {
+                                //widget.data['id'] == signedInUser.email
+                                if (widget.data['acceptedCount'] == 1) {
+                                  var d = await FirebaseFirestore.instance
+                                      .collection('JamiaGroup')
+                                      .doc(widget.data['id'])
+                                      .collection('members')
+                                      .where('status', isEqualTo: 'accepted')
+                                      .get();
+                                  if (d.docs.length > 1) {
+                                    EasyLoading.showError(
+                                        'لا يمكنك الالغاء هناك مشتركين في الجمعية');
+                                  } else {
+                                    if (mounted) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => EditJamia(
+                                                    jamiaId: widget.data['id'],
+                                                    name: widget.data['name'],
+                                                    minMembers: widget
+                                                        .data['minMembers'],
+                                                    maxMembers: widget
+                                                        .data['maxMembers'],
+                                                    amount:
+                                                        widget.data['amount'],
+                                                    startDate: widget
+                                                        .data['startDate']
+                                                        .toDate(),
+                                                    //.toString(),
+                                                    endDate: widget
+                                                        .data['endDate']
+                                                        .toDate()
+                                                    //.toString()
+                                                    ,
+                                                  )));
+                                    }
+                                  }
+                                } else {
+                                  EasyLoading.showError('لا يمكنك التعديل');
+                                }
+                              }),
+
+                          SizedBox(height: 8),
+                          ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.only(
+                                    left: 130, right: 130),
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              ),
+                              child: const Text('إلغاء',
+                                  style: TextStyle(fontSize: 15)),
+                              onPressed: () async {
+                                //widget.data['emailid'] ==signedInUser.email
+                                if (widget.data['acceptedCount'] == 1) {
+                                  print('if');
+                                  print(widget.data['acceptedCount']);
+                                  //confirm first
+                                  _showAlertDialog();
+                                } else {
+                                  print(widget.data['acceptedCount']);
+                                  EasyLoading.showError('لا يمكنك التعديل');
+                                }
+                              }),
 
                           ///////////////
                           // get members collection from firebase and show it in list view using stream builder and jamia id
@@ -533,6 +607,50 @@ class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
                     ),
                   ),
                 ))));
+  }
+
+  Future<void> _showAlertDialog() async {
+    print('object');
+    print(widget.data['id']);
+    print(widget.data['emailid']);
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('تحذير'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(' هل انت متأكد من رغبتك بحذف جمعية${widget.data['name']}'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text("تراجع"),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(foregroundColor: Colors.red),
+              child: const Text("حذف"),
+              onPressed: () {
+                if (mounted) {
+                  EasyLoading.showSuccess('تم الغاء الجمعية بنجاح');
+                  FirebaseFirestore.instance
+                      .collection('JamiaGroup')
+                      .doc(widget.data['id'])
+                      .delete();
+                  Navigator.pop(context);
+                }
+              },
+            )
+          ],
+        );
+      },
+    );
   }
 
   Future<bool> check() async {

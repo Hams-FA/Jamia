@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'dart:ui' as ui;
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cron/cron.dart';
@@ -14,6 +14,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'dart:ui' as ui;
+
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
