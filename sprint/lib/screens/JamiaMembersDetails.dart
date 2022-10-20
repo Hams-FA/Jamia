@@ -53,10 +53,10 @@ class _JamiaMembersDetailsState extends State<JamiaMembersDetails> {
             child: Scaffold(
               appBar: AppBar(
                   title: const Text(
-                    'تفاصيل الجمعية',
+                    '            تفاصيل الجمعية',
                     style: TextStyle(
                         fontSize: 25,
-                        color: Color(0xFF393737),
+                        color: ui.Color.fromARGB(255, 255, 255, 255),
                         fontWeight: FontWeight.bold),
                     textAlign: TextAlign.right,
                   ),
@@ -144,12 +144,12 @@ class _JamiaMembersDetailsState extends State<JamiaMembersDetails> {
                                                     children: [
                                                       Text('${data?['turn']}-'),
                                                       const SizedBox(width: 16),
-                                                      ProfilePicture(
+                                                      /*ProfilePicture(
                                                         name: '',
                                                         radius: 20,
                                                         fontsize: 20,
                                                         img: imageURL,
-                                                      ),
+                                                      ),*/
                                                       const SizedBox(width: 16),
                                                       RichText(
                                                         text: TextSpan(
@@ -218,46 +218,50 @@ class _JamiaMembersDetailsState extends State<JamiaMembersDetails> {
                                                   });
                                                   if (data.id !=
                                                       signedInUser.email) {
-                                                  return RatingBar.builder(
-                                                    initialRating: rating,
-                                                    minRating: 1,
-                                                    direction: Axis.horizontal,
-                                                    allowHalfRating: true,
-                                                    itemCount: 5,
-                                                    itemSize: 24,
-                                                    itemPadding:
-                                                        const EdgeInsets
-                                                                .symmetric(
-                                                            horizontal: 1.0),
-                                                    itemBuilder: (context, _) =>
-                                                        const Icon(
-                                                      Icons.star,
-                                                      color: Colors.amber,
-                                                    ),
-                                                    onRatingUpdate:
-                                                        (rating) async {
-                                                      await FirebaseFirestore
-                                                          .instance
-                                                          .collection('Ratings')
-                                                          .doc(
-                                                              '${widget.jamiaId}-${_auth.currentUser?.email}-${data.id}')
-                                                          .set({
-                                                        'jamia_id':
-                                                            widget.jamiaId,
-                                                        'rated_user': data.id,
-                                                        'rating_user': _auth
-                                                            .currentUser?.email,
-                                                        'rating': rating
-                                                      });
-                                                    },
-                                                  );
-                                                }
+                                                    return RatingBar.builder(
+                                                      initialRating: rating,
+                                                      minRating: 1,
+                                                      direction:
+                                                          Axis.horizontal,
+                                                      allowHalfRating: true,
+                                                      itemCount: 5,
+                                                      itemSize: 24,
+                                                      itemPadding:
+                                                          const EdgeInsets
+                                                                  .symmetric(
+                                                              horizontal: 1.0),
+                                                      itemBuilder:
+                                                          (context, _) =>
+                                                              const Icon(
+                                                        Icons.star,
+                                                        color: Colors.amber,
+                                                      ),
+                                                      onRatingUpdate:
+                                                          (rating) async {
+                                                        await FirebaseFirestore
+                                                            .instance
+                                                            .collection(
+                                                                'Ratings')
+                                                            .doc(
+                                                                '${widget.jamiaId}-${_auth.currentUser?.email}-${data.id}')
+                                                            .set({
+                                                          'jamia_id':
+                                                              widget.jamiaId,
+                                                          'rated_user': data.id,
+                                                          'rating_user': _auth
+                                                              .currentUser
+                                                              ?.email,
+                                                          'rating': rating
+                                                        });
+                                                      },
+                                                    );
+                                                  }
                                                 } else {
                                                   print("false");
                                                 }
 
                                                 return const Center(
-                                                  child: Text('يتم التحميل'),
+                                                  child: Text(' '),
                                                 );
                                               },
                                             ),

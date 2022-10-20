@@ -31,8 +31,7 @@ class FirebaseUserDetails extends StatefulWidget {
 class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
   final _auth = FirebaseAuth.instance;
   late User signedInUser;
-    late String? imageURL;
-
+  late String? imageURL;
 
   @override
   void initState() {
@@ -375,158 +374,166 @@ class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
                               return Text('');
                             }),
                           ),
-                          
 
                           ///////////////
                           // get members collection from firebase and show it in list view using stream builder and jamia id
                           SizedBox(
                             width: 20,
                           ),
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        margin: const EdgeInsets.all(10),
-                        //color: Colors.grey.shade200,
-                        child: Directionality(
-                          textDirection: ui.TextDirection.rtl,
-                          child: Row(
-                            children: [
-                              const Text(
-                                ' ترتيب أعضاء الجمعية',
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            margin: const EdgeInsets.all(10),
+                            //color: Colors.grey.shade200,
+                            child: Directionality(
+                              textDirection: ui.TextDirection.rtl,
+                              child: Row(
+                                children: [
+                                  const Text(
+                                    ' ترتيب أعضاء الجمعية',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                ],
                               ),
-                              SizedBox(
-                                width: 20,
-                              ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.all(10),
-                        color: Colors.grey.shade200,
-                        child: StreamBuilder(
-                          stream: FirebaseFirestore.instance
-                              .collection('JamiaGroup')
-                              .doc(widget.data['id'])
-                              .collection('members')
-                              .where('status', isEqualTo: 'accepted')
-                              .orderBy('turn')
-                              .snapshots(),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              print(snapshot);
-                              return ListView.builder(
-                                  // disable scroll
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: snapshot.data?.docs.length,
-                                  itemBuilder: (context, index) {
-                                    DocumentSnapshot data =
-                                        snapshot.data!.docs[index];
-                                    return Container(
-                                      // padding: const EdgeInsets.all(8),
-                                      margin: const EdgeInsets.all(10),
-                                      color: Colors.grey.shade200,
-                                      child: Directionality(
-                                        textDirection: ui.TextDirection.rtl,
-                                        child: Row(
-                                          children: [
-                                            FutureBuilder<String>(
-                                              future: FirebaseStorage.instance
-                                                  .ref()
-                                                  .child(
-                                                      'usersProfileImages/${data.id}')
-                                                  .getDownloadURL(),
-                                              builder: (BuildContext context,
-                                                  AsyncSnapshot<String>
-                                                      snapshot) {
-                                                if (snapshot.connectionState ==
-                                                        ConnectionState.done ||
-                                                    snapshot.data == null ||
-                                                    snapshot.hasError) {
-                                                  if (snapshot.data == null ||
-                                                      snapshot.hasError) {
-                                                    imageURL = null;
-                                                  } else {
-                                                    imageURL = snapshot.data;
-                                                  }
-                                                  return Row(
-                                                    children: [
-                                                      Text('${data['turn']}-'),
-                                                      const SizedBox(width: 16),
-                                                      ProfilePicture(
-                                                        name: '',
-                                                        radius: 20,
-                                                        fontsize: 20,
-                                                        img: imageURL,
-                                                      ),
-                                                      const SizedBox(width: 16),
-                                                      // Text(data['name'])
-                                                      // -- if you don't want this feature --
-                                                      // the line above will make it as before
-                                                      // and uncomment the line below
-                                                      RichText(
-                                                        text: TextSpan(
-                                                          style:
-                                                              const TextStyle(
-                                                            color: Colors.blue,
+                          Container(
+                            margin: const EdgeInsets.all(10),
+                            color: Colors.grey.shade200,
+                            child: StreamBuilder(
+                              stream: FirebaseFirestore.instance
+                                  .collection('JamiaGroup')
+                                  .doc(widget.data['id'])
+                                  .collection('members')
+                                  .where('status', isEqualTo: 'accepted')
+                                  .orderBy('turn')
+                                  .snapshots(),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  print(snapshot);
+                                  return ListView.builder(
+                                      // disable scroll
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: snapshot.data?.docs.length,
+                                      itemBuilder: (context, index) {
+                                        DocumentSnapshot data =
+                                            snapshot.data!.docs[index];
+                                        return Container(
+                                          // padding: const EdgeInsets.all(8),
+                                          margin: const EdgeInsets.all(10),
+                                          color: Colors.grey.shade200,
+                                          child: Directionality(
+                                            textDirection: ui.TextDirection.rtl,
+                                            child: Row(
+                                              children: [
+                                                FutureBuilder<String>(
+                                                  future: FirebaseStorage
+                                                      .instance
+                                                      .ref()
+                                                      .child(
+                                                          'usersProfileImages/${data.id}')
+                                                      .getDownloadURL(),
+                                                  builder:
+                                                      (BuildContext context,
+                                                          AsyncSnapshot<String>
+                                                              snapshot) {
+                                                    if (snapshot.connectionState ==
+                                                            ConnectionState
+                                                                .done ||
+                                                        snapshot.data == null ||
+                                                        snapshot.hasError) {
+                                                      if (snapshot.data ==
+                                                              null ||
+                                                          snapshot.hasError) {
+                                                        imageURL = null;
+                                                      } else {
+                                                        imageURL =
+                                                            snapshot.data;
+                                                      }
+                                                      return Row(
+                                                        children: [
+                                                          Text(
+                                                              '${data['turn']}-'),
+                                                          const SizedBox(
+                                                              width: 16),
+                                                          ProfilePicture(
+                                                            name: '',
+                                                            radius: 20,
+                                                            fontsize: 20,
+                                                            img: imageURL,
                                                           ),
-                                                          children: <TextSpan>[
-                                                            TextSpan(
-                                                                text: data.id ==
-                                                                        signedInUser
-                                                                            .email
-                                                                    ? 'انت'
-                                                                    : '${data['name']}',
-                                                                style:
-                                                                    const TextStyle(
-                                                                  color: Colors
-                                                                      .black,
-                                                                  decoration:
-                                                                      TextDecoration
-                                                                          .underline,
-                                                                ),
-                                                                recognizer:
-                                                                    TapGestureRecognizer()
-                                                                      ..onTap =
-                                                                          () {
-                                                                        Navigator.of(context).push(MaterialPageRoute(
-                                                                            builder: (context) =>
-                                                                                ViewFriendProfile(email: data.id)));
-                                                                      }),
-                                                          ],
-                                                        ),
-                                                      )
-                                                    ],
-                                                  );
-                                                }
+                                                          const SizedBox(
+                                                              width: 16),
+                                                          // Text(data['name'])
+                                                          // -- if you don't want this feature --
+                                                          // the line above will make it as before
+                                                          // and uncomment the line below
+                                                          RichText(
+                                                            text: TextSpan(
+                                                              style:
+                                                                  const TextStyle(
+                                                                color:
+                                                                    Colors.blue,
+                                                              ),
+                                                              children: <
+                                                                  TextSpan>[
+                                                                TextSpan(
+                                                                    text: data.id ==
+                                                                            signedInUser
+                                                                                .email
+                                                                        ? 'انت'
+                                                                        : '${data['name']}',
+                                                                    style:
+                                                                        const TextStyle(
+                                                                      color: Colors
+                                                                          .black,
+                                                                      decoration:
+                                                                          TextDecoration
+                                                                              .underline,
+                                                                    ),
+                                                                    recognizer:
+                                                                        TapGestureRecognizer()
+                                                                          ..onTap =
+                                                                              () {
+                                                                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => ViewFriendProfile(email: data.id)));
+                                                                          }),
+                                                              ],
+                                                            ),
+                                                          )
+                                                        ],
+                                                      );
+                                                    }
 
-                                                return const Center(
-                                                  child: Text('يتم التحميل'),
-                                                );
-                                              },
+                                                    return const Center(
+                                                      child:
+                                                          Text('يتم التحميل'),
+                                                    );
+                                                  },
+                                                ),
+                                              ],
                                             ),
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  });
-                            } else {
-                              return const Center(
-                                  child: CircularProgressIndicator());
-                            }
-                          },
-                        ),
+                                          ),
+                                        );
+                                      });
+                                } else {
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                }
+                              },
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            ))));
+                ))));
   }
-            
-  
 
   Future<bool> check() async {
     var max;
