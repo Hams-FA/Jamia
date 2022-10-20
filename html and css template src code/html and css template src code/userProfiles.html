@@ -118,13 +118,13 @@
 
     var tbody = document.getElementById('tbody');
     
-    function addUserItemToTable(fname,lname,email,NID,PhoneNO,age,bankName,IBAN){
+    function addUserItemToTable(fname,lname,email,NID,PhoneNO,birthDate,bankName,IBAN){
 
         var trow = document.createElement('tr');
         var td1 = document.createElement('td');
         var td2 = document.createElement('td');
         td2.innerHTML = fname+' '+lname;
-        td1.innerHTML = email+' :البريد الالكتروني '+'<br>'+' رقم الهوية: '+NID+'<br>'+' رقم الجوال: '+PhoneNO+'<br>'+' العمر: '+age+'<br>'+bankName+' :اسم البنك '+'<br>'+IBAN+' :الايبان ';
+        td1.innerHTML = email+' :البريد الالكتروني '+'<br>'+' رقم الهوية: '+NID+'<br>'+' رقم الجوال: '+PhoneNO+'<br>'+' العمر: '+birthDate+'<br>'+bankName+' :اسم البنك '+'<br>'+IBAN+' :الايبان ';
         // +'<br>'+'StripeLink: '+_stripeLink;
         
         
@@ -155,7 +155,7 @@
             tbody.innerHTML = '';
             userDocsList.forEach(element => {
                 
-            addUserItemToTable(element.fname,element.lname,element.Email,element.NID,element.PhoneNO,element.age,element.bankName,element.IBAN)
+            addUserItemToTable(element.fname,element.lname,element.Email,element.NID,element.PhoneNO,element.birthDate,element.bankName,element.IBAN)
         });
         ++lengthOfUsers;
         
