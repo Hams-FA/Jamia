@@ -374,7 +374,7 @@ class _FormPageState extends State<FormPage> {
                     minMembers: minMembers,
                     maxMembers: maxMembers,
                     // week: week,
-                    amount: amount,
+                    amount: amount.round(),
                     startDate: startDate,
                     //.toString(),
                     //formatedStartDate,
