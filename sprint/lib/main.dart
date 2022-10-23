@@ -71,6 +71,19 @@ Future<void> main() async {
     ));
   });
 
+  cron.schedule(Schedule.parse('30 8 2 * *'), () async {
+    print('notification budget');
+
+    await AwesomeNotifications().createNotification(
+        content: NotificationContent(
+      id: 2,
+      channelKey: 'key1',
+      title: 'تفكر تنظم ميزانيتك وترتب شؤونك المالية؟',
+      body:
+          'تطبيقنا يساعدك تنشئ ميزانية بالأقسام اللي تحتاجها والنسب اللي تبغاها',
+    ));
+  });
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
