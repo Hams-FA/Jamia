@@ -52,6 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
     paymetnNotificationCheck();
     pastJamiah = getPastJamiah();
+    checkUserStatus();
   }
 
   final auth = FirebaseAuth.instance;
@@ -432,5 +433,24 @@ class _MyHomePageState extends State<MyHomePage> {
     //print(task27.toString());
     task1?.cancel();
     task27?.cancel();
+  }
+
+//need testing!!
+  void checkUserStatus() {
+    final cron = Cron();
+    //every day?
+    cron.schedule(Schedule.parse('*/1 * * * *'), () async {
+      print('Check user\'s status');
+      final stauts = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(signedInUser.email)
+          .get();
+      if (stauts['status'] == 1) {
+        await _auth.signOut();
+        if (mounted) {
+          Navigator.pushNamed(context, '/login');
+        }
+      }
+    });
   }
 }
