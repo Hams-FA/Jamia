@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "585806474023",
+    "project_id": "jamia-2bcc1",
+    "storage_bucket": "jamia-2bcc1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:585806474023:android:ec595ecc429df5314c1702",
+        "android_client_info": {
+          "package_name": "com.example.sprint"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "585806474023-87fnpkl987gjg3aoqvcmf4d845a116dv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4XvaOSJyztap5bQQWau-_kS-nu2MKR7o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "585806474023-87fnpkl987gjg3aoqvcmf4d845a116dv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
