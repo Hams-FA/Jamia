@@ -1,10 +1,13 @@
+import 'dart:convert';
 import 'dart:ui' as ui;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:sprint/screens/JamiaMembersDetails.dart';
 import 'package:sprint/screens/form.dart';
+import 'package:http/http.dart' as http;
 
 class JamiaHistory4 extends StatefulWidget {
   const JamiaHistory4({super.key});
@@ -14,6 +17,37 @@ class JamiaHistory4 extends StatefulWidget {
 }
 
 class _JamiaHistory4State extends State<JamiaHistory4> {
+  void sendPushMessage(String body, String title, String token) async {
+    try {
+      await http.post(
+        Uri.parse('https://fcm.googleapis.com/fcm/send'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization':
+              'key=AAAAiGTJayc:APA91bH8EQZpQtqKV_w9cYujZcxgl0HBCnYlN3xrYSfGWO1sOqKM2953gpAixiOBbEEhr4hm3RSZ4a0BXcZjmXMLZYFQazN26vAhiZFE7VL54Hx4fVyB6GGjvafVOLcP3wiG30ccJ4zK',
+        },
+        body: jsonEncode(
+          <String, dynamic>{
+            'notification': <String, dynamic>{
+              'body': body,
+              'title': title,
+            },
+            'priority': 'high',
+            'data': <String, dynamic>{
+              'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+              'id': '1',
+              'status': 'done'
+            },
+            "to": token,
+          },
+        ),
+      );
+      print('done');
+    } catch (e) {
+      print("error push notification");
+    }
+  }
+
   late List<QueryDocumentSnapshot> pastJamiah;
   bool _isLoading = true;
   @override
@@ -60,6 +94,9 @@ class _JamiaHistory4State extends State<JamiaHistory4> {
 
   @override
   Widget build(BuildContext context) {
+    //List<String> selectedEmails = List<String>.empty(growable: true);
+    late List<QueryDocumentSnapshot> selectedEmails = [];
+
     bool visibilityController = true;
     return Directionality(
       textDirection: ui.TextDirection.rtl,
@@ -89,31 +126,183 @@ class _JamiaHistory4State extends State<JamiaHistory4> {
                   )
                 : ListView(
                     children: pastJamiah.map((reqt) {
+                      showAlertDialog(BuildContext context) {
+                        // set up the buttons
+                        Widget cancelButton = TextButton(
+                          style: TextButton.styleFrom(
+                              foregroundColor:
+                                  ui.Color.fromARGB(255, 87, 85, 85)),
+                          child: Text("تراجع"),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        );
+                        Widget continueButton = TextButton(
+                            style: TextButton.styleFrom(
+                                foregroundColor: Colors.green),
+                            child: Text("تأكيد"),
+                            onPressed:
+                                //Navigator.pop(context);
+
+                                () async {
+                              await FirebaseFirestore.instance
+                                  .collection('JamiaGroup')
+                                  .doc(reqt.id)
+                                  .update({
+                                'startDate': DateTime.now(),
+                                'endDate': DateTime.now()
+                                    .add(const Duration(days: 30)),
+                                'acceptedCount': 1,
+                                'JamiaTrun': 1
+                              });
+                              await FirebaseFirestore.instance
+                                  .collection('JamiaGroup')
+                                  .doc(reqt.id)
+                                  .collection('members')
+                                  .get()
+                                  .then(
+                                (value) {
+                                  value.docs.forEach((member) {
+                                    if (member.id != reqt.get("emailid")) {
+                                      selectedEmails.add(member);
+                                    }
+                                  });
+                                  print("selectedEmails: is --->  ");
+                                  print(selectedEmails);
+                                  selectedEmails.forEach((element) async {
+                                    final docInviteFriends = FirebaseFirestore
+                                        .instance
+                                        .collection('JamiaGroup')
+                                        .doc(reqt.id)
+                                        .collection('members');
+                                    docInviteFriends
+                                        .doc(element.id)
+                                        .set({'status': 'pending'});
+                                    final docSnapshot = await FirebaseFirestore
+                                        .instance
+                                        .collection("requestList")
+                                        .add({
+                                      'email': element.id,
+                                      'jamiaID': reqt.id
+                                    });
+                                    FirebaseFirestore.instance
+                                        .collection('JamiaGroup')
+                                        .doc(reqt.id)
+                                        .collection('transaction')
+                                        .get()
+                                        .then((QuerySnapshot querySnapshot) {
+                                      querySnapshot.docs.forEach((doc) {
+                                        doc.reference.delete();
+                                      });
+                                    });
+                                    FirebaseFirestore.instance
+                                        .collection('JamiaGroup')
+                                        .doc(reqt.id)
+                                        .collection('members')
+                                        .doc(FirebaseAuth
+                                            .instance.currentUser!.email)
+                                        .update({
+                                      'name': FirebaseAuth
+                                          .instance.currentUser!.email,
+                                      'turn': 1,
+                                      'status': 'accepted',
+                                      'date': DateTime.now(),
+                                    });
+                                    FirebaseFirestore.instance
+                                        .collection('tokens')
+                                        .where('userID', isEqualTo: element)
+                                        .limit(1)
+                                        .get()
+                                        .then((value) {
+                                      final tokens = value.docs;
+                                      tokens.forEach((e) {
+                                        sendPushMessage(
+                                            'انقر لمراجعتها الان',
+                                            '!لقد تمت دعوتك لتجديد جمعية سابقة',
+                                            e.get('token'));
+                                      });
+                                    });
+                                  });
+                                  if (mounted) {
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                    EasyLoading.dismiss();
+                                    EasyLoading.showSuccess(
+                                        'تمت اعادة الجمعية والدعوة لها من جديد بنجاح');
+                                  } else {
+                                    EasyLoading.dismiss();
+                                    EasyLoading.showError(
+                                        'حدث خطأ الرجاء المحاولة مرة اخرى');
+                                  }
+                                },
+
+                                //Navigator.pop(context);
+                              );
+                            });
+                        // set up the AlertDialog
+                        AlertDialog alert = AlertDialog(
+                          title: Text("إعادة بدء الجمعية"),
+                          content:
+                              Text(" هل أنت متأكد من رغبتك في إعادة بدء جمعية"
+                                      "       من جديد؟( " +
+                                  reqt.get('name') +
+                                  " ) "),
+                          actions: [
+                            cancelButton,
+                            continueButton,
+                          ],
+                        );
+                        // show the dialog
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return alert;
+                          },
+                        );
+                      }
+
                       return Card(
-                        child: ListTile(
-                          title: Text(reqt.get('name')),
-                          leading: CircleAvatar(
-                              backgroundColor: Color(0xFF0F7C0D),
-                              child: Image.asset('images/logo.jpg')),
-                          subtitle: Text(
-                              " لمعرفة المزيد من التفاصيل وتقييم اعضاء الجمعية "),
-                          trailing: TextButton(
-                            onPressed: () async {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => JamiaMembersDetails(
-                                          data: reqt.data()
-                                              as Map<String, dynamic>,
-                                          jamiaId: reqt.id)));
-                            },
-                            child: const Text('انقر هنا!!',
-                                style: const TextStyle(
-                                    decoration: TextDecoration.underline,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "Montsterrat Classic",
-                                    color: Color(0xFF545454))),
-                          ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            ListTile(
+                              title: Text(reqt.get('name')),
+                              leading: CircleAvatar(
+                                  backgroundColor: Color(0xFF0F7C0D),
+                                  child: Image.asset('images/logo.jpg')),
+                              subtitle: Text(
+                                  " هل تريد معرفة التفاصيل وتقييم اعضاء الجمعية !!"),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.visibility),
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                JamiaMembersDetails(
+                                                    data: reqt.data()
+                                                        as Map<String, dynamic>,
+                                                    jamiaId: reqt.id)));
+                                  },
+                                ),
+                                IconButton(
+                                  icon: const Icon(Icons.restart_alt),
+                                  onPressed: () {
+                                    reqt.get('emailid') ==
+                                            FirebaseAuth
+                                                .instance.currentUser!.email
+                                        ? showAlertDialog(context)
+                                        : EasyLoading.showError(
+                                            "لا تملك صلاحية اعادة بدء هذه الجمعية ,الرجاء الطلب من منشئ الجمعية اعادة بدئها من حسابة !!");
+                                  },
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       );
                     }).toList(),

@@ -37,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Container(
                   child: Image.asset('images/logo.jpg'),
                   width: 350,
-                  height: 350,
+                  height: 300,
                 ),
                 const Text(
                   " مرحباً بك في تطبيق جمعية",
@@ -150,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 4),
                 MyButton(
                   color: Colors.green,
                   title: 'تسجيل الدخول',
