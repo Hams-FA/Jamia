@@ -30,6 +30,7 @@ class _MyHomePageState extends State<MyHomePage> {
   late List<QueryDocumentSnapshot> pastJamiah;
   bool _isLoading = true;
   final _auth = FirebaseAuth.instance;
+  bool loggedin = false;
   late User signedInUser;
   final cron1 = Cron();
   final cron27 = Cron();
@@ -95,6 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
       final user = _auth.currentUser;
       if (user != null) {
         signedInUser = user;
+        loggedin = true;
       }
     } catch (e) {
       EasyLoading.showError("حدث خطأ ما ....");
@@ -437,18 +439,32 @@ class _MyHomePageState extends State<MyHomePage> {
 
 //need testing!!
   void checkUserStatus() {
+    bool sent = false;
     final cron = Cron();
     //every day?
-    cron.schedule(Schedule.parse('*/1 * * * *'), () async {
+    cron.schedule(Schedule.parse('*/5 * * * * *'), () async {
       print('Check user\'s status');
       final stauts = await FirebaseFirestore.instance
           .collection('users')
           .doc(signedInUser.email)
           .get();
-      if (stauts['status'] == 1) {
+      print(stauts.get('status'));
+      if (stauts.get('status') == 1 && loggedin) {
+        loggedin = false;
+        print('log out');
         await _auth.signOut();
         if (mounted) {
           Navigator.pushNamed(context, '/login');
+        }
+        if (!sent) {
+          await AwesomeNotifications().createNotification(
+              content: NotificationContent(
+            id: 2,
+            channelKey: 'key1',
+            title: 'تم إيقاف حسابك',
+            body: 'بإمكانك التواصل معنا لمعرفة التفاصيل',
+          ));
+          sent = true;
         }
       }
     });
