@@ -43,10 +43,10 @@
                     <a href="JamiaDetails.html" class="nav-link">جمعيات </a>
                 </li>
                 <li class="nav-item">
-                    <a href="jamias.html" class="nav-link">االتحويل الشهري</a>
+                    <a href="jamias.html" class="nav-link">التحويل الشهري</a>
                 </li>
                 <li class="nav-item">
-                    <a href="userProfiles.html" class="nav-link">الأشخاص</a>
+                    <a href="userProfiles.html" class="nav-link">المستخدمين</a>
                 </li>
                 <li class="nav-item">
                     <a href="activation.html" class="nav-link">إدارة المستخدمين</a>
@@ -55,7 +55,16 @@
             </div>
             </div>
           </nav>
-
+		  <div class="container-xl d-flex justify-content-center align-items-center pt-3">
+			<div class="input-group mb-3">
+				<button class="btn btn-success" type="button" id="searchBtn">ابحث</button>
+				<select  id="option" class="form-select form-select-sm" aria-label=".form-select-sm example">
+					<option value="1">الاسم</option>
+					<option value="2">البريد الالكتروني</option>
+				  </select>
+				<input type="text" class="form-control" id="searchBar" placeholder="البحث عن طريق البريد الالكتروني أو الاسم" aria-label="Search using Name or Email">
+			  </div>
+		  </div>
 	<div class="container-xl d-flex justify-content-center align-items-center p-5">
 		<div class="table-wrapper">
 			<div class="table-title">
@@ -267,7 +276,9 @@ signOut(auth).then(() => {
 
 			// row.setAttribute('data-email', JSON.stringify(frankDocRef));
 			cell3.innerHTML = " " + doc1.data().fname + " " + doc1.data().lname;
+			cell3.classList += 'name';
 			cell2.innerHTML =  doc1.data().Email;
+			cell2.classList += 'email';
 			if (nowstatus == 1) {
 
 				cell1.innerHTML = '<button style="background-color: green;" class="  btn btn-success addData" ><b>تفعيل</b></button>';
@@ -381,6 +392,42 @@ signOut(auth).then(() => {
 			// 	updateDoc(doc, { "status": 1 });
 
 			// }
+			
+			
+			
+			searchBar.onkeyup =  function searchData(){
+
+				var searchBtn = document.getElementById('searchBtn');
+				var searchBar = document.getElementById('searchBar');
+				
+				var filter = searchBar.value.toUpperCase();
+				var tbody = document.getElementById('t');
+				var tr = tbody.getElementsByTagName('tr');
+				var category = document.getElementById('option');
+				
+				
+				for (let i = 0; i < tr.length; i++) {
+					if(category.options.selectedIndex == 0){
+						var td = tr[i].getElementsByTagName('td')[2];
+					}
+					else{
+						var td = tr[i].getElementsByTagName('td')[1];
+					}
+					
+					console.log(td);
+					if(td){
+						let textValue = td.textContent || td.innerHTML;
+
+						if(textValue.toUpperCase().indexOf(filter)> -1){
+							tr[i].style.display = '';
+						}
+						else{
+							tr[i].style.display = 'none';
+						}
+					}
+				}
+			}
+			  
 	</script>
 	// <script>
 	// 	function myFunction() {
