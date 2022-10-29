@@ -43,21 +43,24 @@
                 <li style = "float: right; "class="nav-item">
                     <a href="#" class="nav-link">الدفع</a>
                 </li>
-                <li style = "float: right"class="nav-item">
-                    <form id="form" role="search">
-                        <input type="search" id="query" name="q"
-                         placeholder="ابحث"
-                         aria-label="Search through site content">
-                        <button>بحث</button>
-                      </form>
-            </li>
+                
                 </ul>
             </div>
             </div>
           </nav>
-
-            <div style="text-align: center; " class="container-xl d-flex justify-content-center align-items-center p-5">
-                <div style="text-align: center; "  class="table-wrapper">
+          <div class="container-xl d-flex justify-content-center align-items-center pt-3">
+			<div class="input-group mb-3">
+				<button class="btn btn-success" type="button" id="searchBtn">ابحث</button>
+				<select  id="option" class="form-select form-select-sm" aria-label=".form-select-sm example">
+					<option value="1">الاسم</option>
+					<option value="2">البريد الالكتروني</option>
+                    <option value="3">رقم الهوية</option>
+				  </select>
+				<input type="text" class="form-control" id="searchBar" placeholder="البحث عن طريق الاسم، البريد الالكتروني، أو رقم الهوية" aria-label="Search using Name or Email">
+			  </div>
+		  </div>
+            <div class="container d-flex justify-content-center align-items-center p-5">
+                <div style="text-align: center;"  class="">
                     <div style="text-align: center; "  class="table-title">
                         <div style="text-align: center; "  class="row">
                             <div style="text-align: center; " class="col-sm-6">
@@ -66,9 +69,15 @@
                         </div>
                     </div>
             
-            <table id="t" class="table table-striped table-hover">
+            <table id="t" class="table table-wrapper table-hover">
 
-                <td> التفاصيل</td>
+               <!-- <td> التفاصيل</td> -->
+               <td> الايبان</td>
+               <td> اسم البنك</td>
+               <td> العمر</td>
+               <td> رقم الجوال</td>
+               <td> رقم الهوية</td>
+               <td> البريد الالكتروني</td>
                <td > الاسم </td>
               </tr>
             
@@ -129,19 +138,37 @@
 
     var tbody = document.getElementById('tbody');
     
-    function addUserItemToTable(fname,lname,email,NID,PhoneNO,age,bankName,IBAN){
+    function addUserItemToTable(fname,lname,email,NID,PhoneNO,birthDate,bankName,IBAN){
 
         var trow = document.createElement('tr');
         var td1 = document.createElement('td');
         var td2 = document.createElement('td');
-        td2.innerHTML = fname+' '+lname;
-        td1.innerHTML = email+' :البريد الالكتروني '+'<br>'+' رقم الهوية: '+NID+'<br>'+' رقم الجوال: '+PhoneNO+'<br>'+' العمر: '+age+'<br>'+bankName+' :اسم البنك '+'<br>'+IBAN+' :الايبان ';
+        var td3 = document.createElement('td');
+        var td4 = document.createElement('td');
+        var td5 = document.createElement('td');
+        var td6 = document.createElement('td');
+        var td7 = document.createElement('td');
+        var td8 = document.createElement('td');
+        td8.innerHTML = fname+' '+lname;
+        td7.innerHTML = email;
+        td6.innerHTML = NID;
+        td5.innerHTML = PhoneNO;
+        td4.innerHTML = birthDate;
+        td3.innerHTML = bankName;
+        td2.innerHTML = IBAN;
+        //td1.innerHTML = email+' :البريد الالكتروني '+'<br>'+' رقم الهوية: '+NID+'<br>'+' رقم الجوال: '+PhoneNO+'<br>'+' العمر: '+age+'<br>'+bankName+' :اسم البنك '+'<br>'+IBAN+' :الايبان ';
         // +'<br>'+'StripeLink: '+_stripeLink;
         
         
 
-        trow.appendChild(td1);
+        //trow.appendChild(td1);
         trow.appendChild(td2);
+        trow.appendChild(td3);
+        trow.appendChild(td4);
+        trow.appendChild(td5);
+        trow.appendChild(td6);
+        trow.appendChild(td7);
+        trow.appendChild(td8);
 
         tbody.appendChild(trow);
     }
@@ -166,7 +193,7 @@
             tbody.innerHTML = '';
             userDocsList.forEach(element => {
                 
-            addUserItemToTable(element.fname,element.lname,element.Email,element.NID,element.PhoneNO,element.age,element.bankName,element.IBAN)
+            addUserItemToTable(element.fname,element.lname,element.Email,element.NID,element.PhoneNO,element.birthDate,element.bankName,element.IBAN)
         });
         ++lengthOfUsers;
         
@@ -197,6 +224,41 @@
     
     });
   
+    searchBar.onkeyup =  function searchData(){
+
+var searchBtn = document.getElementById('searchBtn');
+var searchBar = document.getElementById('searchBar');
+
+var filter = searchBar.value.toUpperCase();
+var tbody = document.getElementById('t');
+var tr = tbody.getElementsByTagName('tr');
+var category = document.getElementById('option');
+
+
+for (let i = 0; i < tr.length; i++) {
+    if(category.options.selectedIndex == 2){
+        var td = tr[i].getElementsByTagName('td')[4];
+    }
+    else if(category.options.selectedIndex == 1){
+        var td = tr[i].getElementsByTagName('td')[5];
+    }
+    else{
+        var td = tr[i].getElementsByTagName('td')[6];
+    }
+    
+    console.log(td);
+    if(td){
+        let textValue = td.textContent || td.innerHTML;
+
+        if(textValue.toUpperCase().indexOf(filter)> -1){
+            tr[i].style.display = '';
+        }
+        else{
+            tr[i].style.display = 'none';
+        }
+    }
+}
+}
     
         </script>
     
