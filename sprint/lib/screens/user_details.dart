@@ -329,7 +329,8 @@ class _UserDetailsState extends State<UserDetails> {
       'endDate': endDate,
       'id': docUser.id,
       'emailid': signedInUser.email,
-      'acceptedCount': 1
+      'acceptedCount': 1,
+      'JamiaTrun': 1
     };
 
     await docUser.set(json);

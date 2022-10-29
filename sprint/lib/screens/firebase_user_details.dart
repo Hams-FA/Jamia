@@ -498,10 +498,19 @@ class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
                                       itemBuilder: (context, index) {
                                         DocumentSnapshot data =
                                             snapshot.data!.docs[index];
+                                        print('hee');
+                                        print(data.data()); //
+                                        print(widget.data['JamiaTrun']);
                                         return Container(
                                           // padding: const EdgeInsets.all(8),
-                                          margin: const EdgeInsets.all(10),
-                                          color: Colors.grey.shade200,
+                                          //margin: const EdgeInsets.all(10),
+                                          //Color.fromARGB(255, 193, 226, 183)
+                                          color: (data['turn'] ==
+                                                  widget.data['JamiaTrun'])
+                                              ? Color.fromARGB(
+                                                  255, 182, 214, 173)
+                                              : Colors.grey.shade200,
+                                          //Colors.grey.shade200,
                                           child: Directionality(
                                             textDirection: ui.TextDirection.rtl,
                                             child: Row(

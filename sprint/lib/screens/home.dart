@@ -443,12 +443,12 @@ class _MyHomePageState extends State<MyHomePage> {
     final cron = Cron();
     //every day?
     cron.schedule(Schedule.parse('*/5 * * * * *'), () async {
-      print('Check user\'s status');
+      //print('Check user\'s status');
       final stauts = await FirebaseFirestore.instance
           .collection('users')
           .doc(signedInUser.email)
           .get();
-      print(stauts.get('status'));
+      //print(stauts.get('status'));
       if (stauts.get('status') == 1 && loggedin) {
         loggedin = false;
         print('log out');
