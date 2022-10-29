@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link href="style1.css" rel="stylesheet" type="text/css">
+    <style>
+        body {background-color :#c7d4c0;}
+        #logo { float:right; margin:0; width:5%; height: 5%;}
+        #navlist { float: left; }
+    </style>
+    <title>جمعيات</title>
+    <link rel="shortcut icon" href="logo3.jpg">
+</head>
+<body style="text-align: center;">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <img id="logo" src="logo3.jpg">
+        <div class="container">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul id = "navlist" class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a href="" class="nav-link" id="logout">تسجيل خروج </a>
+                </li>
+                <li class="nav-item">
+                    <a href="JamiaDetails.html" class="nav-link">جمعيات </a>
+                </li>
+                    <li class="nav-item">
+                    <a href="jamias.html" class="nav-link">التحويل الشهري</a>
+                </li>
+                <li class="nav-item">
+                    <a href="userProfiles.html" class="nav-link">المستخدمين</a>
+                </li>
+                <li class="nav-item">
+                    <a href="activation.html" class="nav-link">إدارة المستخدمين</a>
+                </li>
+                <li style = "float: right; "class="nav-item">
+                    <a href="#" class="nav-link">الدفع</a>
+                </li>
+                <li style = "float: right"class="nav-item">
+                    <form id="form" role="search">
+                        <input type="search" id="query" name="q"
+                         placeholder="ابحث"
+                         aria-label="Search through site content">
+                        <button>بحث</button>
+                      </form>
+            </li>
+                </ul>
+            </div>
+            </div>
+          </nav>
+
+            <div style="text-align: center; " class="container-xl d-flex justify-content-center align-items-center p-5">
+                <div style="text-align: center; "  class="table-wrapper">
+                    <div style="text-align: center; "  class="table-title">
+                        <div style="text-align: center; "  class="row">
+                            <div style="text-align: center; " class="col-sm-6">
+                                <h2 style="text-align: center; ">الأشخاص</h2>
+                            </div>
+                        </div>
+                    </div>
+            
+            <table id="t" class="table table-striped table-hover">
+             <tr class="hovertr">  
+               <td> التفاصيل</td>
+               <td > اسم الجمعية</td>
+             </tr>
+             
+                <tbody id="tbody"></tbody>
+         </table>
+ 
+         
+
+           <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-firestore.js"></script>
+        <script id="MainScript">
+
+        
+        
+        var users = [];
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyAPD2rLWY3Nvbs3cW19-SkCQ7NtfeIr_xk",
+            authDomain: "jamia-2bcc1.firebaseapp.com",
+            projectId: "jamia-2bcc1",
+            storageBucket: "jamia-2bcc1.appspot.com",
+            messagingSenderId: "585806474023",
+            appId: "1:585806474023:web:1eb6cd2f2a2166704c1702",
+            measurementId: "G-0GXW0ST5VC"
+        };
+        firebase.initializeApp(firebaseConfig);
+    let db = firebase.firestore();
+    
+    
+    function realtimeChanges(){
+            
+            db.collection('JamiaGroup').onSnapshot((querySnapshot)=>{
+                
+                querySnapshot.forEach(doc => {
+                    users.push(doc.data());
+                    addAllUserItemToTable(users);
+                    
+                });
+            });
+            
+    }
+
+    var tbody = document.getElementById('tbody');
+    
+    function addUserItemToTable(name,acceptedCount,amount,startDate,id,maxMembers){
+        
+        
+        var trow = document.createElement('tr');
+        
+        var td1 = document.createElement('td');
+        var td2 = document.createElement('td');
+        startDate.getYear;
+        td2.innerHTML = name;
+        td1.innerHTML = 'عدد الأعضاء: '+acceptedCount+'<br>'+'السهم: '+amount+'<br>'+startDate.toDate()+' :تاريخ البدء '+'<br>'+id +' :رقم المجموعة '+'<br>';// + 'الاعضاء: '+maxMembers;
+        
+        
+        
+        
+
+        trow.appendChild(td1);
+        trow.appendChild(td2);
+
+        tbody.appendChild(trow);
+    }
+    
+    
+
+    function addAllUserItemToTable(userDocsList){
+        
+            tbody.innerHTML = '';
+            userDocsList.forEach(element => {
+                
+            addUserItemToTable(element.name,element.acceptedCount,element.amount,element.startDate,element.id,element.maxMembers)
+        });
+    }
+
+    window.onload = realtimeChanges;
+        </script>
+        <script type="module">
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/9.11.0/firebase-app.js";
+    import { getDatabase } from "https://www.gstatic.com/firebasejs/9.11.0/firebase-database.js";
+    import { getAuth, signInWithEmailAndPassword ,signOut,onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.11.0/firebase-auth.js";
+    
+    
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+    const auth = getAuth(app);
+
+    document.getElementById("logout").addEventListener('click', function(){
+    signOut(auth).then(() => {
+      // Sign-out successful.
+          //alert("لقد تم تسجيل خروجك بنجاح!");
+          location.replace("login.html");
+    
+    }).catch((error) => {
+        console.log('Error singing in, ',error.message);
+        alert("حدث خطأ!! حاول مرة اخرى");
+    });
+    
+    });
+  
+    
+        </script>
+</body>
+</html>
