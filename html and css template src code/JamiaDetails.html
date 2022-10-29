@@ -41,32 +41,37 @@
                 <li style = "float: right; "class="nav-item">
                     <a href="#" class="nav-link">الدفع</a>
                 </li>
-                <li style = "float: right"class="nav-item">
-                    <form id="form" role="search">
-                        <input type="search" id="query" name="q"
-                         placeholder="ابحث"
-                         aria-label="Search through site content">
-                        <button>بحث</button>
-                      </form>
-            </li>
+                
                 </ul>
             </div>
             </div>
           </nav>
 
+          <div class="input-group mb-3">
+            <button class="btn btn-success" type="button" id="searchBtn">ابحث</button>
+            <select  id="option" class="form-select form-select-sm" aria-label=".form-select-sm example">
+                <option value="1">اسم الجمعية</option>
+					<option value="2"> رقم الجمعية</option>
+              </select>
+            <input type="text" class="form-control" id="searchBar" placeholder="البحث عن طريق اسم الجمعية أو رقم الجمعية " aria-label="Search using Name or Email">
+          </div>
             <div style="text-align: center; " class="container-xl d-flex justify-content-center align-items-center p-5">
                 <div style="text-align: center; "  class="table-wrapper">
                     <div style="text-align: center; "  class="table-title">
                         <div style="text-align: center; "  class="row">
                             <div style="text-align: center; " class="col-sm-6">
-                                <h2 style="text-align: center; ">الأشخاص</h2>
+                                <h2 style="text-align: center; ">الجمعيات</h2>
                             </div>
                         </div>
                     </div>
             
             <table id="t" class="table table-striped table-hover">
              <tr class="hovertr">  
-               <td> التفاصيل</td>
+              
+               <td> رقم الجمعية</td>
+               <td> تاريخ بدء الجمعية</td>
+               <td> السهم الشهري</td>
+               <td> عدد الأعضاء</td>
                <td > اسم الجمعية</td>
              </tr>
              
@@ -117,18 +122,31 @@
         
         var trow = document.createElement('tr');
         
-        var td1 = document.createElement('td');
+        //var td1 = document.createElement('td');
         var td2 = document.createElement('td');
-        startDate.getYear;
-        td2.innerHTML = name;
-        td1.innerHTML = 'عدد الأعضاء: '+acceptedCount+'<br>'+'السهم: '+amount+'<br>'+startDate.toDate()+' :تاريخ البدء '+'<br>'+id +' :رقم المجموعة '+'<br>';// + 'الاعضاء: '+maxMembers;
+        var td3 = document.createElement('td');
+        var td4 = document.createElement('td');
+        var td5 = document.createElement('td');
+        var td6 = document.createElement('td');
+        
+        
+        td6.innerHTML = name;
+        td5.innerHTML = acceptedCount;
+        td4.innerHTML = amount
+        td3.innerHTML = startDate.toDate().toDateString();
+        td2.innerHTML = id;
+        //td1.innerHTML = 'عدد الأعضاء: '+acceptedCount+'<br>'+'السهم: '+amount+'<br>'+startDate.toDate()+' :تاريخ البدء '+'<br>'+id +' :رقم المجموعة '+'<br>';// + 'الاعضاء: '+maxMembers;
         
         
         
         
 
-        trow.appendChild(td1);
+        //trow.appendChild(td1);
         trow.appendChild(td2);
+        trow.appendChild(td3);
+        trow.appendChild(td4);
+        trow.appendChild(td5);
+        trow.appendChild(td6);
 
         tbody.appendChild(trow);
     }
@@ -168,7 +186,39 @@
     });
     
     });
-  
+
+    searchBar.onkeyup =  function searchData(){
+
+var searchBtn = document.getElementById('searchBtn');
+var searchBar = document.getElementById('searchBar');
+
+var filter = searchBar.value.toUpperCase();
+var tbody = document.getElementById('t');
+var tr = tbody.getElementsByTagName('tr');
+var category = document.getElementById('option');
+
+
+for (let i = 0; i < tr.length; i++) {
+    if(category.options.selectedIndex == 1){
+        var td = tr[i].getElementsByTagName('td')[0];
+    }
+    else{
+        var td = tr[i].getElementsByTagName('td')[4];
+    }
+    
+    console.log(td);
+    if(td){
+        let textValue = td.textContent || td.innerHTML;
+
+        if(textValue.toUpperCase().indexOf(filter)> -1){
+            tr[i].style.display = '';
+        }
+        else{
+            tr[i].style.display = 'none';
+        }
+    }
+}
+}
     
         </script>
 </body>
