@@ -143,6 +143,32 @@ class _MyHomePageState extends State<MyHomePage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
+                                DateTime.now().isBefore(
+                                        reqt.get('startDate').toDate())
+                                    ? Column(
+                                        children: [
+                                          GestureDetector(
+                                              onTap: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            inviteFriends(
+                                                                data: reqt)));
+                                              },
+                                              child: const Icon(
+                                                Icons.person_add_alt,
+                                                color: Color(0xFF545454),
+                                              )),
+                                          const Text('   ادعو اصدقائك    ',
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontFamily:
+                                                      "Montsterrat Classic",
+                                                  color: Color(0xFF545454))),
+                                        ],
+                                      )
+                                    : Container(),
                                 Column(children: [
                                   GestureDetector(
                                       onTap: () {
@@ -163,28 +189,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                           fontFamily: "Montsterrat Classic",
                                           color: Color(0xFF545454))),
                                 ]),
-                                Column(
-                                  children: [
-                                    GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      inviteFriends(
-                                                          data: reqt)));
-                                        },
-                                        child: const Icon(
-                                          Icons.person_add_alt,
-                                          color: Color(0xFF545454),
-                                        )),
-                                    const Text('   ادعو اصدقائك    ',
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: "Montsterrat Classic",
-                                            color: Color(0xFF545454))),
-                                  ],
-                                ),
                               ],
                             ),
                           ],
