@@ -57,6 +57,7 @@ dependencies:
   flutter_profile_picture: ^2.0.0
   image_picker: ^0.8.5+3
   flutter_rating_bar: ^4.0.1
+  url_launcher: ^6.1.6
 
 
 dev_dependencies:

@@ -73,8 +73,9 @@ class _MyHomePageState extends State<MyHomePage> {
             .then((value) {
           value.docs.forEach((member) {
             if ((element.data()['endDate'] as Timestamp)
-                .toDate()
-                .isAfter(DateTime.now())) {
+                    .toDate()
+                    .isAfter(DateTime.now()) &&
+                member.get('status') == 'accepted') {
               print('isCurrentJamia ${element.data()}');
               pastJamiah.add(element);
             }
@@ -441,7 +442,6 @@ class _MyHomePageState extends State<MyHomePage> {
     task27?.cancel();
   }
 
-//need testing!!
   void checkUserStatus() {
     bool sent = false;
     final cron = Cron();

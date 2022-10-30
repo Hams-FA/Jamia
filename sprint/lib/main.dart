@@ -6,6 +6,7 @@ import 'package:sprint/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:sprint/screens/JamiaHistory.dart';
 import 'package:sprint/screens/JamiaHistory4.dart';
+import 'package:sprint/screens/inquiry.dart';
 //import 'package:sprint/screens/JamiaHistory2.dart';
 import 'package:sprint/screens/registration_screen.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -125,10 +126,13 @@ class MyApp extends StatelessWidget {
         '/ViewAndDeleteFriends': (BuildContext context) =>
             const ViewAndDeleteFriends(),
         '/JamiaHistory': (BuildContext context) => const JamiaHistory4(),
+        '/InquiryPage': (BuildContext context) => const InquiryPage(),
         //'/JamiaHistory2': (BuildContext context) => const JamiaHistory2(),
       },
       home: //const PaymentDemo(),//const LoginScreen(),
-          const LoginScreen(), //const MyHomePage(title: 'Flutter Demo Home Page'),
+          const LoginScreen(),
+      //ViewUserProfile(),
+      //const MyHomePage(title: 'Flutter Demo Home Page'),
       //RegistrationScreen()
       builder: EasyLoading.init(),
       /*

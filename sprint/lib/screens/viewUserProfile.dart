@@ -53,6 +53,19 @@ class _ViewUserProfileState extends State<ViewUserProfile> {
             title: const Text('الملف الشخصي'),
             centerTitle: true,
             backgroundColor: Colors.green,
+            actions: [
+              Column(
+                children: [
+                  //Text("للأستفسار عبر الايميل"),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/InquiryPage');
+                    },
+                    icon: Icon(Icons.mark_unread_chat_alt_outlined),
+                  ),
+                ],
+              )
+            ],
           ),
           body: SingleChildScrollView(
             child: Column(

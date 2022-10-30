@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 import '../widgets/my_button.dart';
 import '../widgets/validations.dart';
 
@@ -37,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Container(
                   child: Image.asset('images/logo.jpg'),
                   width: 350,
-                  height: 350,
+                  height: 300,
                 ),
                 const Text(
                   " مرحباً بك في تطبيق جمعية",
@@ -150,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 4),
                 MyButton(
                   color: Colors.green,
                   title: 'تسجيل الدخول',
@@ -209,6 +209,45 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                     ),
                     const Text('مستخدم جديد؟'),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextButton(
+                      child: const Text(
+                        'تواصل معنا ',
+                        style: TextStyle(fontSize: 15, color: Colors.green),
+                      ),
+                      onPressed: () async {
+                        String email = "Admin2022@gmail.com";
+                        String subject = "استفسار عن عملية تسجيل الدخول";
+                        String body = "تفضل اكتب استفسارك هنا !!";
+
+                        String? encodeQueryParameters(
+                            Map<String, String> params) {
+                          return params.entries
+                              .map((MapEntry<String, String> e) =>
+                                  '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+                              .join('&');
+                        }
+
+                        final Uri emailLaunchUri = Uri(
+                          scheme: 'mailto',
+                          path: email,
+                          query: encodeQueryParameters(<String, String>{
+                            'subject': subject,
+                            'body': body
+                          }),
+                        );
+                        if (await canLaunch(emailLaunchUri.toString())) {
+                          launchUrl(emailLaunchUri);
+                        } else {
+                          print("The action is not support NO Email App!");
+                        }
+                      },
+                    ),
+                    const Text('هل واجهتك مشكلة في عملية تسجيل الدخول؟'),
                   ],
                 ),
               ],
