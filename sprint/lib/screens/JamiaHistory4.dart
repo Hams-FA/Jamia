@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'dart:ui' as ui;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -94,6 +95,7 @@ class _JamiaHistory4State extends State<JamiaHistory4> {
 
   @override
   Widget build(BuildContext context) {
+    DateTime startDate = DateTime.now();
     //List<String> selectedEmails = List<String>.empty(growable: true);
     late List<QueryDocumentSnapshot> selectedEmails = [];
 
@@ -149,9 +151,9 @@ class _JamiaHistory4State extends State<JamiaHistory4> {
                                   .collection('JamiaGroup')
                                   .doc(reqt.id)
                                   .update({
-                                'startDate': DateTime.now(),
-                                'endDate': DateTime.now()
-                                    .add(const Duration(days: 30)),
+                                'startDate': startDate,
+                                'endDate':
+                                    startDate.add(const Duration(days: 30)),
                                 'acceptedCount': 1,
                                 'JamiaTrun': 1
                               });
@@ -261,6 +263,137 @@ class _JamiaHistory4State extends State<JamiaHistory4> {
                         );
                       }
 
+                      showDataAlert() {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(
+                                      20.0,
+                                    ),
+                                  ),
+                                ),
+                                contentPadding: EdgeInsets.only(
+                                  top: 10.0,
+                                ),
+                                title: Text(
+                                  "اختر تاريخ البدء الجديد",
+                                  style: TextStyle(fontSize: 24.0),
+                                ),
+                                content: Container(
+                                  height: 400,
+                                  child: SingleChildScrollView(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            'تاريخ البدء : ${startDate.day}-${startDate.month}-${startDate.year}',
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Container(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            child: ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  primary: Color.fromARGB(
+                                                      255, 76, 175, 80),
+                                                ),
+                                                onPressed: () async {
+                                                  DateTime? newDate =
+                                                      await showDatePicker(
+                                                          context: context,
+                                                          initialDate:
+                                                              startDate,
+                                                          firstDate:
+                                                              DateTime.now(),
+                                                          lastDate:
+                                                              DateTime(2100));
+                                                  if (newDate == null) return;
+
+                                                  setState(() {
+                                                    startDate = newDate.add(
+                                                        Duration(days: 14));
+
+                                                    // endDate = DateTime(startDate.year,
+                                                    //     startDate.month, startDate.day + 14);
+                                                  });
+                                                },
+                                                child:
+                                                    Text('أختر تاريخ البدء')),
+                                          ),
+                                        ),
+                                        Container(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Container(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            child: ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  primary: Color.fromARGB(
+                                                      255, 76, 175, 80),
+                                                ),
+                                                onPressed: () {
+                                                  showAlertDialog(context);
+                                                },
+                                                child: Text('ارسـال')),
+                                          ),
+                                        ),
+                                        Container(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Container(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            child: ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  primary: Color.fromARGB(
+                                                      255, 76, 175, 80),
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: Text('تراجـع')),
+                                          ),
+                                        ),
+                                        Container(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            'ملاحظة',
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            ' سوف تبدأ الجمعية بعد 14 يوم من تاريخ البدء التي تم اختياره اعلاه',
+                                            style: TextStyle(fontSize: 12),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            });
+                      }
+
                       return Card(
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
@@ -276,6 +409,16 @@ class _JamiaHistory4State extends State<JamiaHistory4> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
+                                reqt.get('emailid') ==
+                                        FirebaseAuth.instance.currentUser!.email
+                                    ? IconButton(
+                                        icon: const Icon(Icons.restart_alt),
+                                        onPressed: () {
+                                          showDataAlert();
+                                          //showAlertDialog(context);
+                                        },
+                                      )
+                                    : Container(),
                                 IconButton(
                                   icon: const Icon(Icons.visibility),
                                   onPressed: () {
@@ -287,17 +430,6 @@ class _JamiaHistory4State extends State<JamiaHistory4> {
                                                     data: reqt.data()
                                                         as Map<String, dynamic>,
                                                     jamiaId: reqt.id)));
-                                  },
-                                ),
-                                IconButton(
-                                  icon: const Icon(Icons.restart_alt),
-                                  onPressed: () {
-                                    reqt.get('emailid') ==
-                                            FirebaseAuth
-                                                .instance.currentUser!.email
-                                        ? showAlertDialog(context)
-                                        : EasyLoading.showError(
-                                            "لا تملك صلاحية اعادة بدء هذه الجمعية ,الرجاء الطلب من منشئ الجمعية اعادة بدئها من حسابة !!");
                                   },
                                 ),
                               ],

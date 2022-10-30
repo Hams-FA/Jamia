@@ -27,6 +27,40 @@ class _InquiryPageState extends State<InquiryPage> {
   // final subjectController = TextEditingController();
   // //final emailController = TextEditingController();
   // final messageController = TextEditingController();
+  Future SendEmail({
+    required String subject,
+    required String message,
+  }) async {
+    final serviceId = 'service_w5ei0k1';
+    final templateId = 'template_nog68lf';
+    final userId = '5tJEsLojudk2YIKcD';
+
+    final url = Uri.parse('https://api.emailjs.com/api/v1.0/email/send');
+    final response = await http.post(
+      url,
+      headers: {
+        'origin': 'http://localhost',
+        'Content-Type': 'application/json',
+      },
+      body: json.encode({
+        'service_id': serviceId,
+        'template_id': templateId,
+        'user_id': userId,
+        'template_params': {
+          'to_email': 'ruba.abdullah2001@gmail.com',
+          'user_email': FirebaseAuth.instance.currentUser!.email,
+          'user_subject': subject,
+          'user_message': message,
+        },
+      }),
+    );
+    EasyLoading.showSuccess('تم ارسال استفسارك بنجاح ');
+    subjectController.clear();
+    messageController.clear();
+    Navigator.pushNamed(context, '/home');
+
+    print(response.body);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +114,7 @@ class _InquiryPageState extends State<InquiryPage> {
                         return null;
                       },
                     ),
+
                     /*
                 TextFormField(
                   controller: emailController,
@@ -126,9 +161,13 @@ class _InquiryPageState extends State<InquiryPage> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(40))),
                         onPressed: () {
-                          SendEmail(
-                              message: messageController.text,
-                              subject: subjectController.text);
+                          messageController.text.isEmpty &&
+                                  subjectController.text.isEmpty
+                              ? EasyLoading.showError(
+                                  'تأكد من جميع الخانات!ّ! ')
+                              : SendEmail(
+                                  message: messageController.text,
+                                  subject: subjectController.text);
                         },
 
                         /*() async {
@@ -177,7 +216,7 @@ class _InquiryPageState extends State<InquiryPage> {
     );
   }
 }
-
+/*
 Future SendEmail({
   required String subject,
   required String message,
@@ -208,6 +247,7 @@ Future SendEmail({
   EasyLoading.showSuccess('تم ارسال استفسارك بنجاح ');
   subjectController.clear();
   messageController.clear();
+  //Navigator.pushNamed(context, '/home');
 
   print(response.body);
-}
+}*/
