@@ -67,18 +67,18 @@ class RequestPageFinal extends StatelessWidget {
                         color: Color(0xFF545454)));
               }
             }),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Color.fromARGB(255, 76, 175, 80),
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => FormPage()));
-          },
-          mini: true,
-          child: const Icon(
-            Icons.add,
-            color: Color(0xFF393737),
-          ),
-        ), // This trailing comma makes auto-formatting nicer for build methods.
+        // floatingActionButton: FloatingActionButton(
+        //   backgroundColor: Color.fromARGB(255, 76, 175, 80),
+        //   onPressed: () {
+        //     Navigator.push(
+        //         context, MaterialPageRoute(builder: (context) => FormPage()));
+        //   },
+        //   mini: true,
+        //   child: const Icon(
+        //     Icons.add,
+        //     color: Color(0xFF393737),
+        //   ),
+        // ), // This trailing comma makes auto-formatting nicer for build methods.
         floatingActionButtonLocation:
             FloatingActionButtonLocation.miniCenterDocked,
 
@@ -98,6 +98,19 @@ class RequestPageFinal extends StatelessWidget {
                       children: [
                         Icon(Icons.person),
                         Text("الملف الشخصي"),
+                      ],
+                    ),
+                    minWidth: 40,
+                  ),
+                  MaterialButton(
+                    onPressed: () {},
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.account_balance_wallet,
+                        ),
+                        Text("الميزانية"),
                       ],
                     ),
                     minWidth: 40,

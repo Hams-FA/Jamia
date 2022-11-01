@@ -58,6 +58,7 @@ dependencies:
   image_picker: ^0.8.5+3
   flutter_rating_bar: ^4.0.1
   url_launcher: ^6.1.6
+  material_design_icons_flutter: ^5.0.6996
 
 
 dev_dependencies:

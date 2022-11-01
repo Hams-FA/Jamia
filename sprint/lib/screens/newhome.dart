@@ -57,7 +57,7 @@ class _NewHome extends State<NewHome> {
                 ),
               ), // This trailing comma makes auto-formatting nicer for build methods.
               floatingActionButtonLocation:
-                  FloatingActionButtonLocation.miniCenterDocked,
+                  FloatingActionButtonLocation.miniEndFloat, //miniCenterDocked
 
               bottomNavigationBar: BottomAppBar(
                   shape: CircularNotchedRectangle(),
@@ -80,15 +80,14 @@ class _NewHome extends State<NewHome> {
                           minWidth: 40,
                         ),
                         MaterialButton(
-                          onPressed: () {
-                            Navigator.pushNamed(
-                                context, '/ViewAndDeleteFriends');
-                          },
+                          onPressed: () {},
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.man),
-                              Text("اصدقائك"),
+                              Icon(
+                                Icons.account_balance_wallet,
+                              ),
+                              Text("الميزانية"),
                             ],
                           ),
                           minWidth: 40,
@@ -105,6 +104,20 @@ class _NewHome extends State<NewHome> {
                                 color: Colors.green,
                               ),
                               Text("جمعياتي"),
+                            ],
+                          ),
+                          minWidth: 40,
+                        ),
+                        MaterialButton(
+                          onPressed: () {
+                            Navigator.pushNamed(
+                                context, '/ViewAndDeleteFriends');
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.man),
+                              Text("اصدقائك"),
                             ],
                           ),
                           minWidth: 40,

@@ -623,16 +623,14 @@ class _ViewUserProfileState extends State<ViewUserProfile> {
                       minWidth: 40,
                     ),
                     MaterialButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/ViewAndDeleteFriends');
-                      },
+                      onPressed: () {},
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
-                            Icons.man,
+                            Icons.account_balance_wallet,
                           ),
-                          Text("اصدقائك"),
+                          Text("الميزانية"),
                         ],
                       ),
                       minWidth: 40,
@@ -652,6 +650,21 @@ class _ViewUserProfileState extends State<ViewUserProfile> {
                     ),
                     MaterialButton(
                       onPressed: () {
+                        Navigator.pushNamed(context, '/ViewAndDeleteFriends');
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.man,
+                          ),
+                          Text("اصدقائك"),
+                        ],
+                      ),
+                      minWidth: 40,
+                    ),
+                    MaterialButton(
+                      onPressed: () {
                         Navigator.pushNamed(context, '/RequestPageFinal');
                       },
                       child: Column(
@@ -660,7 +673,7 @@ class _ViewUserProfileState extends State<ViewUserProfile> {
                           Icon(
                             Icons.list_alt,
                           ),
-                          Text(" الطلبات"),
+                          Text("الطلبات"),
                         ],
                       ),
                       minWidth: 40,

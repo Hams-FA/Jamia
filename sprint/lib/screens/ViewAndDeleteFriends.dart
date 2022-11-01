@@ -281,6 +281,19 @@ class _ViewAndDeleteFriendsState extends State<ViewAndDeleteFriends> {
                     minWidth: 40,
                   ),
                   MaterialButton(
+                    onPressed: () {},
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.account_balance_wallet,
+                        ),
+                        Text("الميزانية"),
+                      ],
+                    ),
+                    minWidth: 40,
+                  ),
+                  MaterialButton(
                     onPressed: () {
                       Navigator.pushNamed(context, '/ViewAndDeleteFriends');
                     },
