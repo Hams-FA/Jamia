@@ -483,7 +483,7 @@ class _JamiaHistory4State extends State<JamiaHistory4> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.man),
-                        Text("قائمة اصدقائك"),
+                        Text("اصدقائك"),
                       ],
                     ),
                     minWidth: 40,
@@ -509,7 +509,7 @@ class _JamiaHistory4State extends State<JamiaHistory4> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.list_alt),
-                        Text("قائمة الطلبات"),
+                        Text("الطلبات"),
                       ],
                     ),
                     minWidth: 40,
