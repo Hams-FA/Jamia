@@ -542,7 +542,7 @@ class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
                                                       return Row(
                                                         children: [
                                                           Text(
-                                                              '${data['turn']}-'),
+                                                              '   ${data['turn']}-'),
                                                           const SizedBox(
                                                               width: 16),
                                                           ProfilePicture(
