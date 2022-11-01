@@ -135,7 +135,10 @@ class RequestPageFinal extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.list_alt),
+                        Icon(
+                          Icons.list_alt,
+                          color: Colors.green,
+                        ),
                         Text("قائمة الطلبات"),
                       ],
                     ),

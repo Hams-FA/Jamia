@@ -599,6 +599,75 @@ class _ViewUserProfileState extends State<ViewUserProfile> {
               ],
             ),
           ),
+          bottomNavigationBar: BottomAppBar(
+              shape: CircularNotchedRectangle(),
+              child: Container(
+                height: 60,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    MaterialButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/viewUserProfile');
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.person,
+                            color: Colors.green,
+                          ),
+                          Text("الملف الشخصي"),
+                        ],
+                      ),
+                      minWidth: 40,
+                    ),
+                    MaterialButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/ViewAndDeleteFriends');
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.man,
+                          ),
+                          Text("اصدقائك"),
+                        ],
+                      ),
+                      minWidth: 40,
+                    ),
+                    MaterialButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/home');
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.people),
+                          Text("جمعياتي"),
+                        ],
+                      ),
+                      minWidth: 40,
+                    ),
+                    MaterialButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/RequestPageFinal');
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.list_alt,
+                          ),
+                          Text("قائمة الطلبات"),
+                        ],
+                      ),
+                      minWidth: 40,
+                    ),
+                  ],
+                ),
+              )),
         ));
   }
 }
