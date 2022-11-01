@@ -171,7 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               await _auth.signInWithEmailAndPassword(
                                   email: email, password: password);
                           if (mounted) {
-                            Navigator.pushNamed(context, '/home');
+                            Navigator.pushNamed(context, '/NewHome');
                           }
                           EasyLoading.dismiss();
                         } on FirebaseAuthException catch (e) {

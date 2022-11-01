@@ -639,7 +639,7 @@ class _ViewUserProfileState extends State<ViewUserProfile> {
                     ),
                     MaterialButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/home');
+                        Navigator.pushNamed(context, '/NewHome');
                       },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -660,7 +660,7 @@ class _ViewUserProfileState extends State<ViewUserProfile> {
                           Icon(
                             Icons.list_alt,
                           ),
-                          Text("قائمة الطلبات"),
+                          Text(" الطلبات"),
                         ],
                       ),
                       minWidth: 40,

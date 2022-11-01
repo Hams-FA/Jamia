@@ -117,7 +117,7 @@ class RequestPageFinal extends StatelessWidget {
                   ),
                   MaterialButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/home');
+                      Navigator.pushNamed(context, '/NewHome');
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -139,7 +139,7 @@ class RequestPageFinal extends StatelessWidget {
                           Icons.list_alt,
                           color: Colors.green,
                         ),
-                        Text("قائمة الطلبات"),
+                        Text("الطلبات"),
                       ],
                     ),
                     minWidth: 40,

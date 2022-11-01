@@ -298,7 +298,7 @@ class _ViewAndDeleteFriendsState extends State<ViewAndDeleteFriends> {
                   ),
                   MaterialButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/home');
+                      Navigator.pushNamed(context, '/NewHome');
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -319,7 +319,7 @@ class _ViewAndDeleteFriendsState extends State<ViewAndDeleteFriends> {
                         Icon(
                           Icons.list_alt,
                         ),
-                        Text("قائمة الطلبات"),
+                        Text("الطلبات"),
                       ],
                     ),
                     minWidth: 40,

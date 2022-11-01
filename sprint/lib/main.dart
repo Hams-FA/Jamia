@@ -27,7 +27,7 @@ import 'package:sprint/screens/editUserProfile.dart';
 
 import 'dart:convert';
 import 'dart:developer';
-
+import 'package:sprint/screens/newhome.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -128,6 +128,7 @@ class MyApp extends StatelessWidget {
             const ViewAndDeleteFriends(),
         '/JamiaHistory': (BuildContext context) => const JamiaHistory4(),
         '/InquiryPage': (BuildContext context) => const InquiryPage(),
+        '/NewHome': (BuildContext context) => const NewHome(),
         //'/JamiaHistory2': (BuildContext context) => const JamiaHistory2(),
       },
       home: //const PaymentDemo(),//const LoginScreen(),
