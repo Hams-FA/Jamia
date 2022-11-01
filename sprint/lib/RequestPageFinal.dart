@@ -117,19 +117,6 @@ class RequestPageFinal extends StatelessWidget {
                   ),
                   MaterialButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/ViewAndDeleteFriends');
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.man),
-                        Text("اصدقائك"),
-                      ],
-                    ),
-                    minWidth: 40,
-                  ),
-                  MaterialButton(
-                    onPressed: () {
                       Navigator.pushNamed(context, '/NewHome');
                     },
                     child: Column(
@@ -137,6 +124,19 @@ class RequestPageFinal extends StatelessWidget {
                       children: [
                         Icon(Icons.people),
                         Text("جمعياتي"),
+                      ],
+                    ),
+                    minWidth: 40,
+                  ),
+                  MaterialButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/ViewAndDeleteFriends');
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.man),
+                        Text("اصدقائك"),
                       ],
                     ),
                     minWidth: 40,

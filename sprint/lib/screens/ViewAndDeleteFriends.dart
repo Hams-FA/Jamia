@@ -295,6 +295,19 @@ class _ViewAndDeleteFriendsState extends State<ViewAndDeleteFriends> {
                   ),
                   MaterialButton(
                     onPressed: () {
+                      Navigator.pushNamed(context, '/NewHome');
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.people),
+                        Text("جمعياتي"),
+                      ],
+                    ),
+                    minWidth: 40,
+                  ),
+                  MaterialButton(
+                    onPressed: () {
                       Navigator.pushNamed(context, '/ViewAndDeleteFriends');
                     },
                     child: Column(
@@ -305,19 +318,6 @@ class _ViewAndDeleteFriendsState extends State<ViewAndDeleteFriends> {
                           color: Colors.green,
                         ),
                         Text("اصدقائك"),
-                      ],
-                    ),
-                    minWidth: 40,
-                  ),
-                  MaterialButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/NewHome');
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.people),
-                        Text("جمعياتي"),
                       ],
                     ),
                     minWidth: 40,
