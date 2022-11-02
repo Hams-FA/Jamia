@@ -80,7 +80,9 @@ class _NewHome extends State<NewHome> {
                           minWidth: 40,
                         ),
                         MaterialButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/budget');
+                          },
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [

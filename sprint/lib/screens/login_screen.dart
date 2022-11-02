@@ -183,7 +183,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           print(e);
                           print(e.toString());
                           if (e.code == 'user-not-found') {
-                            EasyLoading.showError('الحساب غير موجود');
+                            EasyLoading.showError(
+                                'اسم المستخدم/كملة المرور خاطئة');
                           } else {
                             EasyLoading.showError(
                                 'اسم المستخدم/كملة المرور خاطئة');

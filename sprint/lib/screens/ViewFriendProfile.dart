@@ -51,10 +51,12 @@ class _ViewFriendProfileState extends State<ViewFriendProfile> {
           child: Column(
             children: [
               FutureBuilder<String>(
-                future: _firebaseStorage
+                future: Future.value(
+                    '') /*_firebaseStorage
                     .ref()
                     .child('usersProfileImages/$email')
-                    .getDownloadURL(),
+                    .getDownloadURL()*/
+                ,
                 builder:
                     (BuildContext context, AsyncSnapshot<String> snapshot) {
                   if (snapshot.connectionState == ConnectionState.done ||
@@ -358,41 +360,44 @@ class _ViewFriendProfileState extends State<ViewFriendProfile> {
               StreamBuilder<QuerySnapshot>(
                   stream: FirebaseFirestore.instance
                       .collection('Ratings')
+                      .where('to', isEqualTo: widget.email)
                       .snapshots(),
                   builder: ((context, snapshot) {
                     if (snapshot.hasData) {
                       var count = 0.0;
                       var ratings = 0.0;
-                      snapshot.data?.docs.forEach((element) {
-                        print(element.data());
-                        var data = element.data() as Map<String, dynamic>;
-                        if (data['rated_user'] == _auth.currentUser?.email) {
-                          ratings += data['rating'];
-                          count += 1;
-                        }
-                      });
+                      for (var doc in snapshot.data!.docs) {
+                        count++;
+                        ratings += doc['rating'];
+                      }
+                      // count how many ratings
+
                       return Column(
                         children: [
                           RatingBar.builder(
-                            initialRating: ratings / count,
+                            initialRating: ratings != null
+                                ? ratings
+                                : 0 / count != null
+                                    ? count
+                                    : 1,
                             minRating: 1,
                             direction: Axis.horizontal,
-                            allowHalfRating: true,
+                            allowHalfRating: false,
                             itemCount: 5,
                             itemSize: 40,
                             itemPadding:
                                 const EdgeInsets.symmetric(horizontal: 1.0),
                             itemBuilder: (context, _) => const Icon(
-                              Icons.star,
+                              Icons.star_outlined,
                               color: Colors.amber,
                             ),
-                            ignoreGestures: true,
+                            //  ignoreGestures: true,
                             onRatingUpdate: (rating) {
                               print(rating);
                             },
                           ),
                           const SizedBox(height: 16),
-                          Text('${ratings / count}')
+                          Text('${count}  '),
                         ],
                       );
                     }

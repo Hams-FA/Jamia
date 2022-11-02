@@ -516,12 +516,14 @@ class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
                                             child: Row(
                                               children: [
                                                 FutureBuilder<String>(
-                                                  future: FirebaseStorage
+                                                  future: Future.value(
+                                                      '') /*FirebaseStorage
                                                       .instance
                                                       .ref()
                                                       .child(
                                                           'usersProfileImages/${data.id}')
-                                                      .getDownloadURL(),
+                                                      .getDownloadURL()*/
+                                                  ,
                                                   builder:
                                                       (BuildContext context,
                                                           AsyncSnapshot<String>
@@ -557,38 +559,43 @@ class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
                                                           // -- if you don't want this feature --
                                                           // the line above will make it as before
                                                           // and uncomment the line below
-                                                          RichText(
-                                                            text: TextSpan(
-                                                              style:
-                                                                  const TextStyle(
-                                                                color:
-                                                                    Colors.blue,
-                                                              ),
-                                                              children: <
-                                                                  TextSpan>[
-                                                                TextSpan(
-                                                                    text: data.id ==
-                                                                            signedInUser
-                                                                                .email
-                                                                        ? 'انت'
-                                                                        : '${data['name']}',
-                                                                    style:
-                                                                        const TextStyle(
-                                                                      color: Colors
-                                                                          .black,
-                                                                      decoration:
-                                                                          TextDecoration
-                                                                              .underline,
+                                                          FutureBuilder<String>(
+                                                              future:
+                                                                  getUserName(
+                                                                      data),
+                                                              builder: (context,
+                                                                  snapshot) {
+                                                                if (snapshot
+                                                                    .hasData) {
+                                                                  return RichText(
+                                                                    text:
+                                                                        TextSpan(
+                                                                      style:
+                                                                          const TextStyle(
+                                                                        color: Colors
+                                                                            .blue,
+                                                                      ),
+                                                                      children: <
+                                                                          TextSpan>[
+                                                                        TextSpan(
+                                                                            text:
+                                                                                snapshot.data!,
+                                                                            style: const TextStyle(
+                                                                              color: Colors.black,
+                                                                              decoration: TextDecoration.underline,
+                                                                            ),
+                                                                            recognizer: TapGestureRecognizer()
+                                                                              ..onTap = () {
+                                                                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ViewFriendProfile(email: data.id)));
+                                                                              }),
+                                                                      ],
                                                                     ),
-                                                                    recognizer:
-                                                                        TapGestureRecognizer()
-                                                                          ..onTap =
-                                                                              () {
-                                                                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => ViewFriendProfile(email: data.id)));
-                                                                          }),
-                                                              ],
-                                                            ),
-                                                          )
+                                                                  );
+                                                                } else {
+                                                                  return Text(
+                                                                      '...جاري التحميل');
+                                                                }
+                                                              })
                                                         ],
                                                       );
                                                     }
@@ -616,6 +623,19 @@ class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
                     ),
                   ),
                 ))));
+  }
+
+  Future<String> getUserName(DocumentSnapshot<Object?> data) async {
+    // if the email is same the current user email rurn you, else return the name of the user from users collection
+    if (data.id == FirebaseAuth.instance.currentUser!.email) {
+      return await Future.value('أنت');
+    } else {
+      return await FirebaseFirestore.instance
+          .collection('users')
+          .doc(data.id)
+          .get()
+          .then((value) => value['fname'] + ' ' + value['lname']);
+    }
   }
 
   Future<void> _showAlertDialog() async {
