@@ -74,7 +74,9 @@ Future<void> main() async {
       body: 'تطبيقنا يساعدك تنشئ جمعيتك الخاصة بشكل منظم ومرتب',
     ));
   });
-
+//*/5 * * * * *
+//*/10 * * * * every 10 mins
+//30 8 2 * *
   cron.schedule(Schedule.parse('30 8 2 * *'), () async {
     print('notification budget');
 

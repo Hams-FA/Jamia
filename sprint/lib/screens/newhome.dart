@@ -1,4 +1,9 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cron/cron.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'JamiaHistory4.dart';
 import 'form.dart';
 import 'home.dart';
@@ -11,6 +16,31 @@ class NewHome extends StatefulWidget {
 }
 
 class _NewHome extends State<NewHome> {
+  late User signedInUser;
+  final auth = FirebaseAuth.instance;
+  final _auth = FirebaseAuth.instance;
+  bool loggedin = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getCurrentUser();
+    checkUserStatus();
+  }
+
+  void getCurrentUser() {
+    try {
+      final user = _auth.currentUser;
+      if (user != null) {
+        signedInUser = user;
+        loggedin = true;
+      }
+    } catch (e) {
+      EasyLoading.showError("حدث خطأ ما ....");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -146,5 +176,41 @@ class _NewHome extends State<NewHome> {
             ),
           ),
         ));
+  }
+
+  void checkUserStatus() {
+    bool sent = false;
+    final cron = Cron();
+    //every day?
+    cron.schedule(Schedule.parse('*/5 * * * * *'), () async {
+      //print('Check user\'s status');
+      final stauts = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(signedInUser.email)
+          .get();
+      //print(stauts.get('status'));
+      if (stauts.get('status') == 1 && loggedin) {
+        loggedin = false;
+        print('log out');
+        await _auth.signOut();
+        if (mounted) {
+          print('mounted');
+          Navigator.pushNamed(context, '/login');
+          print('after');
+        }
+        //Navigator.pushNamed(context, '/login');
+        if (!sent) {
+          print('sent');
+          await AwesomeNotifications().createNotification(
+              content: NotificationContent(
+            id: 2,
+            channelKey: 'key1',
+            title: 'تم إيقاف حسابك',
+            body: 'بإمكانك التواصل معنا لمعرفة التفاصيل',
+          ));
+          sent = true;
+        }
+      }
+    });
   }
 }
