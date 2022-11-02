@@ -339,7 +339,7 @@ class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
                                                   backgroundColor: Colors.green,
                                                   padding:
                                                       const EdgeInsets.only(
-                                                          left: 130,
+                                                          left: 120,
                                                           right: 130),
                                                   tapTargetSize:
                                                       MaterialTapTargetSize
