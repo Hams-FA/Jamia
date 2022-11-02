@@ -27,6 +27,11 @@
             #navlist {
                   float: left;
             }
+            #categoryName {
+                  text-align: right;
+            }
+           
+            
       </style>
 </head>
 
@@ -58,9 +63,9 @@
             </div>
       </nav>
 
-      <div style="text-align: center; " class="container-xl d-flex justify-content-center align-items-center p-5">
-            <div style="text-align: center; " class="table-wrapper">
-                  <div style="text-align: center; " class="table-title">
+      <div style="text-align: right; " class="container-xl d-flex justify-content-center align-items-center p-5">
+            <div style="text-align: right; " class="table-wrapper">
+                  <div style="text-align: right; " class="table-title">
                         <div style="text-align: center; " class="row">
 
 
@@ -94,13 +99,13 @@
                   <form class="p-3">
                         <div class="form-group ">
                               
-                              <input type="text" class="form-control form-control-lg" placeholder="اسم القسم"  id="categoryName" required>
+                              <input type="text" class="form-control form-control-lg"  placeholder="اسم القسم"   id="categoryName" required>
                         </div>
                   </form>
                   <div class="row">
                         <div class="col-sm-12">
                               <a id="addCategoryButton" class="btn btn-success" data-toggle="modal"><i
-                                          class="material-icons">&#xE147;</i> <span>اضافة جديد</span></a>
+                                          class="material-icons">&#xE147;</i> <span>اضافة قسم جديد</span></a>
                         </div>
                   </div>
                   <!-- ADD FORM TO ADD CATEGORY-->
@@ -180,8 +185,11 @@
                         catogery.textContent = docx.data().name;
                         // add delete icon
                         const deleteIcon = document.createElement('i');
+                     
                         deleteIcon.classList.add("material-icons");
+                         
                         deleteIcon.classList.add("delete");
+//.attr('id', 'md');
                         deleteIcon.textContent = "delete";
 
                         catogery.appendChild(deleteIcon);
