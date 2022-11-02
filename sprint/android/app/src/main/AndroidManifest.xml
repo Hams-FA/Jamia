@@ -1,9 +1,43 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.sprint">
+
+<uses-permission android:name="android.permission.INTERNET" />
+    <!-- Provide required visibility configuration for API level 30 and above -->
+<queries>
+<intent>
+    <action android:name="android.intent.action.VIEW" />
+    <data android:scheme="https" />
+  </intent>
+<intent>
+    <action android:name="android.intent.action.VIEW" />
+    <data android:scheme="http" />
+  </intent>
+  <!-- If your app checks for SMS support -->
+  <intent>
+    <action android:name="android.intent.action.VIEW" />
+    <data android:scheme="sms" />
+  </intent>
+  <!-- If your app checks for call support -->
+  <intent>
+    <action android:name="android.intent.action.DIAL" />
+    <data android:scheme="tel" />
+  </intent>
+  <intent>
+    <action android:name="android.intent.action.SEDNTO" />
+    <data android:scheme="smsto" />
+  </intent>
+  <intent>
+    <action android:name="android.intent.action.SEDN" />
+    <data android:scheme="*/*" />
+  </intent>
+</queries>
+
+
    <application
-        android:label="sprint"
+        android:label="جمعية"
+        android:usesCleartextTraffic="true"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:exported="true"
