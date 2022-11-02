@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -7,6 +8,7 @@ import 'package:sprint/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:sprint/screens/JamiaHistory.dart';
 import 'package:sprint/screens/JamiaHistory4.dart';
+import 'package:sprint/screens/budget_screen.dart';
 import 'package:sprint/screens/inquiry.dart';
 //import 'package:sprint/screens/JamiaHistory2.dart';
 import 'package:sprint/screens/registration_screen.dart';
@@ -129,10 +131,14 @@ class MyApp extends StatelessWidget {
         '/JamiaHistory': (BuildContext context) => const JamiaHistory4(),
         '/InquiryPage': (BuildContext context) => const InquiryPage(),
         '/NewHome': (BuildContext context) => const NewHome(),
+        '/budget': (BuildContext context) => const BudgetScreen(),
         //'/JamiaHistory2': (BuildContext context) => const JamiaHistory2(),
       },
-      home: //const PaymentDemo(),//const LoginScreen(),
-          const LoginScreen(),
+      // home: //const PaymentDemo(),//const LoginScreen(),
+      //     const LoginScreen(),
+      home: FirebaseAuth.instance.currentUser != null
+          ? const NewHome()
+          : const LoginScreen(),
       //ViewUserProfile(),
       //const MyHomePage(title: 'Flutter Demo Home Page'),
       //RegistrationScreen()

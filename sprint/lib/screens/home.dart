@@ -287,107 +287,107 @@ class _MyHomePageState extends State<MyHomePage> {
 
   ///30 8 1 * * '
   void paymentReminderFirstOfMounth() async {
-    final querySnapshots = await getJamias();
-    if (querySnapshots.docs.length != 0) {
-      for (var element in querySnapshots.docs) {
-        final paymentRecords = await FirebaseFirestore.instance
-            .collection('JamiaGroup')
-            .doc(element.data()['id'])
-            .collection('transaction')
-            .where('Email', isEqualTo: signedInUser.email)
-            .get();
-        var paid = false;
-        List<dynamic> timelocal = List<dynamic>.empty(growable: true);
-        paymentRecords.docs.forEach((element) {
-          var timenow = DateTime.parse(element.get('time'));
-          timelocal.add(timenow);
-        });
-        var max = DateTime.parse('1969-07-20 20:18:04Z');
-        if (timelocal.isNotEmpty) max = timelocal.first;
-        for (var i = 1; i < timelocal.length; i++) {
-          if (timelocal[i].isAfter(max)) max = timelocal[i];
-        }
-        if ((max.month).compareTo(DateTime.now().month) == 0) paid = true;
-        final jamia = await FirebaseFirestore.instance
-            .collection('JamiaGroup')
-            .doc(element.data()['id'])
-            .get();
-        DateTime start = jamia.data()!['startDate'].toDate();
-        //DateTime.parse(jamia.data()!['startDate'].toString());
-        DateTime end = jamia.data()!['endDate'].toDate();
-        //DateTime.parse(jamia.data()!['endDate']);
-        if (start.isBefore(DateTime.now()) &&
-            end.isAfter(DateTime.now()) &&
-            !paid) {
-          print('yay');
-          task1 = cron1.schedule(Schedule.parse('30 8 1 * *'), () async {
-            print('second notification 1');
+    // final querySnapshots = await getJamias();
+    // if (querySnapshots.docs.length != 0) {
+    //   for (var element in querySnapshots.docs) {
+    //     final paymentRecords = await FirebaseFirestore.instance
+    //         .collection('JamiaGroup')
+    //         .doc(element.data()['id'])
+    //         .collection('transaction')
+    //         .where('Email', isEqualTo: signedInUser.email)
+    //         .get();
+    //     var paid = false;
+    //     List<dynamic> timelocal = List<dynamic>.empty(growable: true);
+    //     paymentRecords.docs.forEach((element) {
+    //       var timenow = DateTime.parse(element.get('time'));
+    //       timelocal.add(timenow);
+    //     });
+    //     var max = DateTime.parse('1969-07-20 20:18:04Z');
+    //     if (timelocal.isNotEmpty) max = timelocal.first;
+    //     for (var i = 1; i < timelocal.length; i++) {
+    //       if (timelocal[i].isAfter(max)) max = timelocal[i];
+    //     }
+    //     if ((max.month).compareTo(DateTime.now().month) == 0) paid = true;
+    //     final jamia = await FirebaseFirestore.instance
+    //         .collection('JamiaGroup')
+    //         .doc(element.data()['id'])
+    //         .get();
+    //     DateTime start = jamia.data()!['startDate'].toDate();
+    //     //DateTime.parse(jamia.data()!['startDate'].toString());
+    //     DateTime end = jamia.data()!['endDate'].toDate();
+    //     //DateTime.parse(jamia.data()!['endDate']);
+    //     if (start.isBefore(DateTime.now()) &&
+    //         end.isAfter(DateTime.now()) &&
+    //         !paid) {
+    //       print('yay');
+    //       task1 = cron1.schedule(Schedule.parse('30 8 1 * *'), () async {
+    //         print('second notification 1');
 
-            await AwesomeNotifications().createNotification(
-                content: NotificationContent(
-              id: 2,
-              channelKey: 'key1',
-              title: 'حبينا نذكرك',
-              body: 'لا تنسى تدفع للجمعيات المشارك فيها',
-            ));
-          });
-        } else {
-          print('nooooooooo');
-        }
-      }
-    }
+    //         await AwesomeNotifications().createNotification(
+    //             content: NotificationContent(
+    //           id: 2,
+    //           channelKey: 'key1',
+    //           title: 'حبينا نذكرك',
+    //           body: 'لا تنسى تدفع للجمعيات المشارك فيها',
+    //         ));
+    //       });
+    //     } else {
+    //       print('nooooooooo');
+    //     }
+    //   }
+    // }
   }
 
   void paymentReminderAt27() async {
-    final querySnapshots = await getJamias();
-    if (querySnapshots.docs.length != 0) {
-      for (var element in querySnapshots.docs) {
-        final paymentRecords = await FirebaseFirestore.instance
-            .collection('JamiaGroup')
-            .doc(element.data()['id'])
-            .collection('transaction')
-            .where('Email', isEqualTo: signedInUser.email)
-            .get();
-        var paid = false;
-        List<dynamic> timelocal = List<dynamic>.empty(growable: true);
-        paymentRecords.docs.forEach((element) {
-          var timenow = DateTime.parse(element.get('time'));
-          timelocal.add(timenow);
-        });
-        var max = DateTime.parse('1969-07-20 20:18:04Z');
-        if (timelocal.isNotEmpty) max = timelocal.first;
-        for (var i = 1; i < timelocal.length; i++) {
-          if (timelocal[i].isAfter(max)) max = timelocal[i];
-        }
-        if ((max.month).compareTo(DateTime.now().month) == 0) paid = true;
-        final jamia = await FirebaseFirestore.instance
-            .collection('JamiaGroup')
-            .doc(element.data()['id'])
-            .get();
-        DateTime start = jamia.data()!['startDate'].toDate();
-        //DateTime.parse(jamia.data()!['startDate'].toString());
-        DateTime end = jamia.data()!['endDate'].toDate();
-        //DateTime.parse(jamia.data()!['endDate']);
-        if (start.isBefore(DateTime.now()) &&
-            end.isAfter(DateTime.now()) &&
-            !paid) {
-          print('yay');
-          task27 = cron27.schedule(Schedule.parse('30 8 27 * *'), () async {
-            print('second notification 27');
+    // final querySnapshots = await getJamias();
+    // if (querySnapshots.docs.length != 0) {
+    //   for (var element in querySnapshots.docs) {
+    //     final paymentRecords = await FirebaseFirestore.instance
+    //         .collection('JamiaGroup')
+    //         .doc(element.data()['id'])
+    //         .collection('transaction')
+    //         .where('Email', isEqualTo: signedInUser.email)
+    //         .get();
+    //     var paid = false;
+    //     List<dynamic> timelocal = List<dynamic>.empty(growable: true);
+    //     paymentRecords.docs.forEach((element) {
+    //       var timenow = DateTime.parse(element.get('time'));
+    //       timelocal.add(timenow);
+    //     });
+    //     var max = DateTime.parse('1969-07-20 20:18:04Z');
+    //     if (timelocal.isNotEmpty) max = timelocal.first;
+    //     for (var i = 1; i < timelocal.length; i++) {
+    //       if (timelocal[i].isAfter(max)) max = timelocal[i];
+    //     }
+    //     if ((max.month).compareTo(DateTime.now().month) == 0) paid = true;
+    //     final jamia = await FirebaseFirestore.instance
+    //         .collection('JamiaGroup')
+    //         .doc(element.data()['id'])
+    //         .get();
+    //     DateTime start = jamia.data()!['startDate'].toDate();
+    //     //DateTime.parse(jamia.data()!['startDate'].toString());
+    //     DateTime end = jamia.data()!['endDate'].toDate();
+    //     //DateTime.parse(jamia.data()!['endDate']);
+    //     if (start.isBefore(DateTime.now()) &&
+    //         end.isAfter(DateTime.now()) &&
+    //         !paid) {
+    //       print('yay');
+    //       task27 = cron27.schedule(Schedule.parse('30 8 27 * *'), () async {
+    //         print('second notification 27');
 
-            await AwesomeNotifications().createNotification(
-                content: NotificationContent(
-              id: 2,
-              channelKey: 'key1',
-              title: 'حبينا نذكرك',
-              body: 'اليوم 27 الشهر قرب ينتهي ! لا تنسى تدفع لجمعياتك',
-            ));
-          });
-        } else {
-          print('nooooooooo');
-        }
-      }
-    }
+    //         await AwesomeNotifications().createNotification(
+    //             content: NotificationContent(
+    //           id: 2,
+    //           channelKey: 'key1',
+    //           title: 'حبينا نذكرك',
+    //           body: 'اليوم 27 الشهر قرب ينتهي ! لا تنسى تدفع لجمعياتك',
+    //         ));
+    //       });
+    //     } else {
+    //       print('nooooooooo');
+    //     }
+    //   }
+    // }
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getJamias() async {

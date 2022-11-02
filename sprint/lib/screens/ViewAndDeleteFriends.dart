@@ -103,12 +103,9 @@ class _ViewAndDeleteFriendsState extends State<ViewAndDeleteFriends> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: const [
-                        Icon(
-                          Icons.hourglass_empty,
-                          size: 100,
-                        ),
                         Text(
-                          ' لا يوجد لديك اصدقاءابدأ بإضافة الاصدقاء الآن',
+                          ' لا يوجد لديك اصدقاء\n ابدأ بإضافة الاصدقاء الآن',
+                          textAlign: TextAlign.center,
                         ),
                       ],
                     ),
