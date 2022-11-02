@@ -161,16 +161,20 @@ class _MyHomePageState extends State<MyHomePage> {
                                               child: const Icon(
                                                 Icons.person_add_alt,
                                                 color: Color(0xFF545454),
+                                                size: 27,
                                               )),
-                                          const Text('   ادعو اصدقائك    ',
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontFamily:
-                                                      "Montsterrat Classic",
-                                                  color: Color(0xFF545454))),
+                                          // const Text('   ادعو اصدقائك    ',
+                                          //     style: const TextStyle(
+                                          //         fontWeight: FontWeight.bold,
+                                          //         fontFamily:
+                                          //             "Montsterrat Classic",
+                                          //         color: Color(0xFF545454))),
                                         ],
                                       )
                                     : Container(),
+                                SizedBox(
+                                  width: 20,
+                                ),
                                 Column(children: [
                                   GestureDetector(
                                       onTap: () {
@@ -183,14 +187,20 @@ class _MyHomePageState extends State<MyHomePage> {
                                                       jamiaId: '',
                                                     )));
                                       },
-                                      child: Icon(Icons.visibility,
-                                          color: Color(0xFF545454))),
-                                  Text('   التفاصيل  ',
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: "Montsterrat Classic",
-                                          color: Color(0xFF545454))),
+                                      child: Icon(
+                                        Icons.visibility,
+                                        color: Color(0xFF545454),
+                                        size: 27,
+                                      )),
+                                  // Text('   التفاصيل  ',
+                                  //     style: const TextStyle(
+                                  //         fontWeight: FontWeight.bold,
+                                  //         fontFamily: "Montsterrat Classic",
+                                  //         color: Color(0xFF545454))),
                                 ]),
+                                SizedBox(
+                                  width: 10,
+                                ),
                               ],
                             ),
                           ],
