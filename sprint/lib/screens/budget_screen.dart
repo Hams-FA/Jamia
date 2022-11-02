@@ -132,15 +132,16 @@ class _BudgetScreenState extends State<BudgetScreen> {
                       return Column(children: [
                         Card(
                           child: ListTile(
-                            title: Text('المبلغ'),
-                            trailing: Text(snapshot.data!['salary'].toString()),
-                            subtitle: Text('الكامل'),
+                            title: const Text('المبلغ'),
+                            trailing: Text(
+                                snapshot.data!['salary'].toStringAsFixed(2)),
+                            subtitle: const Text('الكامل'),
                           ),
                         ),
                         Card(
                           child: ListTile(
-                            title: Text('المبلغ'),
-                            subtitle: Text('المتبقي'),
+                            title: const Text('المبلغ'),
+                            subtitle: const Text('المتبقي'),
                             trailing: Text(
                                 '${(salary - percentage).toStringAsFixed(2)}'),
                           ),
@@ -150,26 +151,37 @@ class _BudgetScreenState extends State<BudgetScreen> {
                       // add buttom with card widget to add salary
                       return Card(
                         child: ListTile(
-                          title: Text('الراتب'),
-                          subtitle: Text('لا يوجد راتب'),
+                          title: const Text('الراتب'),
+                          subtitle: const Text('لا يوجد راتب'),
                           trailing: IconButton(
                             onPressed: () {
                               showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
-                                      title: Text('اضف راتبك'),
+                                      title: const Text('اضف راتبك'),
                                       content: TextField(
                                         keyboardType: TextInputType.number,
                                         inputFormatters: <TextInputFormatter>[
                                           FilteringTextInputFormatter.digitsOnly
                                         ],
-                                        decoration:
-                                            InputDecoration(hintText: 'راتبك'),
+                                        decoration: const InputDecoration(
+                                            hintText: 'راتبك',
+                                            fillColor: Colors.white,
+                                            border: OutlineInputBorder()),
                                         onChanged: (value) {
-                                          setState(() {
-                                            salary = double.parse(value);
-                                          });
+                                          // check if the value is not empty
+                                          if (value.isNotEmpty) {
+                                            setState(() {
+                                              salary = double.parse(value);
+                                            });
+                                          } else {
+                                            // show snackbar if the value is empty
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(const SnackBar(
+                                                    content: Text(
+                                                        'الرجاء ادخال راتبك')));
+                                          }
                                         },
                                       ),
                                       actions: [
@@ -177,17 +189,26 @@ class _BudgetScreenState extends State<BudgetScreen> {
                                             onPressed: () {
                                               Navigator.of(context).pop();
                                             },
-                                            child: Text('الغاء')),
+                                            child: const Text('الغاء')),
                                         TextButton(
                                             onPressed: () {
-                                              FirebaseFirestore.instance
-                                                  .collection('users')
-                                                  .doc(FirebaseAuth.instance
-                                                      .currentUser!.email)
-                                                  .update({'salary': salary});
-                                              Navigator.of(context).pop();
+                                              // check if the salary is not empty
+                                              if (salary != 0.0) {
+                                                FirebaseFirestore.instance
+                                                    .collection('users')
+                                                    .doc(FirebaseAuth.instance
+                                                        .currentUser!.email)
+                                                    .update({'salary': salary});
+                                                Navigator.of(context).pop();
+                                              } else {
+                                                // show snackbar if the salary is empty
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(const SnackBar(
+                                                        content: Text(
+                                                            'الرجاء ادخال راتبك')));
+                                              }
                                             },
-                                            child: Text('حفظ'))
+                                            child: const Text('حفظ'))
                                       ],
                                     );
                                   });
@@ -218,7 +239,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
                   // check if the list is empty
                   if (badgets.isEmpty) {
                     return const Center(
-                      child: Text('لا يوجد بيانات'),
+                      child: Text('لا يوجد ميزانية'),
                     );
                   }
                   return ListView(
@@ -231,25 +252,31 @@ class _BudgetScreenState extends State<BudgetScreen> {
                       return Card(
                         child: ListTile(
                           leading: CircleAvatar(
-                            child: Text(
-                              data['percentage'].toString() + '%',
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                            // color the circle with the percentage of the budget
                             backgroundColor: data['percentage'] < 50
                                 ? Colors.green
                                 : data['percentage'] < 80
                                     ? Colors.orange
                                     : Colors.red,
+                            child: Text(
+                              // calculate the actual salary from the percentage
+                              (salary * (data['percentage'] / 100))
+                                  .toStringAsFixed(0),
+                              style: const TextStyle(color: Colors.white),
+                            ),
                           ),
                           title: Text(data['name']),
                           subtitle: FutureBuilder<DocumentSnapshot<Object?>>(
                               future: category.get(),
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) {
-                                  return Text(snapshot.data!['name'] ?? '');
+                                  // check if the doc is exist
+                                  if (snapshot.data!.exists) {
+                                    return Text(snapshot.data!['name']);
+                                  } else {
+                                    return const Text('لا يوجد');
+                                  }
                                 }
-                                return const Text('Loading');
+                                return const Text('جاري التحميل');
                               }),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -281,22 +308,6 @@ class _BudgetScreenState extends State<BudgetScreen> {
                           ),
                         ),
                       );
-                      /*   return ListTile(
-                        title: Text(data['name']),
-                        subtitle: Text(data['description']),
-            
-                        /// delete data from firestore
-                        trailing: IconButton(
-                          icon: const Icon(Icons.delete),
-                          onPressed: () {
-                            // delete data from firestore
-                            FirebaseFirestore.instance
-                                .collection('budgets')
-                                .doc(document.id)
-                                .delete();
-                          },
-                        ),
-                      ); */
                     }).toList(),
                   );
                 },
@@ -375,8 +386,8 @@ class _AddBadgetFormState extends State<AddBadgetForm> {
       querySnapshot.docs.forEach((doc) {
         setState(() {
           _categories.add(DropdownMenuItem(
-            child: Text(doc.get('name')),
             value: doc.reference,
+            child: Text(doc.get('name')),
           ));
         });
       });
@@ -602,8 +613,8 @@ class _EditBadgetFormState extends State<EditBadgetForm> {
       querySnapshot.docs.forEach((doc) {
         setState(() {
           _categories.add(DropdownMenuItem(
-            child: Text(doc.get('name')),
             value: doc.reference,
+            child: Text(doc.get('name')),
           ));
         });
       });
