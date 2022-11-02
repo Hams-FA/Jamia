@@ -336,6 +336,7 @@ class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
                                           else {
                                             return ElevatedButton(
                                                 style: ElevatedButton.styleFrom(
+                                                  backgroundColor: Colors.green,
                                                   padding:
                                                       const EdgeInsets.only(
                                                           left: 130,
@@ -378,6 +379,7 @@ class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
                           SizedBox(height: 8),
                           ElevatedButton(
                               style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.green,
                                 padding: const EdgeInsets.only(
                                     left: 120, right: 130),
                                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -430,6 +432,7 @@ class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
                           SizedBox(height: 8),
                           ElevatedButton(
                               style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.green,
                                 padding: const EdgeInsets.only(
                                     left: 130, right: 130),
                                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
