@@ -278,7 +278,9 @@ class _ViewAndDeleteFriendsState extends State<ViewAndDeleteFriends> {
                     minWidth: 40,
                   ),
                   MaterialButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/budget');
+                    },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

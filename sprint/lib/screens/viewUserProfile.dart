@@ -623,7 +623,9 @@ class _ViewUserProfileState extends State<ViewUserProfile> {
                       minWidth: 40,
                     ),
                     MaterialButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/budget');
+                      },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
