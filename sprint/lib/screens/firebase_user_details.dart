@@ -759,7 +759,7 @@ class _FirebaseUserDetailsState extends State<FirebaseUserDetails> {
 
       transDetail.set(
           {'Email': signedInUser.email, 'time': DateTime.now().toString()});
-      Navigator.pushNamed(context, '/home');
+      Navigator.pushNamed(context, '/NewHome');
     } catch (errorr) {
       if (errorr is StripeException) {
         print(errorr);

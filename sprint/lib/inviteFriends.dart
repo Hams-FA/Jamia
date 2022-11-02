@@ -201,7 +201,7 @@ class _inviteFriendsState extends State<inviteFriends> {
                         updateRequestList.set({jamiaId: true});
                       }
                     });*/
-                    Navigator.pushNamed(context, '/home');
+                    Navigator.pushNamed(context, '/NewHome');
                     //Navigator.pop(context);
                     //}
                     /*

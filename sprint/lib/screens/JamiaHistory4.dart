@@ -327,8 +327,8 @@ class _JamiaHistory4State extends State<JamiaHistory4> {
                                                   if (newDate == null) return;
 
                                                   setState(() {
-                                                    startDate = newDate.add(
-                                                        Duration(days: 14));
+                                                    startDate = newDate;
+                                                    //.add(Duration(days: 14));
 
                                                     // endDate = DateTime(startDate.year,
                                                     //     startDate.month, startDate.day + 14);
@@ -375,14 +375,14 @@ class _JamiaHistory4State extends State<JamiaHistory4> {
                                         Container(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text(
-                                            'ملاحظة',
+                                            '                                  ملاحظة',
                                             textAlign: TextAlign.center,
                                           ),
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text(
-                                            ' سوف تبدأ الجمعية بعد 14 يوم من تاريخ البدء التي تم اختياره اعلاه',
+                                            '                سوف يتم ارسال عوه جديدة لجميع الاعضاء ',
                                             style: TextStyle(fontSize: 12),
                                             textAlign: TextAlign.center,
                                           ),

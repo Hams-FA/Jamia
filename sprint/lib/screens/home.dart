@@ -39,6 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
+    print('home');
     _fcm.getToken().then((token) {
       //print("The token is:" + token!);
       Firestore.collection('tokens').add(
@@ -53,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
     paymetnNotificationCheck();
     pastJamiah = getPastJamiah();
-    checkUserStatus();
+    //checkUserStatus();
   }
 
   final auth = FirebaseAuth.instance;
@@ -454,35 +455,39 @@ class _MyHomePageState extends State<MyHomePage> {
     task27?.cancel();
   }
 
-  void checkUserStatus() {
-    bool sent = false;
-    final cron = Cron();
-    //every day?
-    cron.schedule(Schedule.parse('*/5 * * * * *'), () async {
-      //print('Check user\'s status');
-      final stauts = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(signedInUser.email)
-          .get();
-      //print(stauts.get('status'));
-      if (stauts.get('status') == 1 && loggedin) {
-        loggedin = false;
-        print('log out');
-        await _auth.signOut();
-        if (mounted) {
-          Navigator.pushNamed(context, '/login');
-        }
-        if (!sent) {
-          await AwesomeNotifications().createNotification(
-              content: NotificationContent(
-            id: 2,
-            channelKey: 'key1',
-            title: 'تم إيقاف حسابك',
-            body: 'بإمكانك التواصل معنا لمعرفة التفاصيل',
-          ));
-          sent = true;
-        }
-      }
-    });
-  }
+  // void checkUserStatus() {
+  //   bool sent = false;
+  //   final cron = Cron();
+  //   //every day?
+  //   cron.schedule(Schedule.parse('*/5 * * * * *'), () async {
+  //     print('Check user\'s status');
+  //     final stauts = await FirebaseFirestore.instance
+  //         .collection('users')
+  //         .doc(signedInUser.email)
+  //         .get();
+  //     //print(stauts.get('status'));
+  //     if (stauts.get('status') == 1 && loggedin) {
+  //       loggedin = false;
+  //       print('log out');
+  //       await _auth.signOut();
+  //       if (mounted) {
+  //         print('mounted');
+  //         Navigator.pushNamed(context, '/login');
+  //         print('after');
+  //       }
+  //       //Navigator.pushNamed(context, '/login');
+  //       if (!sent) {
+  //         print('sent');
+  //         await AwesomeNotifications().createNotification(
+  //             content: NotificationContent(
+  //           id: 2,
+  //           channelKey: 'key1',
+  //           title: 'تم إيقاف حسابك',
+  //           body: 'بإمكانك التواصل معنا لمعرفة التفاصيل',
+  //         ));
+  //         sent = true;
+  //       }
+  //     }
+  //   });
+  // }
 }
