@@ -238,7 +238,8 @@ class _inviteFriendsState extends State<inviteFriends> {
                                             'jamiaID': jamiaId
                                           });
                                         });
-                                        Navigator.pushNamed(context, '/home');
+                                        Navigator.pushNamed(
+                                            context, '/NewHome');
                                         //Navigator.pop(context);
                                         //}
 

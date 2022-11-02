@@ -63,7 +63,7 @@ class _ViewAndDeleteFriendsState extends State<ViewAndDeleteFriends> {
           title: Text('أصدقائي'),
           leading: IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/home');
+              Navigator.pushNamed(context, '/NewHome');
             },
             icon: Icon(Icons.arrow_back),
           ),

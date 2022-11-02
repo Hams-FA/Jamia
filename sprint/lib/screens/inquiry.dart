@@ -57,7 +57,7 @@ class _InquiryPageState extends State<InquiryPage> {
     EasyLoading.showSuccess('تم ارسال استفسارك بنجاح ');
     subjectController.clear();
     messageController.clear();
-    Navigator.pushNamed(context, '/home');
+    Navigator.pushNamed(context, '/NewHome');
 
     print(response.body);
   }
