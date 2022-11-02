@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:ui' as ui;
 
 class BudgetScreen extends StatefulWidget {
   const BudgetScreen({super.key});
@@ -38,61 +39,149 @@ class _BudgetScreenState extends State<BudgetScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Budgets'),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // navigate to badget screen
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const AddBadget(),
-            ),
-          );
-        },
-        child: const Icon(Icons.add),
-      ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: _badgetsStream,
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError) {
-            return const Text('Something went wrong');
-          }
-
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Text("Loading");
-          }
-          // check if the list is empty
-          if (badgets.isEmpty) {
-            return const Center(
-              child: Text('No data'),
+    return Directionality(
+      textDirection: ui.TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Budgets'),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            // navigate to badget screen
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const AddBadget(),
+              ),
             );
-          }
-          return ListView(
-            children: snapshot.data!.docs.map((DocumentSnapshot document) {
-              Map<String, dynamic> data =
-                  document.data() as Map<String, dynamic>;
-              return ListTile(
-                title: Text(data['name']),
-                subtitle: Text(data['description']),
+          },
+          child: const Icon(Icons.add),
+        ),
+        body: StreamBuilder<QuerySnapshot>(
+          stream: _badgetsStream,
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError) {
+              return const Text('Something went wrong');
+            }
 
-                /// delete data from firestore
-                trailing: IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: () {
-                    // delete data from firestore
-                    FirebaseFirestore.instance
-                        .collection('budgets')
-                        .doc(document.id)
-                        .delete();
-                  },
-                ),
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Text("Loading");
+            }
+            // check if the list is empty
+            if (badgets.isEmpty) {
+              return const Center(
+                child: Text('No data'),
               );
-            }).toList(),
-          );
-        },
+            }
+            return ListView(
+              children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                Map<String, dynamic> data =
+                    document.data() as Map<String, dynamic>;
+                return ListTile(
+                  title: Text(data['name']),
+                  subtitle: Text(data['description']),
+
+                  /// delete data from firestore
+                  trailing: IconButton(
+                    icon: const Icon(Icons.delete),
+                    onPressed: () {
+                      // delete data from firestore
+                      FirebaseFirestore.instance
+                          .collection('budgets')
+                          .doc(document.id)
+                          .delete();
+                    },
+                  ),
+                );
+              }).toList(),
+            );
+          },
+        ),
+        bottomNavigationBar: BottomAppBar(
+            shape: CircularNotchedRectangle(),
+            child: Container(
+              height: 60,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  MaterialButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/viewUserProfile');
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.person,
+                        ),
+                        Text("الملف الشخصي"),
+                      ],
+                    ),
+                    minWidth: 40,
+                  ),
+                  MaterialButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/budget');
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.account_balance_wallet,
+                          color: Colors.green,
+                        ),
+                        Text("الميزانية"),
+                      ],
+                    ),
+                    minWidth: 40,
+                  ),
+                  MaterialButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/NewHome');
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.people),
+                        Text("جمعياتي"),
+                      ],
+                    ),
+                    minWidth: 40,
+                  ),
+                  MaterialButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/ViewAndDeleteFriends');
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.man,
+                        ),
+                        Text("اصدقائك"),
+                      ],
+                    ),
+                    minWidth: 40,
+                  ),
+                  MaterialButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/RequestPageFinal');
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.list_alt,
+                        ),
+                        Text("الطلبات"),
+                      ],
+                    ),
+                    minWidth: 40,
+                  ),
+                ],
+              ),
+            )),
       ),
     );
   }
