@@ -238,18 +238,32 @@ class _inviteFriendsState extends State<inviteFriends> {
                                             'jamiaID': jamiaId
                                           });
                                         });
-                                        Navigator.pushNamed(context, '/home');
-                                        //Navigator.pop(context);
+                                        // Navigator.pushNamed(
+                                        //     context, '/NewHome');
+
+                                        // Navigator.pushNamed(
+                                        //     context, '/NewHome');
+                                        Navigator.pop(context);
                                         //}
 
-                                        Fluttertoast.showToast(
-                                          msg:
+                                        // Fluttertoast.showToast(
+                                        //   msg:
+                                        //       "قمت بدعوة  ${selectedEmails.length} من أصدفائك",
+                                        //   toastLength: Toast.LENGTH_SHORT,
+                                        //   timeInSecForIosWeb: 1,
+                                        //   backgroundColor: Colors.black,
+                                        //   textColor: Colors.white,
+                                        //   fontSize: 16.0,
+                                        // );
+                                        //try
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
                                               "قمت بدعوة  ${selectedEmails.length} من أصدفائك",
-                                          toastLength: Toast.LENGTH_SHORT,
-                                          timeInSecForIosWeb: 1,
-                                          backgroundColor: Colors.black,
-                                          textColor: Colors.white,
-                                          fontSize: 16.0,
+                                              textAlign: TextAlign.right,
+                                            ),
+                                          ),
                                         );
                                       },
                                       child: Text("دعوة")),

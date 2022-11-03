@@ -5,6 +5,7 @@ import 'dart:ui' as ui;
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:sprint/screens/newhome.dart';
 
 class UserDetails extends StatefulWidget {
   const UserDetails(
@@ -272,7 +273,7 @@ class _UserDetailsState extends State<UserDetails> {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => MyHomePage()));
+                                    builder: (context) => NewHome()));
                           }));
                         },
                         child: Text('تـأكـيـد'))),

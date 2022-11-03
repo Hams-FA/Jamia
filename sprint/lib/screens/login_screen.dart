@@ -171,7 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               await _auth.signInWithEmailAndPassword(
                                   email: email, password: password);
                           if (mounted) {
-                            Navigator.pushNamed(context, '/home');
+                            Navigator.pushNamed(context, '/NewHome');
                           }
                           EasyLoading.dismiss();
                         } on FirebaseAuthException catch (e) {
@@ -183,7 +183,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           print(e);
                           print(e.toString());
                           if (e.code == 'user-not-found') {
-                            EasyLoading.showError('الحساب غير موجود');
+                            EasyLoading.showError(
+                                'اسم المستخدم/كملة المرور خاطئة');
                           } else {
                             EasyLoading.showError(
                                 'اسم المستخدم/كملة المرور خاطئة');

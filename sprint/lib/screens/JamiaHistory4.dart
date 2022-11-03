@@ -103,21 +103,22 @@ class _JamiaHistory4State extends State<JamiaHistory4> {
     return Directionality(
       textDirection: ui.TextDirection.rtl,
       child: Scaffold(
-        appBar: AppBar(
-            actions: <Widget>[
-              /*IconButton(
-                icon: Icon(Icons.home),
-                onPressed: () async {
-                  Navigator.pushNamed(context, '/home');
-                }),*/
-            ],
-            title: const Text('جمعياتي السابقة',
-                textAlign: TextAlign.right,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                    //fontFamily: "Montsterrat Classic",
-                    color: Color.fromARGB(255, 255, 255, 255))),
-            backgroundColor: Color.fromARGB(255, 76, 175, 80)),
+        // appBar: AppBar(
+        //   actions: <Widget>[
+        //     /*IconButton(
+        //         icon: Icon(Icons.home),
+        //         onPressed: () async {
+        //           Navigator.pushNamed(context, '/home');
+        //         }),*/
+        //   ],
+        //   // title: const Text('جمعياتي السابقة',
+        //   //     textAlign: TextAlign.right,
+        //   //     overflow: TextOverflow.ellipsis,
+        //   //     style: const TextStyle(
+        //   //         //fontFamily: "Montsterrat Classic",
+        //   //         color: Color.fromARGB(255, 255, 255, 255))),
+        //   // backgroundColor: Color.fromARGB(255, 76, 175, 80)
+        // ),
         body: _isLoading
             ? Center(
                 child: CircularProgressIndicator(),
@@ -326,8 +327,8 @@ class _JamiaHistory4State extends State<JamiaHistory4> {
                                                   if (newDate == null) return;
 
                                                   setState(() {
-                                                    startDate = newDate.add(
-                                                        Duration(days: 14));
+                                                    startDate = newDate;
+                                                    //.add(Duration(days: 14));
 
                                                     // endDate = DateTime(startDate.year,
                                                     //     startDate.month, startDate.day + 14);
@@ -374,14 +375,14 @@ class _JamiaHistory4State extends State<JamiaHistory4> {
                                         Container(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text(
-                                            'ملاحظة',
+                                            '                                  ملاحظة',
                                             textAlign: TextAlign.center,
                                           ),
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text(
-                                            ' سوف تبدأ الجمعية بعد 14 يوم من تاريخ البدء التي تم اختياره اعلاه',
+                                            '                سوف يتم ارسال عوه جديدة لجميع الاعضاء ',
                                             style: TextStyle(fontSize: 12),
                                             textAlign: TextAlign.center,
                                           ),
@@ -440,83 +441,84 @@ class _JamiaHistory4State extends State<JamiaHistory4> {
                     }).toList(),
                   ),
 
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Color.fromARGB(255, 76, 175, 80),
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => FormPage()));
-          },
-          mini: true,
-          child: const Icon(
-            Icons.add,
-            color: Color(0xFF393737),
-          ),
-        ), // This trailing comma makes auto-formatting nicer for build methods.
-        floatingActionButtonLocation:
-            FloatingActionButtonLocation.miniCenterDocked,
+        // floatingActionButton: FloatingActionButton(
+        //   backgroundColor: Color.fromARGB(255, 76, 175, 80),
+        //   onPressed: () {
+        //     Navigator.push(
+        //         context, MaterialPageRoute(builder: (context) => FormPage()));
+        //   },
+        //   mini: true,
+        //   child: const Icon(
+        //     Icons.add,
+        //     color: Color(0xFF393737),
+        //   ),
+        // ), // This trailing comma makes auto-formatting nicer for build methods.
+        // floatingActionButtonLocation:
+        //     FloatingActionButtonLocation.miniCenterDocked,
 
-        bottomNavigationBar: BottomAppBar(
-            shape: CircularNotchedRectangle(),
-            child: Container(
-              height: 60,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  MaterialButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/viewUserProfile');
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.person),
-                        Text("الملف الشخصي"),
-                      ],
-                    ),
-                    minWidth: 40,
-                  ),
-                  MaterialButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/ViewAndDeleteFriends');
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.man),
-                        Text("اصدقائك"),
-                      ],
-                    ),
-                    minWidth: 40,
-                  ),
-                  MaterialButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/home');
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.people),
-                        Text("جمعياتي"),
-                      ],
-                    ),
-                    minWidth: 40,
-                  ),
-                  MaterialButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/RequestPageFinal');
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.list_alt),
-                        Text("الطلبات"),
-                      ],
-                    ),
-                    minWidth: 40,
-                  ),
-                ],
-              ),
-            )),
+        // bottomNavigationBar: BottomAppBar(
+        //     shape: CircularNotchedRectangle(),
+        //     child: Container(
+        //       height: 60,
+        //       child: Row(
+        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //         children: [
+        //           MaterialButton(
+        //             onPressed: () {
+        //               Navigator.pushNamed(context, '/viewUserProfile');
+        //             },
+        //             child: Column(
+        //               mainAxisAlignment: MainAxisAlignment.center,
+        //               children: [
+        //                 Icon(Icons.person),
+        //                 Text("الملف الشخصي"),
+        //               ],
+        //             ),
+        //             minWidth: 40,
+        //           ),
+        //           MaterialButton(
+        //             onPressed: () {
+        //               Navigator.pushNamed(context, '/ViewAndDeleteFriends');
+        //             },
+        //             child: Column(
+        //               mainAxisAlignment: MainAxisAlignment.center,
+        //               children: [
+        //                 Icon(Icons.man),
+        //                 Text("اصدقائك"),
+        //               ],
+        //             ),
+        //             minWidth: 40,
+        //           ),
+        //           MaterialButton(
+        //             onPressed: () {
+        //               Navigator.pushNamed(context, '/home');
+        //             },
+        //             child: Column(
+        //               mainAxisAlignment: MainAxisAlignment.center,
+        //               children: [
+        //                 Icon(Icons.people),
+        //                 Text("جمعياتي"),
+        //               ],
+        //             ),
+        //             minWidth: 40,
+        //           ),
+        //           MaterialButton(
+        //             onPressed: () {
+        //               Navigator.pushNamed(context, '/RequestPageFinal');
+        //             },
+        //             child: Column(
+        //               mainAxisAlignment: MainAxisAlignment.center,
+        //               children: [
+        //                 Icon(Icons.list_alt),
+        //                 Text("الطلبات"),
+        //               ],
+        //             ),
+        //             minWidth: 40,
+        //           ),
+        //         ],
+        //       ),
+        //     )
+        //     ),
       ),
     );
   }

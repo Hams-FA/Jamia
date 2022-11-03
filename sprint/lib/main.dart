@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -7,6 +8,7 @@ import 'package:sprint/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:sprint/screens/JamiaHistory.dart';
 import 'package:sprint/screens/JamiaHistory4.dart';
+import 'package:sprint/screens/budget_screen.dart';
 import 'package:sprint/screens/inquiry.dart';
 //import 'package:sprint/screens/JamiaHistory2.dart';
 import 'package:sprint/screens/registration_screen.dart';
@@ -27,7 +29,7 @@ import 'package:sprint/screens/editUserProfile.dart';
 
 import 'dart:convert';
 import 'dart:developer';
-
+import 'package:sprint/screens/newhome.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -72,7 +74,9 @@ Future<void> main() async {
       body: 'تطبيقنا يساعدك تنشئ جمعيتك الخاصة بشكل منظم ومرتب',
     ));
   });
-
+//*/5 * * * * *
+//*/10 * * * * every 10 mins
+//30 8 2 * *
   cron.schedule(Schedule.parse('30 8 2 * *'), () async {
     print('notification budget');
 
@@ -128,10 +132,15 @@ class MyApp extends StatelessWidget {
             const ViewAndDeleteFriends(),
         '/JamiaHistory': (BuildContext context) => const JamiaHistory4(),
         '/InquiryPage': (BuildContext context) => const InquiryPage(),
+        '/NewHome': (BuildContext context) => const NewHome(),
+        '/budget': (BuildContext context) => const BudgetScreen(),
         //'/JamiaHistory2': (BuildContext context) => const JamiaHistory2(),
       },
-      home: //const PaymentDemo(),//const LoginScreen(),
-          const LoginScreen(),
+      // home: //const PaymentDemo(),//const LoginScreen(),
+      //     const LoginScreen(),
+      home: FirebaseAuth.instance.currentUser != null
+          ? const NewHome()
+          : const LoginScreen(),
       //ViewUserProfile(),
       //const MyHomePage(title: 'Flutter Demo Home Page'),
       //RegistrationScreen()

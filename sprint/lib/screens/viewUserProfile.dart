@@ -530,36 +530,7 @@ class _ViewUserProfileState extends State<ViewUserProfile> {
                                     },
                                     height: 42,
                                     child: const Text(
-                                      "تعديل",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8),
-                                child: Material(
-                                  elevation: 5,
-                                  color: Colors.green,
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: MaterialButton(
-                                    onPressed: () async {
-                                      try {
-                                        await _auth.signOut();
-                                        if (mounted) {
-                                          Navigator.pushNamed(
-                                              context, '/login');
-                                        }
-                                      } on FirebaseAuthException catch (e) {
-                                        EasyLoading.showError(
-                                            'حدث خطأ، الرجاء المحاولة مرة اخرى');
-                                      }
-                                    },
-                                    height: 42,
-                                    child: const Text(
-                                      "تسجيل الخروج",
+                                      "تعديل الحساب",
                                       style: TextStyle(color: Colors.white),
                                     ),
                                   ),
@@ -579,7 +550,38 @@ class _ViewUserProfileState extends State<ViewUserProfile> {
                                     },
                                     height: 42,
                                     child: const Text(
-                                      "حذف",
+                                      "حذف الحساب",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8),
+                                child: Material(
+                                  elevation: 5,
+                                  color: ui.Color.fromARGB(255, 226, 86, 86),
+//                                  color: ui.Color.fromARGB(255, 175, 76, 76),
+
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: MaterialButton(
+                                    onPressed: () async {
+                                      try {
+                                        await _auth.signOut();
+                                        if (mounted) {
+                                          Navigator.pushNamed(
+                                              context, '/login');
+                                        }
+                                      } on FirebaseAuthException catch (e) {
+                                        EasyLoading.showError(
+                                            'حدث خطأ، الرجاء المحاولة مرة اخرى');
+                                      }
+                                    },
+                                    height: 42,
+                                    child: const Text(
+                                      "تسجيل الخروج",
                                       style: TextStyle(color: Colors.white),
                                     ),
                                   ),
@@ -624,6 +626,34 @@ class _ViewUserProfileState extends State<ViewUserProfile> {
                     ),
                     MaterialButton(
                       onPressed: () {
+                        Navigator.pushNamed(context, '/budget');
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.account_balance_wallet,
+                          ),
+                          Text("الميزانية"),
+                        ],
+                      ),
+                      minWidth: 40,
+                    ),
+                    MaterialButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/NewHome');
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.people),
+                          Text("جمعياتي"),
+                        ],
+                      ),
+                      minWidth: 40,
+                    ),
+                    MaterialButton(
+                      onPressed: () {
                         Navigator.pushNamed(context, '/ViewAndDeleteFriends');
                       },
                       child: Column(
@@ -639,19 +669,6 @@ class _ViewUserProfileState extends State<ViewUserProfile> {
                     ),
                     MaterialButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/home');
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.people),
-                          Text("جمعياتي"),
-                        ],
-                      ),
-                      minWidth: 40,
-                    ),
-                    MaterialButton(
-                      onPressed: () {
                         Navigator.pushNamed(context, '/RequestPageFinal');
                       },
                       child: Column(
@@ -660,7 +677,7 @@ class _ViewUserProfileState extends State<ViewUserProfile> {
                           Icon(
                             Icons.list_alt,
                           ),
-                          Text("قائمة الطلبات"),
+                          Text("الطلبات"),
                         ],
                       ),
                       minWidth: 40,

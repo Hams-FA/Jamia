@@ -63,7 +63,7 @@ class _ViewAndDeleteFriendsState extends State<ViewAndDeleteFriends> {
           title: Text('أصدقائي'),
           leading: IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/home');
+              Navigator.pushNamed(context, '/NewHome');
             },
             icon: Icon(Icons.arrow_back),
           ),
@@ -103,12 +103,9 @@ class _ViewAndDeleteFriendsState extends State<ViewAndDeleteFriends> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: const [
-                        Icon(
-                          Icons.hourglass_empty,
-                          size: 100,
-                        ),
                         Text(
-                          ' لا يوجد لديك اصدقاءابدأ بإضافة الاصدقاء الآن',
+                          ' لا يوجد لديك اصدقاء\n ابدأ بإضافة الاصدقاء الآن',
+                          textAlign: TextAlign.center,
                         ),
                       ],
                     ),
@@ -282,6 +279,34 @@ class _ViewAndDeleteFriendsState extends State<ViewAndDeleteFriends> {
                   ),
                   MaterialButton(
                     onPressed: () {
+                      Navigator.pushNamed(context, '/budget');
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.account_balance_wallet,
+                        ),
+                        Text("الميزانية"),
+                      ],
+                    ),
+                    minWidth: 40,
+                  ),
+                  MaterialButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/NewHome');
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.people),
+                        Text("جمعياتي"),
+                      ],
+                    ),
+                    minWidth: 40,
+                  ),
+                  MaterialButton(
+                    onPressed: () {
                       Navigator.pushNamed(context, '/ViewAndDeleteFriends');
                     },
                     child: Column(
@@ -298,19 +323,6 @@ class _ViewAndDeleteFriendsState extends State<ViewAndDeleteFriends> {
                   ),
                   MaterialButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/home');
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.people),
-                        Text("جمعياتي"),
-                      ],
-                    ),
-                    minWidth: 40,
-                  ),
-                  MaterialButton(
-                    onPressed: () {
                       Navigator.pushNamed(context, '/RequestPageFinal');
                     },
                     child: Column(
@@ -319,7 +331,7 @@ class _ViewAndDeleteFriendsState extends State<ViewAndDeleteFriends> {
                         Icon(
                           Icons.list_alt,
                         ),
-                        Text("قائمة الطلبات"),
+                        Text("الطلبات"),
                       ],
                     ),
                     minWidth: 40,
