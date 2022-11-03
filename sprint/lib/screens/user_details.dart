@@ -54,232 +54,235 @@ class _UserDetailsState extends State<UserDetails> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-      appBar: AppBar(
-          title: //Text('معلومات الجمعية التي تم إنشائها')
-              const Text(
-            'معلومات الجمعية التي تم إنشائها',
-            style: TextStyle(
-                fontSize: 25,
-                color: Color.fromARGB(255, 253, 253, 253),
-                fontWeight: FontWeight.bold),
-            textAlign: TextAlign.right,
-          ),
-          backgroundColor: Color.fromARGB(255, 76, 175, 80),
-          leading: GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Icon(Icons.arrow_back_ios_new))),
-      body: Container(
-        padding: EdgeInsets.all(10),
-        margin: EdgeInsets.all(10),
-        color: Colors.grey.shade100,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-                padding: EdgeInsets.all(10),
-                margin: EdgeInsets.all(10),
-                color: Colors.grey.shade200,
-                child: Directionality(
-                    textDirection: ui.TextDirection.rtl,
-                    child: Row(
-                      children: [
-                        Text(
-                          'أسم الجمعية:  ',
-                          style: TextStyle(fontSize: 18),
-                          textAlign: TextAlign.right,
-                        ),
-                        Text(
-                          widget.name,
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                      ],
-                    ))),
-            Container(
-                padding: EdgeInsets.all(10),
-                margin: EdgeInsets.all(10),
-                color: Colors.grey.shade200,
-                child: Directionality(
-                    textDirection: ui.TextDirection.rtl,
-                    child: Row(
-                      children: [
-                        Text(
-                          ' الحد الادنى من الاعضاء:  ',
-                          style: TextStyle(fontSize: 18),
-                        ),
-                        Text(
-                          widget.minMembers.toString(),
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                      ],
-                    ))),
-            Container(
-                padding: EdgeInsets.all(10),
-                margin: EdgeInsets.all(10),
-                color: Colors.grey.shade200,
-                child: Directionality(
-                  textDirection: ui.TextDirection.rtl,
-                  child: Row(
-                    children: [
-                      Text(
-                        ' الحد الاعلى من الاعضاء:  ',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      Text(
-                        widget.maxMembers.toString(),
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                    ],
-                  ),
-                )),
-            // Container(
-            //   padding: EdgeInsets.all(10),
-            //   margin: EdgeInsets.all(10),
-            //   color: Colors.grey.shade200,
-            //   child: Row(
-            //     children: [
-            //       Text(
-            //         widget.week.toString(),
-            //         style: TextStyle(fontWeight: FontWeight.bold),
-            //       ),
-            //       SizedBox(
-            //         width: 20,
-            //       ),
-            //       Text(
-            //         ' Days',
-            //         style: TextStyle(fontSize: 18),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            Container(
-                padding: EdgeInsets.all(10),
-                margin: EdgeInsets.all(10),
-                color: Colors.grey.shade200,
-                child: Directionality(
-                  textDirection: ui.TextDirection.rtl,
-                  child: Row(
-                    children: [
-                      Text(
-                        ' المبلغ الاجمالي:  ',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      Text(
-                        widget.amount.toString(),
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                    ],
-                  ),
-                )),
-            Container(
-                padding: EdgeInsets.all(10),
-                margin: EdgeInsets.all(10),
-                color: Colors.grey.shade200,
-                child: Directionality(
-                  textDirection: ui.TextDirection.rtl,
-                  child: Row(
-                    children: [
-                      Text(
-                        ' تاريخ بدء الجمعية:  ',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      Text(
-                        "${widget.startDate.year}-${widget.startDate.month}-${widget.startDate.day}",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                    ],
-                  ),
-                )),
-            Container(
-                padding: EdgeInsets.all(10),
-                margin: EdgeInsets.all(10),
-                color: Colors.grey.shade200,
-                child: Directionality(
-                  textDirection: ui.TextDirection.rtl,
-                  child: Row(
-                    children: [
-                      Text(
-                        ' تاريخ انتهاء الجمعية:  ',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      Text(
-                        'لم يحدد حتى الان',
-                        //widget.endDate.toString(),
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                    ],
-                  ),
-                )),
-            SizedBox(
-              height: 20,
+        child: Directionality(
+      textDirection: ui.TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+            title: //Text('معلومات الجمعية التي تم إنشائها')
+                const Text(
+              'معلومات الجمعية التي تم إنشائها',
+              style: TextStyle(
+                  fontSize: 25,
+                  color: Color.fromARGB(255, 253, 253, 253),
+                  fontWeight: FontWeight.bold),
+              textAlign: TextAlign.right,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                    width: 100,
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: Color.fromARGB(255, 76, 175, 80),
+            backgroundColor: Color.fromARGB(255, 76, 175, 80),
+            leading: GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Icon(Icons.arrow_back))),
+        body: Container(
+          padding: EdgeInsets.all(10),
+          margin: EdgeInsets.all(10),
+          color: Colors.grey.shade100,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Container(
+                  padding: EdgeInsets.all(10),
+                  margin: EdgeInsets.all(10),
+                  color: Colors.grey.shade200,
+                  child: Directionality(
+                      textDirection: ui.TextDirection.rtl,
+                      child: Row(
+                        children: [
+                          Text(
+                            'أسم الجمعية:  ',
+                            style: TextStyle(fontSize: 18),
+                            textAlign: TextAlign.right,
+                          ),
+                          Text(
+                            widget.name,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                        ],
+                      ))),
+              Container(
+                  padding: EdgeInsets.all(10),
+                  margin: EdgeInsets.all(10),
+                  color: Colors.grey.shade200,
+                  child: Directionality(
+                      textDirection: ui.TextDirection.rtl,
+                      child: Row(
+                        children: [
+                          Text(
+                            ' الحد الادنى من الاعضاء:  ',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          Text(
+                            widget.minMembers.toString(),
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                        ],
+                      ))),
+              Container(
+                  padding: EdgeInsets.all(10),
+                  margin: EdgeInsets.all(10),
+                  color: Colors.grey.shade200,
+                  child: Directionality(
+                    textDirection: ui.TextDirection.rtl,
+                    child: Row(
+                      children: [
+                        Text(
+                          ' الحد الاعلى من الاعضاء:  ',
+                          style: TextStyle(fontSize: 18),
                         ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: Text('تراجع'))),
-                Container(
-                    width: 100,
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: Color.fromARGB(255, 76, 175, 80),
+                        Text(
+                          widget.maxMembers.toString(),
+                          style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        onPressed: () {
-                          saveUserData(
-                              name: widget.name,
-                              minMembers: widget.minMembers,
-                              maxMembers: widget.maxMembers,
-                              // week: widget.week,
-                              amount: widget.amount,
-                              startDate: widget.startDate,
-                              endDate: widget.endDate);
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text('تم حفظ البيانات بنجاح'),
-                            duration: Duration(milliseconds: 3000),
-                          ));
-                          Future.delayed(
-                              const Duration(
-                                milliseconds: 3000,
-                              ), (() {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => NewHome()));
-                          }));
-                        },
-                        child: Text('تـأكـيـد'))),
-              ],
-            )
-          ],
+                        SizedBox(
+                          width: 20,
+                        ),
+                      ],
+                    ),
+                  )),
+              // Container(
+              //   padding: EdgeInsets.all(10),
+              //   margin: EdgeInsets.all(10),
+              //   color: Colors.grey.shade200,
+              //   child: Row(
+              //     children: [
+              //       Text(
+              //         widget.week.toString(),
+              //         style: TextStyle(fontWeight: FontWeight.bold),
+              //       ),
+              //       SizedBox(
+              //         width: 20,
+              //       ),
+              //       Text(
+              //         ' Days',
+              //         style: TextStyle(fontSize: 18),
+              //       ),
+              //     ],
+              //   ),
+              // ),
+              Container(
+                  padding: EdgeInsets.all(10),
+                  margin: EdgeInsets.all(10),
+                  color: Colors.grey.shade200,
+                  child: Directionality(
+                    textDirection: ui.TextDirection.rtl,
+                    child: Row(
+                      children: [
+                        Text(
+                          ' المبلغ الاجمالي:  ',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        Text(
+                          widget.amount.toString(),
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                      ],
+                    ),
+                  )),
+              Container(
+                  padding: EdgeInsets.all(10),
+                  margin: EdgeInsets.all(10),
+                  color: Colors.grey.shade200,
+                  child: Directionality(
+                    textDirection: ui.TextDirection.rtl,
+                    child: Row(
+                      children: [
+                        Text(
+                          ' تاريخ بدء الجمعية:  ',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        Text(
+                          "${widget.startDate.year}-${widget.startDate.month}-${widget.startDate.day}",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                      ],
+                    ),
+                  )),
+              Container(
+                  padding: EdgeInsets.all(10),
+                  margin: EdgeInsets.all(10),
+                  color: Colors.grey.shade200,
+                  child: Directionality(
+                    textDirection: ui.TextDirection.rtl,
+                    child: Row(
+                      children: [
+                        Text(
+                          ' تاريخ انتهاء الجمعية:  ',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        Text(
+                          'لم يحدد حتى الان',
+                          //widget.endDate.toString(),
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                      ],
+                    ),
+                  )),
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                      width: 100,
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: Color.fromARGB(255, 76, 175, 80),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text('تراجع'))),
+                  Container(
+                      width: 100,
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: Color.fromARGB(255, 76, 175, 80),
+                          ),
+                          onPressed: () {
+                            saveUserData(
+                                name: widget.name,
+                                minMembers: widget.minMembers,
+                                maxMembers: widget.maxMembers,
+                                // week: widget.week,
+                                amount: widget.amount,
+                                startDate: widget.startDate,
+                                endDate: widget.endDate);
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text('تم حفظ البيانات بنجاح'),
+                              duration: Duration(milliseconds: 3000),
+                            ));
+                            Future.delayed(
+                                const Duration(
+                                  milliseconds: 3000,
+                                ), (() {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => NewHome()));
+                            }));
+                          },
+                          child: Text('تـأكـيـد'))),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     ));
