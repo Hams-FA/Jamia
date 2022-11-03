@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>ادفع لمين؟</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="logo3.jpg">
+
+    <style>
+        body {
+            background-color: #c7d4c0;
+        }
+
+        #logo {
+            float: right;
+            margin: 0;
+            width: 5%;
+            height: 5%;
+        }
+
+        #navlist {
+            float: left;
+        }
+    </style>
+</head>
+
+<body style="text-align: center;">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <img id="logo" src="logo3.jpg">
+        <div class="container">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul id="navlist" class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a href="" class="nav-link" id="logout" style="color: red; font-size: 14px;">تسجيل الخروج </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="Untitled-1.html"  style=" font-size: 14px;" class="nav-link"> إدارة الأقسام</a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a href="transaction.html"  style=" font-size: 14px; ";
+                        class="nav-link"> المتأخرين عن الدفع</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="activation.html" style=" font-size: 14px; " class="nav-link">إدارة المستخدمين</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="userProfiles.html" style=" font-size:14px;" class="nav-link">المستخدمين</a>
+                    </li>
+                    <li style = "float: right; "class="nav-item">
+                        <a href="stripe.html" class="nav-link">الدفع</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="jamias.html" style=" font-size: 14px; text-decoration: underline; color: black;" class="nav-link">التحويل الشهري</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="JamiaDetails.html" style=" font-size: 14px;" class="nav-link">الجمعيات </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-xl d-flex justify-content-center align-items-center pt-3">
+        <div class="input-group mb-3">
+            <button class="btn btn-success" type="button" id="searchBtn">ابحث</button>
+            <input type="text" class="form-control" id="searchBar" placeholder="البحث عن طريق اسم الجمعية" aria-label="Search using Name or Email">
+          </div>
+      </div>
+
+    <div style="text-align: center; " class="container-xl d-flex justify-content-center align-items-center p-5">
+        <div style="text-align: center; " class="table-wrapper">
+            <div style="text-align: center; " class="table-title">
+                <div style="text-align: center; " class="row">
+                    <div style="text-align: center; " class="col-sm-6">
+                        <h2>الجمعيات المستحقة للتحويل
+                        </h2>
+                    </div>
+                    <!-- <div class="col-sm-6">
+                                                                                                                                                                                                                                <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Employee</span></a>						
+                                                                                                                                                                                                                            </div> -->
+                </div>
+            </div>
+            <!-- create success message -->
+            <div id="success" class="alert alert-success" role="alert" style="display: none;">
+                تم دفع الجمعية بنجاح
+            </div>
+            <table id="t" class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>تأكيد الدفع</th>
+                        <th>أدفع لمين؟</th>
+                        <th>الدور</th>
+
+                        <th>المبلغ المستحق </th>
+
+                        <th>اسم الجمعية</th>
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <!-- <td><button style="background-color: green;"
+                                                                                                                                                                                                                                             class=" btn btn-success addData "><b>حولت</b></button></td>
+                                                                                                                                                                                                                                    <td>نورة محمد</td>
+                                                                                                                                                                                                                                    <td>5000</td>
+                                                                                                                                                                                                                                    <td>جمعية الحارة</td> -->
+                        -->
+
+
+
+                        <!-- <td>
+                                                                                                                                                                                                                                    <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                                                                                                                                                                                                                                    <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                                                                                                                                                                                                                </td> -->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- Add Modal HTML -->
+    <!-- <div id="addEmployeeModal" class="modal fade">
+                                                                                                                                                                                                                <div class="modal-dialog">
+                                                                                                                                                                                                                    <div class="modal-content">
+                                                                                                                                                                                                                        <form>
+                                                                                                                                                                                                                            <div class="modal-header">						
+                                                                                                                                                                                                                                <h4 class="modal-title">Add Employee</h4>
+                                                                                                                                                                                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                            <div class="modal-body">					
+                                                                                                                                                                                                                                <div class="form-group">
+                                                                                                                                                                                                                                    <label>Name</label>
+                                                                                                                                                                                                                                    <input type="text" class="form-control addName" required>
+                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                                <div class="form-group">
+                                                                                                                                                                                                                                    <label>Email</label>
+                                                                                                                                                                                                                                    <input type="email" class="form-control addEmail" required>
+                                                                                                                                                                                                                                </div>					
+                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                            <div class="modal-footer">
+                                                                                                                                                                                                                                <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                                                                                                                                                                                                                                <input type="submit" class="btn btn-success addData" value="Add">
+                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                        </form>
+                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                            </div> -->
+    <!-- Edit Modal HTML -->
+    <!-- <div id="editEmployeeModal" class="modal fade">
+                                                                                                                                                                                                                <div class="modal-dialog">
+                                                                                                                                                                                                                    <div class="modal-content">
+                                                                                                                                                                                                                        <form>
+                                                                                                                                                                                                                            <div class="modal-header">						
+                                                                                                                                                                                                                                <h4 class="modal-title">Edit Employee</h4>
+                                                                                                                                                                                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                            <div class="modal-body">					
+                                                                                                                                                                                                                                <div class="form-group">
+                                                                                                                                                                                                                                    <label>Name</label>
+                                                                                                                                                                                                                                    <input type="text" class="form-control" required>
+                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                                <div class="form-group">
+                                                                                                                                                                                                                                    <label>Email</label>
+                                                                                                                                                                                                                                    <input type="email" class="form-control" required>
+                                                                                                                                                                                                                                </div>					
+                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                            <div class="modal-footer">
+                                                                                                                                                                                                                                <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                                                                                                                                                                                                                                <input type="submit" class="btn btn-info" value="Save">
+                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                        </form>
+                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                            </div> -->
+    <!-- Delete Modal HTML -->
+    <!-- <div id="deleteEmployeeModal" class="modal fade">
+                                                                                                                                                                                                                <div class="modal-dialog">
+                                                                                                                                                                                                                    <div class="modal-content">
+                                                                                                                                                                                                                        <form>
+                                                                                                                                                                                                                            <div class="modal-header">						
+                                                                                                                                                                                                                                <h4 class="modal-title">Delete Employee</h4>
+                                                                                                                                                                                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                            <div class="modal-body">					
+                                                                                                                                                                                                                                <p>Are you sure you want to delete these Records?</p>
+                                                                                                                                                                                                                                <p class="text-warning"><small>This action cannot be undone.</small></p>
+                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                            <div class="modal-footer">
+                                                                                                                                                                                                                                <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                                                                                                                                                                                                                                <input type="submit" class="btn btn-danger" value="Delete">
+                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                        </form>
+                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                            </div> -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.11.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.11.0/firebase-analytics.js";
+        import { getFirestore, collection, getDocs, getDoc } from "https://www.gstatic.com/firebasejs/9.11.0/firebase-firestore.js";
+        import { doc, updateDoc } from "https://www.gstatic.com/firebasejs/9.11.0/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.11.0/firebase-auth.js";
+        // import { useCollection } from 'react-firebase-hooks/firestore.js';
+
+
+
+
+
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyAPD2rLWY3Nvbs3cW19-SkCQ7NtfeIr_xk",
+            authDomain: "jamia-2bcc1.firebaseapp.com",
+            projectId: "jamia-2bcc1",
+            storageBucket: "jamia-2bcc1.appspot.com",
+            messagingSenderId: "585806474023",
+            appId: "1:585806474023:web:e98bb5c8e5e1472f4c1702",
+            measurementId: "G-45VRZZ51WF"
+        };
+
+        // doc1.data().startDate.toDate() >= new Date() 
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        document.getElementById("logout").addEventListener('click', function () {
+            signOut(auth).then(() => {
+                // Sign-out successful.
+                if (confirm("لقد تم تسجيل خروجك بنجاح!")) {
+                                 location.replace("login.html");}
+
+            }).catch((error) => {
+                console.log('Error singing in, ', error.message);
+                alert("حدث خطأ!! حاول مرة اخرى");
+            });
+
+        });
+        const analytics = getAnalytics(app);
+        // Initialize Cloud Firestore and get a reference to the service
+        const db = getFirestore(app);
+        // const querySnapshot = await getDocs(collection(db, "JamiaGroup"));
+
+        getDocs(collection(db, "JamiaGroup")).then((querySnapshot) => {
+
+            querySnapshot.docs.forEach((doc1) => {
+
+                if (doc1.data().startDate.toDate() <= new Date()) {
+                    if (!(new Date() > doc1.data().endDate.toDate())) {
+
+                        //get members subcollection where turn is equal to jamiahTurn
+                        getDocs(collection(db, "JamiaGroup", doc1.data().id, "members")).then((querySnapshot2) => {
+                            querySnapshot2.docs.forEach((doc2) => {
+
+                                if (doc2.data().paymentStatus != true) {
+                                    getDoc(doc(db, "users", doc2.data().name)).then((doc3) => {
+                                        console.log(doc2.data().turn == doc1.data().JamiaTrun);
+                                        if (doc3.exists()) {
+
+                                            var table = document.getElementById("t");
+                                            var row = table.insertRow(1);
+                                            var cell1 = row.insertCell(0);
+                                            var cell2 = row.insertCell(1);
+                                            var cell3 = row.insertCell(2);
+                                            var cell4 = row.insertCell(3);
+                                            var cell5 = row.insertCell(4);
+                                            var amount2 = 0;
+                                            if (doc1.data().acceptedCount == 1) {
+                                                amount2 = (doc1.data().amount * (doc1.data().acceptedCount));
+                                            }
+                                            else {
+                                                amount2 = (doc1.data().amount * ((doc1.data().acceptedCount) - 1));
+                                            }
+                                            cell2.innerHTML = doc1.data().JamiaTrun;
+                                            cell4.innerHTML = amount2;
+                                            cell5.innerHTML = doc1.data().name;
+                                            cell3.innerHTML = doc2.data().turn;
+                                            cell2.innerHTML = doc3.data().fname + " " + doc3.data().lname;
+                                            //  cell1.innerHTML = '<button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">تأكيد الدفع</button>';
+                                            // add button to update payment status for doc3.data().id without jquery
+                                            var btn = document.createElement("BUTTON");
+                                            btn.innerHTML = "تأكيد الدفع";
+                                            btn.setAttribute("class", "btn btn-success")
+
+                                            btn.setAttribute("id", doc3.id);
+                                            btn.addEventListener("click", function () {
+                                                updateDoc(doc(db, "JamiaGroup", doc1.id, "members", doc3.id), {
+                                                    paymentStatus: true
+                                                }).then(() => {
+                                                    console.log("Document successfully updated!");
+                                                    // show success message
+                                                    document.getElementById("success").style.display = "block";
+                                                    location.reload();
+                                                });
+
+                                                // update jamiaTurn
+                                                // updateDoc(doc(db, "JamiaGroup", doc1.id), {
+                                                //     JamiaTrun: doc1.data().JamiaTrun + 1
+                                                // }).then(() => {
+                                                //     console.log("Document successfully updated!");
+                                                // });
+                                            });
+                                            cell1.appendChild(btn);
+                                        }
+                                    }); // here
+                                }
+                            }
+                            );
+                        }
+                        );
+
+                    }
+                }
+            }
+
+            );
+        }
+        );
+
+        searchBar.onkeyup =  function searchData(){
+
+var searchBtn = document.getElementById('searchBtn');
+var searchBar = document.getElementById('searchBar');
+
+var filter = searchBar.value.toUpperCase();
+var tbody = document.getElementById('t');
+var tr = tbody.getElementsByTagName('tr');
+var category = document.getElementById('option');
+
+
+for (let i = 0; i < tr.length; i++) {
+    var td = tr[i].getElementsByTagName('td')[1];
+    console.log(td);
+    if(td){
+        let textValue = td.textContent || td.innerHTML;
+
+        if(textValue.toUpperCase().indexOf(filter)> -1){
+            tr[i].style.display = '';
+        }
+        else{
+            tr[i].style.display = 'none';
+        }
+    }
+}
+}
+                                                                                                                                                                                                                    // console.log(Date());
+                                                                                                                                                                                                                    // console.log((doc1.data().startDate));
+                                                                                                                                                                                                                    //Parsing method:
+                                                                                                                                                                                                                    // function padTo2Digits(num) {
+                                                                                                                                                                                                                    //     return num.toString().padStart(2, '0');
+                                                                                                                                                                                                                    // }
+
+                                                                                                                                                                                                                    // function formatDate(date) {
+                                                                                                                                                                                                                    //     return [
+                                                                                                                                                                                                                    //         padTo2Digits(date.getDate()),
+                                                                                                                                                                                                                    //         padTo2Digits(date.getMonth() + 1),
+                                                                                                                                                                                                                    //         date.getFullYear(),
+                                                                                                                                                                                                                    //     ].join('/');
+                                                                                                                                                                                                                    // }
+                                                                                                                                                                                                                    // var today = (formatDate(new Date()).substring(0,2));
+                                                                                                                                                                                                                    // var thismonth = (formatDate(new Date()).substring(3,5));
+                                                                                                                                                                                                                    // var thisyear = (formatDate(new Date()).substring(6,10));
+
+                                                                                                                                                                                                                    // var startday = (formatDate(new Date(doc1.data().startDate)).substring(0,2));
+                                                                                                                                                                                                                    // var startmonth = (formatDate(new Date(doc1.data().startDate))).substring(3,5);
+                                                                                                                                                                                                                    // var startyear = (formatDate(new Date(doc1.data().startDate))).substring(6,10);
+                                                                                                                                                                                                                    // console.log(today, thismonth,thisyear);
+                                                                                                                                                                                                                    // console.log(startday,startmonth,startyear);
+                                                                                                                                                                                                                    // if(new Date().getDate() >= new Date(doc1.data().startDate)){
+
+
+
+                                                                                                                                                                                                                    // if(thisyear >= startyear){
+                                                                                                                                                                                                                    //     if(thismonth>= startmonth){
+                                                                                                                                                                                                                    //         if(today>= startday){
+                                                                                                                                                                                                                    // }
+                                                                                                                                                                                                                    //     }
+                                                                                                                                                                                                                    // }
+
+                                                                                                                                                                                                                    // }
+
+                                                                                                                                                                                                                    // function updatePaymentStatus  (id,name) {
+                                                                                                                                                                                                                    //     updateDoc(doc(db, "JamiaGroup/$id/members", id), {
+                                                                                                                                                                                                                    //         paymentStatus: true
+                                                                                                                                                                                                                    //     }).then(() => {
+                                                                                                                                                                                                                    //         console.log("Document successfully updated!");
+                                                                                                                                                                                                                    //         location.reload();
+                                                                                                                                                                                                                    //     }).catch((error) => {
+                                                                                                                                                                                                                    //         // The document probably doesn't exist.
+                                                                                                                                                                                                                    //         console.error("Error updating document: ", error);
+                                                                                                                                                                                                                    //     });
+                                                                                                                                                                                                                    // };
+
+    </script>
+</body>
+
+</html>
