@@ -63,7 +63,7 @@ Future<void> main() async {
   final cron = Cron();
   //*/10 * * * * every 10 mins
   //in mounth 1 5 9 day 27 at 8:30
-  cron.schedule(Schedule.parse('30 8 27 1,5,9 * '), () async {
+  cron.schedule(Schedule.parse('30 8 1 * *'), () async {
     print('notification');
 
     await AwesomeNotifications().createNotification(
@@ -77,7 +77,7 @@ Future<void> main() async {
 //*/5 * * * * *
 //*/10 * * * * every 10 mins
 //30 8 2 * *
-  cron.schedule(Schedule.parse('30 8 2 * *'), () async {
+  cron.schedule(Schedule.parse('*/10 * * * * '), () async {
     print('notification budget');
 
     await AwesomeNotifications().createNotification(
