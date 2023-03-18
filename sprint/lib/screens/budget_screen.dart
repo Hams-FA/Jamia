@@ -121,7 +121,8 @@ class _BudgetScreenState extends State<BudgetScreen> {
                     if ((snapshot.data!.data() as Map<String, dynamic>)
                         .containsKey('salary')) {
                       salary = (snapshot.data!.data()
-                          as Map<String, dynamic>)['salary'];
+                              as Map<String, dynamic>)['salary'] +
+                          0.0;
                       // calculate the total of the badgets and subtract it from the salary using percentage
                       double total = 0.0;
                       for (var badget in badgets) {
