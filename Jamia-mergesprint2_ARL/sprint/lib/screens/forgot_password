@@ -1,0 +1,118 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+
+import '../widgets/my_button.dart';
+import '../widgets/validations.dart';
+
+class ForgotPassword extends StatefulWidget {
+  const ForgotPassword({Key? key}) : super(key: key);
+
+  @override
+  State<ForgotPassword> createState() => _ForgotPasswordState();
+}
+
+class _ForgotPasswordState extends State<ForgotPassword> {
+  final _formKey = GlobalKey<FormState>();
+  final _auth = FirebaseAuth.instance;
+  late String email;
+
+  @override
+  Widget build(BuildContext context) {
+    Validations validations = Validations();
+
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const Text(
+                "نسيت كلمة المرور",
+                style: TextStyle(
+                    fontSize: 35,
+                    color: Color(0xFF393737),
+                    fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 48),
+              Directionality(
+                textDirection: TextDirection.rtl,
+                child: TextFormField(
+                  textAlign: TextAlign.right,
+                  textDirection: TextDirection.rtl,
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (value) => validations.validate(1, value!),
+                  onChanged: (value) {
+                    email = value;
+                  },
+                  decoration: const InputDecoration(
+                    hintText: 'ادخل بريدك الالكتروني',
+                    prefixIcon: Icon(Icons.email),
+                    contentPadding: EdgeInsets.symmetric(
+                      vertical: 10,
+                      horizontal: 20,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.grey,
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.green,
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              MyButton(
+                color: Colors.green,
+                title: 'اعد تعيين كلة المرور',
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    try {
+                      await _auth.sendPasswordResetEmail(email: email);
+                      EasyLoading.showSuccess('تحقق من بريدك الالكتروني');
+                      if (mounted) {
+                        Navigator.pushNamed(context, '/login');
+                      }
+                    } on FirebaseAuthException catch (e) {
+                      //we're not listing the errors to the user with an exact
+                      //and detailed message, because an attacker could take an
+                      //advantage and may succeed to impersonate the user.
+                      //it's a security best practice to give the user a general
+                      //message.
+                      EasyLoading.showError('الايميل خاطئ، حاول مرة اخرى');
+                      //in case you need detailed/firebase error messages
+                      //uncomment the below code line-162 and comment line 100
+                      // EasyLoading.showError(e.toString());
+                    }
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
